@@ -1,0 +1,11 @@
+[alias]
+  gst = status
+  gco = checkout
+  gcom = commit
+  st = status
+  co = checkout
+  cm = commit
+  adda = add --all
+  n  = now --all --stat
+[ghq]
+  root = $HOME/src

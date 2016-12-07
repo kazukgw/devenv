@@ -1,0 +1,91 @@
+version: '2'
+
+services:
+  yourcontainerimage:
+    build: /path/to/build/dir
+    dockerfile: /path/to/dockerfile # buildの時はこれも指定できる
+    expose: ${EXPOSE_PORT} # hostの環境変数はこうやってつかう
+
+  yourcontainerimage:
+    image: imagename
+    command: bundle exec thin -p 3000
+    container_name: my-web-app
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
+    dns_search:
+      - dc1.example.com
+    env_file:
+      - ./common.env # 環境変数はファイルで記述できる
+  # .envファイルは
+  # VAL1=hogefuga のようにする。クオートはつけない
+    environment: #もちろんこうかける
+      RACK_ENV: development
+      SHOW: 'true'
+      SESSION_SECRET:
+    expose:
+      - "3000"
+
+    extends: #既存のdocker-compose.yml を拡張できる
+      file: common.yml
+      service: webapp
+    external_links:
+      - redis_1
+    extra_hosts:
+      - "somehost:162.242.195.82"
+    labels: #
+      com.example.description: "Accounting webapp"
+    links:
+      - db:database
+    log_driver: "json-file" # "syslog", "none"
+    log_opt:
+        syslog-address: "tcp://192.168.0.42:123"
+
+    net: "bridge" # "none" "container:[name or id]" "host"
+    ports:
+      - "3000"
+      - "3000-3005"
+      - "8000:8000"
+      - "9090-9091:8080-8081"
+    security_opt:
+      - label:user:USER
+      - label:role:ROLE
+    ulimits: #
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+
+    volume_driver: mydriver
+    volumes:
+      - /var/lib/mysql
+      - ./cache:/tmp/cache
+      - ~/configs:/etc/configs/:ro
+    volumes_from:
+      - service_name
+      - container_name
+      - service_name:rw
+
+    # misc
+    cpu_shares: 73
+    cpuset: 0,1
+
+    entrypoint: /code/entrypoint.sh
+    user: postgresql
+    working_dir: /code
+
+    domainname: foo.com
+    hostname: foo
+    ipc: host
+    mac_address: 02:42:ac:11:65:43
+
+    mem_limit: 1000000000
+    memswap_limit: 2000000000
+    privileged: true
+
+    restart: always
+
+    read_only: true
+    stdin_open: true
+    tty: true
+

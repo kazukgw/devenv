@@ -1,0 +1,7 @@
+set main-view = id date author commit-title:graph=yes,refs=yes
+# set line-graphics = utf-8
+set diff-context = 6
+
+bind main F !git fetch origin
+bind main C !?git checkout %(commit)
+bind main R !?git rebase -i %(commit)

@@ -1,0 +1,31 @@
+mysql:
+  image: mysql
+
+  # hostの3306とcontainerの3306をつなぐ
+  ports:
+    - "3306:3306"
+
+  # ほかのコンテナに公開するポート
+  expose:
+    - "3306"
+
+  # host(この場合boot2docker) と syncするdirectory
+  volumes:
+    - /var/tmp/your-app/mysql:/var/lib/mysql
+    # mysql の設定自動読み込み
+    - ./mysql/conf.d:/etc/mysql/conf.d
+    # 流しこむSQLを置く場所
+    - ./mysql/init_db.d:/docker-entrypoint-initdb.d
+
+  # 環境変数
+  environment:
+    # 最初のイメージ起動に作成するユーザ名
+    MYSQL_USER: a_user
+    # そのパスワード
+    MYSQL_PASSWORD: password
+    # root のパスワード
+    MYSQL_ROOT_PASSWORD: password
+    # 最初のイメージ起動に作成するDB名
+    MYSQL_DATABASE: appdb
+
+

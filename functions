@@ -1,0 +1,101 @@
+# vim: set ft=sh
+
+# alias
+alias l='ls -G -a'
+alias ls='ls -G -a'
+alias ll='ls -G -lah | fzf'
+alias tmux='tmux -u'
+alias t='tmux'
+alias g='git'
+alias tiga='tig --all'
+
+alias vim=nvim
+alias vi=nvim
+alias v=nvim
+alias vimrc='nvim $HOME/.config/nvim/init.vim'
+
+# docker
+function dcom() {
+  local all="__ALL__"
+  local args=("$@")
+  local shifted=("${args[@]:1}")
+  case "$1" in
+    "")
+      docker-compose
+    ;;
+
+    version | ps | up) docker-compose ${args[@]} ;;
+
+    login)
+      local selected=$(docker-compose ps | awk 'NR > 2 {print $1}' | uniq |\
+                       fzf_add_header $all | fzf)
+      if [[ "$selected" = "" ]]; then
+        echo "container is not found..."
+      else
+        docker exec -it $selected /bin/bash
+      fi
+    ;;
+
+    build | kill | start | stop | restart | scale | pause | unpause | logs | rm)
+      if [[ $(parse_yaml docker-compose.yml | grep version | awk -F'=' '{print $2}') =~ "2" ]];
+      then
+        local selected=$(parse_yaml docker-compose.yml | grep services | awk -F'___' '{print $2}' | uniq |\
+                         fzf_add_header $all | fzf)
+        if [[ "$selected" = "$all" ]]; then
+          docker-compose ${args[@]}
+        else
+          docker-compose ${args[@]} $selected
+        fi
+      else
+        local selected=$(parse_yaml docker-compose.yml | awk -F'___' '{print $1}' | uniq |\
+                         fzf_add_header $all | fzf)
+        if [[ "$selected" = "$all" ]]; then
+          docker-compose ${args[@]}
+        else
+          docker-compose ${args[@]} $selected
+        fi
+      fi
+    ;;
+    *)
+      local selected=$(docker-compose ps | awk 'NR > 2 {print $1}' | fzf)
+      docker-compose ${args[@]} $selected
+    ;;
+  esac
+}
+
+function parse_yaml () {
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("___")}
+         printf("%s%s=\"%s\"\n", vn, $2, $3);
+      }
+   }'
+   return 0
+}
+
+function fzf_add_header() {
+  echo $1
+  while read x; do
+    echo $x
+  done
+}
+
+function tat() {
+  local selected=$(tmux ls | fzf | awk -F':' '{print $1}')
+  tmux a -t $selected
+}
+
+function pj() {
+  local selected=$(find $HOME/src -maxdepth 3 -type d | sed -E 's/.*\/src\///g' | fzf)
+  if [ -n "$selected" ]; then
+    cd $HOME/src/$selected
+  else
+    echo "$selected is not found..."
+  fi
+}
