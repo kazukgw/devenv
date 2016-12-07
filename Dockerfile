@@ -102,6 +102,7 @@ ADD templates /home/$USER/.templates
 ADD functions /home/$USER/.functions
 ADD tmux.conf /home/$USER/.tmux.conf
 ADD git-completion /home/$USER/.git-completion
+ADD gitconfig /home/$USER/.gitconfig
 
 RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
 
