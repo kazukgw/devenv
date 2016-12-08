@@ -163,8 +163,8 @@ let NERDTreeShowHidden = 1
 
 """"""" Lightline {{{
 let g:lightline = {
-        \ 'separator': { 'left': '⮀', 'right': '⮂'  },
-        \ 'subseparator': { 'left': '⮁', 'right': '⮃'  },
+        \ 'separator': { 'left': '', 'right': ''  },
+        \ 'subseparator': { 'left': '', 'right': ''  },
         \ 'mode_map': {'c': 'NORMAL'},
         \ 'active': {
         \   'left': [
