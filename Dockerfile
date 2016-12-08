@@ -68,7 +68,11 @@ RUN apt-get install -y \
   nkf \
   htop \
   git-extras \
-  exuberant-ctags
+  exuberant-ctags \
+  language-pack-ja-base \
+  language-pack-ja \
+  ibus \
+  ibus-mozc
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USER/.fzf \
   && /home/$USER/.fzf/install
@@ -92,7 +96,11 @@ RUN pip install --upgrade \
 RUN mkdir /home/$USER/.config \
   && git clone https://github.com/b4b4r07/enhancd /home/$USER/.config/enhancd \
   && wget https://github.com/ok-borg/borg/releases/download/v0.0.1/borg_linux_amd64 -O /home/$USER/bin/borg \
-  && chmod 755 /home/$USER/bin/borg
+  && chmod 755 /home/$USER/bin/borg \
+  && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+
+ENV LANG=ja_JP.UTF-8
 
 ## vim plugins
 ADD nvim /home/$USER/.config/nvim
@@ -103,6 +111,7 @@ ADD functions /home/$USER/.functions
 ADD tmux.conf /home/$USER/.tmux.conf
 ADD git-completion /home/$USER/.git-completion
 ADD gitconfig /home/$USER/.gitconfig
+ADD tigrc /home/$USER/.tigrc
 
 RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
 
