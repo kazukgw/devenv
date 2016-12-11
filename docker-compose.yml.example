@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  devenv:
+    image: kazukgw/devenv
+    volumes:
+      # ssh
+      - <your_dot_ssh>:/home/devenv/.ssh
+      # workspace
+      - <your_src_dir>:/home/devenv/src
+      # nvim pluggin
+      - <your_vim_plugged_dir>:/home/devenv/.config/nvim/plugged
+      # pip pacakges
+      - <pip_local>:/home/devenv/.local
+      # timezone
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      http_proxy: xxxx
+      https_proxy: xxxx
+      GIT_EMAIL: xxx
+      GIT_NAME: xxx
+      GITHUB_USER: xxx
+

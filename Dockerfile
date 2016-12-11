@@ -8,10 +8,11 @@ RUN apt-get update && apt-get install -y sudo \
   useradd -g $USER -G sudo -m -s /bin/bash $USER && \
   echo "$USER:$PASSWORD" | chpasswd
 
-RUN apt-get install -y \
+RUN apt-get update --fix-missing && apt-get install -y \
   git \
   curl \
   wget \
+  make \
   apt-transport-https \
   ca-certificates \
   software-properties-common \
@@ -51,7 +52,8 @@ RUN apt-key adv \
     && echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list \
     && apt-get update \
     && apt-cache policy docker-engine \
-    && apt-get install docker-engine -y
+    && apt-get install docker-engine -y \
+    && usermod -aG docker devenv
 
 ## neovim
 RUN add-apt-repository -y ppa:neovim-ppa/unstable \
@@ -67,12 +69,14 @@ RUN apt-get install -y \
   silversearcher-ag \
   nkf \
   htop \
+  tree \
   git-extras \
   exuberant-ctags \
+  shellcheck \
   language-pack-ja-base \
   language-pack-ja \
-  ibus \
-  ibus-mozc
+  dbus \
+  ibus
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USER/.fzf \
   && /home/$USER/.fzf/install
@@ -91,6 +95,7 @@ RUN pip install --upgrade \
  cython \
  awscli \
  mycli \
+ docker-compose \
  neovim
 
 RUN mkdir /home/$USER/.config \
