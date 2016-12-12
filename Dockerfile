@@ -63,6 +63,7 @@ RUN add-apt-repository -y ppa:neovim-ppa/unstable \
 
 ## apt pkgs
 RUN apt-get install -y \
+  man \
   jq \
   tig \
   g++ \
