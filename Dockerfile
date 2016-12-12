@@ -75,6 +75,8 @@ RUN apt-get install -y \
   shellcheck \
   language-pack-ja-base \
   language-pack-ja \
+  xclip \
+  xsel \
   dbus \
   ibus
 

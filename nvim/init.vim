@@ -48,7 +48,7 @@ set modeline
 set modelines=4
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
-set clipboard=unnamed
+set clipboard+=unnamedplus
 set ambiwidth=double
 
 """ color scheme
@@ -742,6 +742,16 @@ command! -nargs=0 ClipPath call s:Clip(expand('%:p'))
 command! -nargs=0 ClipFile call s:Clip(expand('%:t'))
 " 現在開いているファイルのディレクトリパスをレジスタへ
 command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
+
+" viminfo で clipboardを共有
+" http://shirakiya.hatenablog.com/entry/2015/01/30/025257
+let OSTYPE = system('uname')
+if OSTYPE == "Linux\n"
+    noremap y y:wv<CR>
+    noremap p :rv!<CR>p
+endif
+
+set viminfo='50,\"3000,:0,n~/.viminfo
 
 """ }}}
 
