@@ -4,10 +4,16 @@ services:
   devenv:
     image: kazukgw/devenv
     volumes:
+      # docker
+      - /var/run/docker.sock:/var/run/docker.sock
       # ssh
       - <your_dot_ssh>:/home/devenv/.ssh
-      # workspace
+      # src
       - <your_src_dir>:/home/devenv/src
+      # bin
+      - <your_bin_dir>:/home/devenv/bin
+      # pkg
+      - <your_pkg_dir>:/home/devenv/pkg
       # nvim pluggin
       - <your_vim_plugged_dir>:/home/devenv/.config/nvim/plugged
       # pip pacakges

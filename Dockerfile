@@ -13,6 +13,7 @@ RUN apt-get update --fix-missing && apt-get install -y \
   curl \
   wget \
   make \
+  gawk \
   apt-transport-https \
   ca-certificates \
   software-properties-common \
@@ -75,8 +76,6 @@ RUN apt-get install -y \
   shellcheck \
   language-pack-ja-base \
   language-pack-ja \
-  xclip \
-  xsel \
   dbus \
   ibus
 
@@ -88,7 +87,9 @@ ENV PATH /home/$USER/.fzf/bin:$PATH
 ## go pkgs
 RUN go get -u github.com/motemen/ghq \
   && go get -u github.com/laurent22/massren \
-  && go get -u github.com/dinedal/textql/...
+  && go get -u github.com/dinedal/textql/... \
+  && go get -u github.com/derekparker/delve/cmd/dlv \
+  && go get github.com/mholt/archiver/cmd/archiver
 
 RUN pip install --upgrade \
  jedi \
@@ -119,6 +120,8 @@ ADD tmux.conf /home/$USER/.tmux.conf
 ADD git-completion /home/$USER/.git-completion
 ADD gitconfig /home/$USER/.gitconfig
 ADD tigrc /home/$USER/.tigrc
+RUN mkdir /home/$USER/.docker
+ADD docker-config.json /home/$USER/.docker/config.json
 
 RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
 

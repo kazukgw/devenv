@@ -743,15 +743,6 @@ command! -nargs=0 ClipFile call s:Clip(expand('%:t'))
 " 現在開いているファイルのディレクトリパスをレジスタへ
 command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
 
-" viminfo で clipboardを共有
-" http://shirakiya.hatenablog.com/entry/2015/01/30/025257
-let OSTYPE = system('uname')
-if OSTYPE == "Linux\n"
-    noremap y y:wv<CR>
-    noremap p :rv!<CR>p
-endif
-
-set viminfo='50,\"3000,:0,n~/.viminfo
 
 """ }}}
 
@@ -777,61 +768,6 @@ command! JediLoadLib call LoadCurrentPathAsLibPath()
 """ }}}
 
 
-""""""" Note {{{
-command! Todo exec 'edit ' . $NOTEPATH . '/todo.md'
-
-command! Notesync exec '! cd ' . $NOTEPATH . ' && robo sync'
-command! -nargs=1 -complete=file Notew exec 'w ' . $NOTEPATH . '/_entrance/' . <q-args>
-
-function! NoteEditWith(result)
-  exec 'rightbelow split '. $NOTEPATH . '/' . split(a:result, "	")[0]
-endfunction
-
-function! NoteEditvWith(result)
-  exec 'rightbelow vsplit '. $NOTEPATH . '/' . split(a:result, "	")[0]
-endfunction
-
-command! Note call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Notev call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditvWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Notetag call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls tag | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Notetagv call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls tag | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditvWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Notesummary call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls summary | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Notesummaryv call fzf#run({
-      \ 'source': 'cd ' . $NOTEPATH . ' && fm ls summary | sed -e "s/.*kazukgw\/Note\///g"',
-      \ 'sink': function('NoteEditvWith'),
-      \ 'dir': $NOTEPATH,
-      \ })
-
-command! Quizlet exec ' r! python '. $NOTEPATH .'/_bin/md_to_quizlet.py'
-""" }}}
-
-
 """"""""""""""""""""""""""""""
 filetype plugin indent on
-
 

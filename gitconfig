@@ -3,10 +3,6 @@
   email =
 [github]
   user =
-[http]
-  proxy = $http_proxy
-[https]
-  proxy = $https_proxy
 [alias]
   st = status
   co = checkout
