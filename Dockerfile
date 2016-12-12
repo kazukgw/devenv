@@ -64,6 +64,9 @@ RUN add-apt-repository -y ppa:neovim-ppa/unstable \
 ## apt pkgs
 RUN apt-get install -y \
   man \
+  telnet \
+  tcpdump \
+  traceroute \
   jq \
   tig \
   g++ \
