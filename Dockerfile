@@ -61,6 +61,11 @@ RUN add-apt-repository -y ppa:neovim-ppa/unstable \
   && apt-get update \
   && apt-get install neovim -y
 
+RUN wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo apt-key add - \
+  && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | sudo apt-key add - \
+  && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
+  && apt-get update
+
 ## apt pkgs
 RUN apt-get install -y \
   man \
@@ -84,7 +89,7 @@ RUN apt-get install -y \
   ibus
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USER/.fzf \
-  && /home/$USER/.fzf/install
+  && /home/$USER/.fzf/install --all
 
 ENV PATH /home/$USER/.fzf/bin:$PATH
 
@@ -95,7 +100,7 @@ RUN go get -u github.com/motemen/ghq \
   && go get -u github.com/derekparker/delve/cmd/dlv \
   && go get github.com/mholt/archiver/cmd/archiver
 
-RUN pip install --upgrade \
+RUN pip install --upgrade pip && pip install --upgrade \
  jedi \
  requests \
  pylint \
@@ -126,6 +131,7 @@ ADD gitconfig /home/$USER/.gitconfig
 ADD tigrc /home/$USER/.tigrc
 RUN mkdir /home/$USER/.docker
 ADD docker-config.json /home/$USER/.docker/config.json
+ADD fzf.bash /home/$USER/.fzf.bash
 
 RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
 

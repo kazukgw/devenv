@@ -1,3 +1,17 @@
+cat << EOS
+
+
+██████╗ ███████╗██╗   ██╗███████╗███╗   ██╗██╗   ██╗
+██╔══██╗██╔════╝██║   ██║██╔════╝████╗  ██║██║   ██║
+██║  ██║█████╗  ██║   ██║█████╗  ██╔██╗ ██║██║   ██║
+██║  ██║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║╚██╗ ██╔╝
+██████╔╝███████╗ ╚████╔╝ ███████╗██║ ╚████║ ╚████╔╝
+╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝  ╚═══╝
+
+
+EOS
+
+
 ## variables
 export HISTCONTROL=ignoreboth
 export HISTSIZE=10000
@@ -18,24 +32,26 @@ if [[ -n "$https_proxy" ]]; then git config --global https.proxy "$https_proxy";
 source $HOME/.functions
 
 
-## init tools
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export PATH=~/.fzf/bin:$PATH
-
-export ENHANCD_COMMAND=cdd
-source ~/.config/enhancd/init.sh
-
-
 ## completion
 source ~/.git-completion
+
 
 # Enable tab completion for `g` by marking it as an alias for `git`
 if type _git &> /dev/null && [ -f $HOME/.git-completion ]; then
   complete -o default -o nospace -F _git g;
 fi;
 
+
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config"  ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
+
+## init tools
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export PATH=~/.fzf/bin:$PATH
+
+export ENHANCD_COMMAND=cdd
+source ~/.config/enhancd/init.sh
 
 
 ## prompt
