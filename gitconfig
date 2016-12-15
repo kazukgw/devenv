@@ -9,4 +9,4 @@
   cm = commit
   adda = add --all
 [ghq]
-  root = $HOME/src
+  root = ~/src
