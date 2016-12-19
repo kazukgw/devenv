@@ -93,7 +93,8 @@ RUN apt-get update --fix-missing && apt-get install -y \
   dbus \
   ibus
 
-RUN curl -L https://git.io/n-install | N_PREFIX=/home/$USER/.n bash -s -- -y \
+ENV N_PREFIX=/home/$USER/.n
+RUN curl -L https://git.io/n-install | bash -s -- -y \
   && chmod +x /home/$USER/.n/bin/n
 ENV PATH /home/$USER/.n/bin:$PATH
 
