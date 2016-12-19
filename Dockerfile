@@ -36,7 +36,10 @@ RUN wget https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz \
   && mkdir /home/$USER/.go \
   && tar -zxvf go1.7.1.linux-amd64.tar.gz -C /home/$USER/.go \
   && rm go1.7.1.linux-amd64.tar.gz \
-  && chown -R $USER:$USER /home/$USER/.go
+  && chown -R $USER:$USER /home/$USER/.go \
+  && mkdir /home/$USER/src \
+  && mkdir /home/$USER/bin \
+  && mkdir /home/$USER/pkg
 
 ENV GOROOT /home/$USER/.go/go
 ENV GOPATH /home/$USER
@@ -69,7 +72,7 @@ RUN wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo 
   && apt-get update
 
 ## apt pkgs
-RUN apt-get install -y \
+RUN apt-get update --fix-missing && apt-get install -y \
   man \
   telnet \
   tcpdump \
@@ -90,17 +93,29 @@ RUN apt-get install -y \
   dbus \
   ibus
 
+RUN curl -L https://git.io/n-install | N_PREFIX=/home/$USER/.n bash -s -- -y \
+  && chmod +x /home/$USER/.n/bin/n
+ENV PATH /home/$USER/.n/bin:$PATH
+
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USER/.fzf \
   && /home/$USER/.fzf/install --all
 
 ENV PATH /home/$USER/.fzf/bin:$PATH
 
 ## go pkgs
-RUN go get -u github.com/motemen/ghq \
+RUN mkdir /usr/local/go \
+  && mkdir /usr/local/go/src \
+  && mkdir /usr/local/go/bin \
+  && mkdir /usr/local/go/pkg \
+  && export GOPATH=/usr/local/go \
+  && go get -u github.com/motemen/ghq \
   && go get -u github.com/laurent22/massren \
   && go get -u github.com/dinedal/textql/... \
   && go get -u github.com/derekparker/delve/cmd/dlv \
-  && go get github.com/mholt/archiver/cmd/archiver
+  && go get github.com/mholt/archiver/cmd/archiver \
+  && export GOPATH=/home/$USER
+
+ENV PATH /usr/local/go/bin:$PATH
 
 RUN pip2 install --upgrade pip && pip2 install --upgrade \
  jedi \
@@ -123,7 +138,6 @@ RUN pip install --upgrade pip && pip install --upgrade \
  neovim
 
 RUN mkdir /home/$USER/.config \
-  && git clone https://github.com/b4b4r07/enhancd /home/$USER/.config/enhancd \
   && wget https://github.com/ok-borg/borg/releases/download/v0.0.1/borg_linux_amd64 -O /home/$USER/bin/borg \
   && chmod 755 /home/$USER/bin/borg \
   && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
@@ -144,6 +158,12 @@ ADD tigrc /home/$USER/.tigrc
 RUN mkdir /home/$USER/.docker
 ADD docker-config.json /home/$USER/.docker/config.json
 ADD fzf.bash /home/$USER/.fzf.bash
+
+RUN apt-get clean \
+  && apt-get autoremove \
+  && dpkg -l 'linux-*' \
+  | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
+  | xargs sudo apt-get -y purge
 
 RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
 

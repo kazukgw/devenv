@@ -62,9 +62,6 @@ fi;
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export PATH=~/.fzf/bin:$PATH
 
-export ENHANCD_COMMAND=cdd
-source ~/.config/enhancd/init.sh
-
 
 ## prompt
 source ~/.bash_prompt
