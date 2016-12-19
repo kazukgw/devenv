@@ -19,6 +19,7 @@ RUN apt-get update --fix-missing && apt-get install -y \
   ca-certificates \
   software-properties-common \
   mysql-client \
+  bzip2 \
   tmux \
   python \
   python-dev \
@@ -100,6 +101,16 @@ RUN go get -u github.com/motemen/ghq \
   && go get -u github.com/dinedal/textql/... \
   && go get -u github.com/derekparker/delve/cmd/dlv \
   && go get github.com/mholt/archiver/cmd/archiver
+
+RUN pip2 install --upgrade pip && pip2 install --upgrade \
+ jedi \
+ requests \
+ pylint \
+ cython \
+ awscli \
+ mycli \
+ docker-compose \
+ neovim
 
 RUN pip install --upgrade pip && pip install --upgrade \
  jedi \
