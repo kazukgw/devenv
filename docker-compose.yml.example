@@ -26,4 +26,3 @@ services:
       GIT_EMAIL: xxx
       GIT_NAME: xxx
       GITHUB_USER: xxx
-

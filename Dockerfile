@@ -126,6 +126,8 @@ RUN pip2 install --upgrade pip && pip2 install --upgrade \
  awscli \
  mycli \
  docker-compose \
+ numpy scipy \
+ virtualenv \
  neovim
 
 RUN pip install --upgrade pip && pip install --upgrade \
@@ -136,6 +138,8 @@ RUN pip install --upgrade pip && pip install --upgrade \
  awscli \
  mycli \
  docker-compose \
+ numpy scipy \
+ virtualenv \
  neovim
 
 RUN mkdir /home/$USER/.config \

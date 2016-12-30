@@ -47,6 +47,7 @@ set showtabline=2
 set completeopt-=preview
 set modeline
 set modelines=4
+set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
 set clipboard+=unnamedplus
@@ -698,17 +699,17 @@ endfunction
 function! PjCDedit(e)
   let dirpath = $GOPATH . '/src/' . a:e
   call fzf#run({
-        \ 'source': 'find '. dirpath. ' -maxdepth 10 -type f | sed -E "s/.*Projects\/src\///g"',
+        \ 'source': 'find '. dirpath. ' -maxdepth 10 -type f | sed -E "s/.*\/src\///g"',
         \ 'sink': function('PjCDedit_')
         \})
 endfunction
 
 command! Pj call fzf#run({
-      \ 'source': 'find ~/Projects/src -maxdepth 3 -type d | sed -E "s/.*Projects\/src\///g"',
+      \ 'source': 'find $GOPATH/src -maxdepth 3 -type d | sed -E "s/.*\/src\///g"',
       \ 'sink': function('PjCD')
       \ })
 command! Pje call fzf#run({
-      \ 'source': 'find $GOPATH/src -maxdepth 3 -type d | sed -E "s/.*Projects\/src\///g"',
+      \ 'source': 'find $GOPATH/src -maxdepth 3 -type d | sed -E "s/.*\/src\///g"',
       \ 'sink': function('PjCDedit')
       \})
 
@@ -735,7 +736,7 @@ command! Current echo @%
 """ https://gist.github.com/pinzolo/8168337
 """ 指定のデータをレジスタに登録する
 function! s:Clip(data)
-  let @*=a:data
+  let @"=a:data
   echo "clipped: " . a:data
 endfunction
 
@@ -746,6 +747,12 @@ command! -nargs=0 ClipFile call s:Clip(expand('%:t'))
 " 現在開いているファイルのディレクトリパスをレジスタへ
 command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
 
+" 最後に保存した状態とのDiff
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+  \ | diffthis | wincmd p | diffthis
+
+" くり返しpasteしても同じ内容がpasteされるように
+vnoremap <silent> <C-p> "0p<CR>
 
 """ }}}
 
