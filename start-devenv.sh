@@ -8,7 +8,7 @@ if [[ -n "$cname" ]]; then
   if [[ $status =~ ^Up.* ]]; then
     echo "==> exec $cname"
     echo ""
-    docker exec -it $cname /bin/bash
+    docker attach $cname
   elif [[ $status =~ ^Exited.* ]]; then
     echo "==> start and attach $cname"
     echo ""

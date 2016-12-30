@@ -9,7 +9,8 @@ set title
 set nocompatible            " Be iMproved
 set gfn=Ricty:h12
 set number                  " 行数を表示
-set encoding=utf-8
+set fileencodings=utf-8,sjis
+" set encoding=utf-8
 set tabstop=2               " tab はだいたい`soft` の `2`
 set expandtab               " softtab 有効
 set softtabstop=2
@@ -96,6 +97,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tyru/caw.vim'
+Plug 'yuttie/comfortable-motion.vim'
 
 " ruby
 Plug 'tpope/vim-haml', { 'for': 'ruby' }
@@ -163,33 +165,33 @@ let NERDTreeShowHidden = 1
 
 """"""" Lightline {{{
 let g:lightline = {
-        \ 'separator': { 'left': '', 'right': ''  },
-        \ 'subseparator': { 'left': '', 'right': ''  },
-        \ 'mode_map': {'c': 'NORMAL'},
-        \ 'active': {
-        \   'left': [
-        \     ['mode', 'paste'],
-        \     ['fugitive', 'gitgutter', 'filename'],
-        \   ],
-        \   'right': [
-        \     ['lineinfo', 'syntastic'],
-        \     ['percent'],
-        \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
-        \   ]
-        \ },
-        \ 'component_function': {
-        \   'modified': 'MyModified',
-        \   'readonly': 'MyReadonly',
-        \   'fugitive': 'MyFugitive',
-        \   'filename': 'MyFilename',
-        \   'fileformat': 'MyFileformat',
-        \   'filetype': 'MyFiletype',
-        \   'fileencoding': 'MyFileencoding',
-        \   'mode': 'MyMode',
-        \   'syntastic': 'SyntasticStatuslineFlag',
-        \   'charcode': 'MyCharCode',
-        \   'gitgutter': 'MyGitGutter',
-        \ }
+  \ 'separator': { 'left': '', 'right': ''  },
+  \ 'subseparator': { 'left': '', 'right': ''  },
+  \ 'mode_map': {'c': 'NORMAL'},
+  \ 'active': {
+  \   'left': [
+  \     ['mode', 'paste'],
+  \     ['fugitive', 'gitgutter', 'filename'],
+  \   ],
+  \   'right': [
+  \     ['lineinfo', 'syntastic'],
+  \     ['percent'],
+  \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
+  \   ]
+  \ },
+  \ 'component_function': {
+  \   'modified': 'MyModified',
+  \   'readonly': 'MyReadonly',
+  \   'fugitive': 'MyFugitive',
+  \   'filename': 'MyFilename',
+  \   'fileformat': 'MyFileformat',
+  \   'filetype': 'MyFiletype',
+  \   'fileencoding': 'MyFileencoding',
+  \   'mode': 'MyMode',
+  \   'syntastic': 'SyntasticStatuslineFlag',
+  \   'charcode': 'MyCharCode',
+  \   'gitgutter': 'MyGitGutter',
+  \ }
 \ }
 
 function! MyModified()
