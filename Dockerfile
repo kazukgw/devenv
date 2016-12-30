@@ -5,7 +5,7 @@ ARG PASSWORD=P@55w0rd
 
 RUN apt-get update && apt-get install -y sudo \
   && groupadd -g 1000 $USER && \
-  useradd -g $USER -G sudo -m -s /bin/bash $USER && \
+  useradd -g $USER -G sudo -m -d /Users/kazukgw -s /bin/bash $USER && \
   echo "$USER:$PASSWORD" | chpasswd
 
 RUN apt-get update --fix-missing && apt-get install -y \
