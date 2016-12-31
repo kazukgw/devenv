@@ -751,8 +751,9 @@ command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
   \ | diffthis | wincmd p | diffthis
 
-" くり返しpasteしても同じ内容がpasteされるように
-vnoremap <silent> <C-p> "0p<CR>
+" yank, paste 時に自動でviminfoをupdate
+noremap y y:wv<CR>
+noremap p :rv!<CR>p
 
 """ }}}
 

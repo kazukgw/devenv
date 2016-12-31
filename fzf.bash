@@ -1,20 +1,20 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/devenv/.fzf/bin* ]]; then
-  export PATH="$PATH:/home/devenv/.fzf/bin"
+if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+  export PATH="$PATH:$HOME/.fzf/bin"
 fi
 
 # Man path
 # --------
-if [[ ! "$MANPATH" == */home/devenv/.fzf/man* && -d "/home/devenv/.fzf/man" ]]; then
-  export MANPATH="$MANPATH:/home/devenv/.fzf/man"
+if [[ ! "$MANPATH" == *$HOME/.fzf/man* && -d "$HOME/.fzf/man" ]]; then
+  export MANPATH="$MANPATH:$HOME/.fzf/man"
 fi
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/home/devenv/.fzf/shell/completion.bash" 2> /dev/null
+[[ $- == *i* ]] && source "$HOME/.fzf/shell/completion.bash" 2> /dev/null
 
 # Key bindings
 # ------------
-source "/home/devenv/.fzf/shell/key-bindings.bash"
+source "$HOME/.fzf/shell/key-bindings.bash"
 

@@ -1,11 +1,13 @@
 FROM ubuntu
 
-ARG USER=devenv
+ARG USER=kazukgw
 ARG PASSWORD=P@55w0rd
+ARG HOMEDIR=/Users/$USER
 
 RUN apt-get update && apt-get install -y sudo \
-  && groupadd -g 1000 $USER && \
-  useradd -g $USER -G sudo -m -d /Users/kazukgw -s /bin/bash $USER && \
+  && groupadd -g 1000 $USER \
+  && mkdir -p $HOMEDIR \
+  && useradd -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER && \
   echo "$USER:$PASSWORD" | chpasswd
 
 RUN apt-get update --fix-missing && apt-get install -y \
@@ -33,16 +35,16 @@ RUN apt-get update --fix-missing && apt-get install -y \
 
 ## golang
 RUN wget https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz \
-  && mkdir /home/$USER/.go \
-  && tar -zxvf go1.7.1.linux-amd64.tar.gz -C /home/$USER/.go \
+  && mkdir $HOMEDIR/.go \
+  && tar -zxvf go1.7.1.linux-amd64.tar.gz -C $HOMEDIR/.go \
   && rm go1.7.1.linux-amd64.tar.gz \
-  && chown -R $USER:$USER /home/$USER/.go \
-  && mkdir /home/$USER/src \
-  && mkdir /home/$USER/bin \
-  && mkdir /home/$USER/pkg
+  && chown -R $USER:$USER $HOMEDIR/.go \
+  && mkdir $HOMEDIR/src \
+  && mkdir $HOMEDIR/bin \
+  && mkdir $HOMEDIR/pkg
 
-ENV GOROOT /home/$USER/.go/go
-ENV GOPATH /home/$USER
+ENV GOROOT $HOMEDIR/.go/go
+ENV GOPATH $HOMEDIR
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 
 ## Google Cloud SDK
@@ -59,7 +61,7 @@ RUN apt-key adv \
     && apt-get update \
     && apt-cache policy docker-engine \
     && apt-get install docker-engine -y \
-    && usermod -aG docker devenv
+    && usermod -aG docker $USER
 
 ## neovim
 RUN add-apt-repository -y ppa:neovim-ppa/unstable \
@@ -93,15 +95,15 @@ RUN apt-get update --fix-missing && apt-get install -y \
   dbus \
   ibus
 
-ENV N_PREFIX=/home/$USER/.n
+ENV N_PREFIX=$HOMEDIR/.n
 RUN curl -L https://git.io/n-install | bash -s -- -y \
-  && chmod +x /home/$USER/.n/bin/n
-ENV PATH /home/$USER/.n/bin:$PATH
+  && chmod +x $HOMEDIR/.n/bin/n
+ENV PATH $HOMEDIR/.n/bin:$PATH
 
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USER/.fzf \
-  && /home/$USER/.fzf/install --all
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git $HOMEDIR/.fzf \
+  && $HOMEDIR/.fzf/install --all
 
-ENV PATH /home/$USER/.fzf/bin:$PATH
+ENV PATH $HOMEDIR/.fzf/bin:$PATH
 
 ## go pkgs
 RUN mkdir /usr/local/go \
@@ -114,7 +116,7 @@ RUN mkdir /usr/local/go \
   && go get -u github.com/dinedal/textql/... \
   && go get -u github.com/derekparker/delve/cmd/dlv \
   && go get github.com/mholt/archiver/cmd/archiver \
-  && export GOPATH=/home/$USER
+  && export GOPATH=$HOMEDIR
 
 ENV PATH /usr/local/go/bin:$PATH
 
@@ -142,27 +144,13 @@ RUN pip install --upgrade pip && pip install --upgrade \
  virtualenv \
  neovim
 
-RUN mkdir /home/$USER/.config \
-  && wget https://github.com/ok-borg/borg/releases/download/v0.0.1/borg_linux_amd64 -O /home/$USER/bin/borg \
-  && chmod 755 /home/$USER/bin/borg \
+RUN mkdir $HOMEDIR/.config \
+  && wget https://github.com/ok-borg/borg/releases/download/v0.0.1/borg_linux_amd64 -O $HOMEDIR/bin/borg \
+  && chmod 755 $HOMEDIR/bin/borg \
   && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 ENV LANG=ja_JP.UTF-8
-
-## vim plugins
-ADD nvim /home/$USER/.config/nvim
-ADD bash_profile /home/$USER/.bash_profile
-ADD bash_prompt /home/$USER/.bash_prompt
-ADD templates /home/$USER/.templates
-ADD functions /home/$USER/.functions
-ADD tmux.conf /home/$USER/.tmux.conf
-ADD git-completion /home/$USER/.git-completion
-ADD gitconfig /home/$USER/.gitconfig
-ADD tigrc /home/$USER/.tigrc
-RUN mkdir /home/$USER/.docker
-ADD docker-config.json /home/$USER/.docker/config.json
-ADD fzf.bash /home/$USER/.fzf.bash
 
 RUN apt-get clean \
   && apt-get autoremove \
@@ -170,9 +158,23 @@ RUN apt-get clean \
   | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
   | xargs sudo apt-get -y purge
 
-RUN chown -R $USER:$USER /home/$USER && echo 'source ~/.bash_profile' >> /home/$USER/.bashrc
+## vim plugins
+ADD nvim $HOMEDIR/.config/nvim
+ADD bash_profile $HOMEDIR/.bash_profile
+ADD bash_prompt $HOMEDIR/.bash_prompt
+ADD templates $HOMEDIR/.templates
+ADD functions $HOMEDIR/.functions
+ADD tmux.conf $HOMEDIR/.tmux.conf
+ADD git-completion $HOMEDIR/.git-completion
+ADD gitconfig $HOMEDIR/.gitconfig
+ADD tigrc $HOMEDIR/.tigrc
+RUN mkdir $HOMEDIR/.docker
+ADD docker-config.json $HOMEDIR/.docker/config.json
+ADD fzf.bash $HOMEDIR/.fzf.bash
 
-USER devenv
+RUN chown -R $USER:$USER $HOMEDIR && echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc
 
-WORKDIR /home/devenv
+USER $USER
+
+WORKDIR $HOMEDIR
 
