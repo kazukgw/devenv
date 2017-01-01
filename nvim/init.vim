@@ -49,7 +49,7 @@ set modelines=4
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
-set clipboard+=unnamedplus
+" set clipboard+=unnamedplus
 set ambiwidth=double
 
 """ color scheme
