@@ -1,8 +1,8 @@
 FROM ubuntu
 
-ARG USER=kazukgw
+ARG USER=devenv
 ARG PASSWORD=P@55w0rd
-ARG HOMEDIR=/Users/$USER
+ARG HOMEDIR=/home/devenv
 
 RUN apt-get update && apt-get install -y sudo \
   && groupadd -g 1000 $USER \

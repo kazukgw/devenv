@@ -1,4 +1,3 @@
-
 """"""" set config {{{
 syntax enable
 syntax on
@@ -751,9 +750,22 @@ command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
   \ | diffthis | wincmd p | diffthis
 
-" yank, paste 時に自動でviminfoをupdate
-noremap y y:wv<CR>
-noremap p :rv!<CR>p
+augroup yankhook
+  autocmd!
+  autocmd TextYankPost * :wv
+  autocmd WinEnter,TabEnter * :rv!
+augroup end
+
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<CR>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
 
 """ }}}
 
