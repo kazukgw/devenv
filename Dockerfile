@@ -34,10 +34,11 @@ RUN apt-get update --fix-missing && apt-get install -y \
   && easy_install3 pip
 
 ## golang
-RUN wget https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz \
+ARG GOVERSION=1.8beta2
+RUN wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir $HOMEDIR/.go \
-  && tar -zxvf go1.7.1.linux-amd64.tar.gz -C $HOMEDIR/.go \
-  && rm go1.7.1.linux-amd64.tar.gz \
+  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C $HOMEDIR/.go \
+  && rm go${GOVERSION}.linux-amd64.tar.gz \
   && chown -R $USER:$USER $HOMEDIR/.go \
   && mkdir $HOMEDIR/src \
   && mkdir $HOMEDIR/bin \
@@ -145,7 +146,7 @@ RUN pip install --upgrade pip && pip install --upgrade \
  neovim
 
 RUN mkdir $HOMEDIR/.config \
-  && wget https://github.com/ok-borg/borg/releases/download/v0.0.1/borg_linux_amd64 -O $HOMEDIR/bin/borg \
+  && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O $HOMEDIR/bin/borg \
   && chmod 755 $HOMEDIR/bin/borg \
   && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
