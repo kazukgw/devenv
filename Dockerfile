@@ -146,8 +146,8 @@ RUN pip install --upgrade pip && pip install --upgrade \
  neovim
 
 RUN mkdir $HOMEDIR/.config \
-  && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O $HOMEDIR/bin/borg \
-  && chmod 755 $HOMEDIR/bin/borg \
+  && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O /usr/local/bin/borg \
+  && chmod +x /usr/local/bin/borg \
   && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
