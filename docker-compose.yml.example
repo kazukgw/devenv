@@ -17,7 +17,11 @@ services:
       # nvim pluggin
       - <your_vim_plugged_dir>:/home/devenv/.config/nvim/plugged
       # pip pacakges
-      - <pip_local>:/home/devenv/.local
+      - <your_pip_local>:/home/devenv/.local
+      # .gsutil
+      - <your_gsutil>:/home/devenv/.gsutil
+      # .gcloud
+      - <your_gcloud>:/home/devenv/.config/gcloud
       # timezone
       - /etc/localtime:/etc/localtime:ro
     environment:
