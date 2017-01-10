@@ -1,9 +1,9 @@
 # vim: set ft=sh
 
 # alias
-alias l='ls -G -a'
-alias ls='ls -G -a'
-alias ll='ls -G -lah | fzf'
+alias l='ls -G -a --color=auto'
+alias ls='ls -G -a --color=auto'
+alias ll='ls -G -lah --color=auto'
 alias tmux='tmux -u'
 alias t='tmux'
 alias ttt='tmux new -s dev'
@@ -98,5 +98,26 @@ function pj() {
     cd $HOME/src/$selected
   else
     echo "$selected is not found..."
+  fi
+}
+
+function ff() {
+  local targ=$(find . \
+    -maxdepth 5 \
+    -path "*.git" -prune \
+    -o -path "*node_modules" -prune \
+    -o -path "*site-packages" -prune \
+    -o -type f -o -type d | sed -e 's/^\.\///g' | fzf)
+
+  if [[ ! -e $targ ]]; then
+    return
+  fi
+
+  if [[ -d $targ ]]; then
+    cd $targ
+    echo $targ
+  else
+    cd $(dirname $targ)
+    echo $(dirname $targ)
   fi
 }
