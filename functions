@@ -96,8 +96,6 @@ function pj() {
   local selected=$(find $HOME/src -maxdepth 3 -type d | sed -E 's/.*\/src\///g' | fzf)
   if [ -n "$selected" ]; then
     cd $HOME/src/$selected
-  else
-    echo "$selected is not found..."
   fi
 }
 
