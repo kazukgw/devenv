@@ -371,7 +371,7 @@ let g:Gitv_OpenPreviewOnLaunch = 0
 """"""" tagbar {{{
 nnoremap <C-]> g<C-]>
 noremap tb :TagbarToggle <CR>
-let g:tagbar_ctags_bin='/usr/local/bin/ctags'
+let g:tagbar_ctags_bin='/usr/bin/ctags'
 
 let g:tagbar_type_objc = {
     \ 'ctagstype' : 'ObjectiveC',
