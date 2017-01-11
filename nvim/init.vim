@@ -97,7 +97,6 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tyru/caw.vim'
-Plug 'yuttie/comfortable-motion.vim'
 
 " ruby
 Plug 'tpope/vim-haml', { 'for': 'ruby' }
@@ -107,6 +106,8 @@ Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 
 " JS
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'mtscout6/syntastic-local-eslint.vim', { 'for': 'javascript' }
 
 " JSX
 Plug 'pangloss/vim-javascript', { 'for': 'jsx' }
@@ -322,6 +323,13 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
 
 """"""" tern_for_vim {{{
 let g:tern#is_show_argument_hints_enabled = 0
+" Use tern_for_vim.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+" Use deoplete.
+let g:tern_request_timeout = 1
+let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on autocomplete
+
 """ }}}
 
 
@@ -467,14 +475,13 @@ let g:markdown_fenced_languages = [
 
 
 """"""" syntastic {{{
+let g:syntastic_enable_signs = 1
+let g:syntastic_check_on_open = 1
+
 let g:syntastic_mode_map = { 'mode': 'passive',
-            \ 'active_filetypes': ['javascript', 'ruby', 'python'] }
-let g:syntastic_javascript_checkers = ["jshint"]
-let g:syntastic_ruby_checkers = ["rubocop"]
-let g:syntastic_ruby_exec = '/Users/kazukgw/.rbenv/versions/2.2.1/bin/ruby'
-let g:syntastic_rubocop_exec = '/Users/kazukgw/.rbenv/versions/2.2.1/bin/rubocop'
-let g:syntastic_python_checkers = ["pylint"]
-let g:syntastic_pylint_exec = '/Users/kazukgw/.pyenv/versions/2.7.10/bin/pylint'
+            \ 'active_filetypes': ['javascript', 'python', 'go'] }
+let g:syntastic_javascript_checkers = ["eslint"]
+let g:syntastic_python_checkers = ["python"]
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 """ }}}
 

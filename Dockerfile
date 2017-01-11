@@ -26,11 +26,11 @@ RUN apt-get update --fix-missing && apt-get install -y \
 
 ## golang
 ARG GOVERSION=1.8beta2
-ENV GOROOT /usr/local/goroot
-ENV PATH $GOROOT/go/bin:$PATH
+ENV GOROOT /usr/local/goroot/go
+ENV PATH $GOROOT/bin:$PATH
 RUN wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
-  && mkdir $GOROOT \
-  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C $GOROOT \
+  && mkdir -p /usr/local/goroot \
+  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C /usr/local/goroot \
   && rm go${GOVERSION}.linux-amd64.tar.gz
 
 
@@ -89,7 +89,6 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
 
 
 ## go pkgs
-ENV GOROOT /usr/local/goroot/go
 RUN mkdir /usr/local/go \
   && mkdir /usr/local/go/src \
   && mkdir /usr/local/go/bin \
@@ -107,7 +106,8 @@ ENV PATH /usr/local/go/bin:$PATH
 ENV N_PREFIX=/usr/local/n
 ENV PATH /usr/local/n/bin:$PATH
 RUN curl -L https://git.io/n-install | bash -s -- -y \
-  && chmod +x /usr/local/n/bin/n
+  && chmod +x /usr/local/n/bin/n \
+  && npm install --global eslint babel-eslint tern
 
 
 ## pips
@@ -160,7 +160,16 @@ RUN groupadd -g 1000 $USER \
   && mkdir $HOMEDIR/src \
   && mkdir $HOMEDIR/bin \
   && mkdir $HOMEDIR/pkg \
-  && usermod -aG docker $USER
+  && usermod -aG docker $USER \
+## mv node to home
+  && mv /usr/local/n $HOMEDIR/.n \
+## mv goroot to home
+  && mv /usr/local/goroot/go $HOMEDIR/.go
+
+## set go & nodejs env var
+ENV GOROOT $HOMEDIR/.go
+ENV N_PREFIX $HOMEDIR/.n
+ENV PATH $GOROOT/bin:$HOMEDIR/.n/bin:$PATH
 
 
 ## fzf
@@ -197,7 +206,7 @@ ADD docker-config.json $HOMEDIR/.docker/config.json
 
 
 ## change permission
-RUN chown -R $USER:$USER $HOMEDIR && echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc
+RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:$USER $HOMEDIR
 
 USER $USER
 
