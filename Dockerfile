@@ -121,6 +121,8 @@ RUN pip2 install --upgrade pip && pip2 install --upgrade \
   docker-compose \
   numpy scipy \
   virtualenv \
+  flake8 \
+  autopep8 \
   neovim \
  && pip install --upgrade pip && pip install --upgrade \
     jedi \
@@ -131,6 +133,8 @@ RUN pip2 install --upgrade pip && pip2 install --upgrade \
     mycli \
     docker-compose \
     numpy scipy \
+    flake8 \
+    autopep8 \
     virtualenv \
     neovim \
 ## borg

@@ -92,7 +92,8 @@ Plug 'majutsushi/tagbar'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'neomake/neomake'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -123,6 +124,7 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 
 " python
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
@@ -175,7 +177,6 @@ let g:lightline = {
   \     ['fugitive', 'gitgutter', 'filename'],
   \   ],
   \   'right': [
-  \     ['lineinfo', 'syntastic'],
   \     ['percent'],
   \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
   \   ]
@@ -189,7 +190,6 @@ let g:lightline = {
   \   'filetype': 'MyFiletype',
   \   'fileencoding': 'MyFileencoding',
   \   'mode': 'MyMode',
-  \   'syntastic': 'SyntasticStatuslineFlag',
   \   'charcode': 'MyCharCode',
   \   'gitgutter': 'MyGitGutter',
   \ }
@@ -371,7 +371,7 @@ let g:Gitv_OpenPreviewOnLaunch = 0
 """"""" tagbar {{{
 nnoremap <C-]> g<C-]>
 noremap tb :TagbarToggle <CR>
-let g:tagbar_ctags_bin='/usr/local/bin/ctags'
+let g:tagbar_ctags_bin='/usr/bin/ctags'
 
 let g:tagbar_type_objc = {
     \ 'ctagstype' : 'ObjectiveC',
@@ -474,15 +474,39 @@ let g:markdown_fenced_languages = [
 """ }}}
 
 
-""""""" syntastic {{{
-let g:syntastic_enable_signs = 1
-let g:syntastic_check_on_open = 1
+""""""" syntastic **(replaced with neomake)** {{{
+" let g:syntastic_enable_signs = 1
+" let g:syntastic_check_on_open = 1
+"
+" let g:syntastic_mode_map = { 'mode': 'passive',
+"             \ 'active_filetypes': ['javascript', 'python', 'go'] }
+" let g:syntastic_javascript_checkers = ["eslint"]
+" let g:syntastic_python_checkers = ["python"]
+" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+""" }}}
 
-let g:syntastic_mode_map = { 'mode': 'passive',
-            \ 'active_filetypes': ['javascript', 'python', 'go'] }
-let g:syntastic_javascript_checkers = ["eslint"]
-let g:syntastic_python_checkers = ["python"]
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+
+""""""" neomake {{{
+autocmd! BufWritePost * Neomake
+
+"\ 'args': ['--ignore=E221,E241,E272,E251,W702,E203,E201,E202',  '--format=default'],
+    "
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_python_flake8_maker = {
+    \ 'args': ['--format=default'],
+    \ 'errorformat':
+        \ '%E%f:%l: could not compile,%-Z%p^,' .
+        \ '%A%f:%l:%c: %t%n %m,' .
+        \ '%A%f:%l: %t%n %m,' .
+        \ '%-G%.%#',
+    \ }
+let g:neomake_python_enabled_makers = ['flake8']
+""" }}}
+
+
+""""""" autopep8 {{{
+autocmd! BufWritePre *.py Autopep8
+let g:autopep8_disable_show_diff=1
 """ }}}
 
 
