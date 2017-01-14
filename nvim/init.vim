@@ -82,7 +82,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins' }
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elzr/vim-json'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
@@ -98,6 +97,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tyru/caw.vim'
+Plug 'kana/vim-fakeclip'
 
 " ruby
 Plug 'tpope/vim-haml', { 'for': 'ruby' }
@@ -118,7 +118,6 @@ Plug 'mxw/vim-jsx', { 'for': 'jsx' }
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
 " go
-Plug 'kazukgw/ctrlp-goimport', { 'for': 'go' }
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'zchee/deoplete-go', { 'do': 'make'}
 
@@ -797,6 +796,9 @@ function! s:Repl()
   return "p@=RestoreRegister()\<CR>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" fakeclip経由で tmuxにcopy
+map <Leader>y "&y
 
 """ }}}
 
