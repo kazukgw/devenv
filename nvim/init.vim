@@ -309,17 +309,6 @@ let g:indentLine_char = '¦'
 """ }}}
 
 
-""""""" Ctrlp {{{
-nnoremap <Space>b :<c-u>CtrlPBuffer<CR>
-nnoremap <Space>g :<c-u>CtrlPGoImport<CR>
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --ignore-dir ".git" --ignore-dir "_workspace" -g ""'
-endif
-let g:ctrlp_custom_ignore = '(\.git)|(_workspace)'
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
-""" }}}
-
-
 """"""" tern_for_vim {{{
 let g:tern#is_show_argument_hints_enabled = 0
 " Use tern_for_vim.
@@ -717,6 +706,9 @@ au BufNewFile,BufRead *.es6 set filetype=javascript
 command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
 
 """ fzf
+
+nnoremap <C-p> :FZF<CR>
+
 function! PjCD(e)
   exec 'cd ' . $GOPATH . '/src/' . a:e
 endfunction
