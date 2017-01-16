@@ -153,9 +153,9 @@ RUN apt-get clean \
 
 
 ## create user
-ARG USER=kazukgw
+ARG USER=devenv
 ARG PASSWORD=P@55w0rd
-ARG HOMEDIR=/Users/kazukgw
+ARG HOMEDIR=/home/devenv
 
 RUN groupadd -g 1000 $USER \
   && mkdir -p $HOMEDIR \
