@@ -1,10 +1,37 @@
 FROM ubuntu
 
-RUN apt-get update --fix-missing && apt-get install -y \
+ENV DEVENVROOT=/home/devenv
+
+RUN apt-get update --fix-missing \
+  && apt-get install -y \
     sudo \
+    wget \
+
+## change repository
+  && wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo apt-key add - \
+  && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | sudo apt-key add - \
+  && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
+  && echo "Package: *\nPin: origin \"archive.ubuntulinux.jp\"\nPin-Priority: 600\n" > /etc/apt/preferences \
+
+## apt pkgs
+  && apt-get update --fix-missing && apt-get install -y \
+    man \
+    telnet \
+    tcpdump \
+    traceroute \
+    g++ \
+    gfortran \
+    htop \
+    tree \
+    git-extras \
+    exuberant-ctags \
+    shellcheck \
+    language-pack-ja-base \
+    language-pack-ja \
+    dbus \
+    ibus \
     git \
     curl \
-    wget \
     make \
     gawk \
     connect-proxy \
@@ -14,6 +41,10 @@ RUN apt-get update --fix-missing && apt-get install -y \
     mysql-client \
     bzip2 \
     tmux \
+    jq \
+    tig \
+    nkf \
+    silversearcher-ag \
     python \
     python-dev \
     python-setuptools \
@@ -22,20 +53,25 @@ RUN apt-get update --fix-missing && apt-get install -y \
     python3-setuptools \
     python-software-properties \
   && easy_install pip \
-  && easy_install3 pip
+  && easy_install3 pip \
+
+## devenv
+  && mkdir -p ${DEVENVROOT} \
+  && mkdir -p ${DEVENVROOT}/src \
+  && mkdir -p ${DEVENVROOT}/bin \
+  && mkdir -p ${DEVENVROOT}/pkg \
 
 ## golang
-ARG GOVERSION=1.8beta2
-ENV GOROOT /usr/local/goroot/go
-ENV PATH $GOROOT/bin:$PATH
-RUN wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
-  && mkdir -p /usr/local/goroot \
-  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C /usr/local/goroot \
-  && rm go${GOVERSION}.linux-amd64.tar.gz
+  && export GOVERSION=1.8beta2 \
+  && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
+  && mkdir -p ${DEVENVPATH}/.go \
+  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
+  && mv ${DEVENVROOT}/go  ${DEVENVROOT}/.go \
+  && rm go${GOVERSION}.linux-amd64.tar.gz \
 
 
-## Google Cloud SDK
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
+## google cloud sdk
+  && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
   && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
   && apt-get update && apt-get install google-cloud-sdk -y \
@@ -54,77 +90,47 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
 ## neovim
   && add-apt-repository -y ppa:neovim-ppa/unstable \
   && apt-get update \
-  && apt-get install neovim -y \
-
-
-## change repository
-  && wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo apt-key add - \
-  && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | sudo apt-key add - \
-  && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
-  && echo "Package: *\nPin: origin \"archive.ubuntulinux.jp\"\nPin-Priority: 600\n" > /etc/apt/preferences \
-  && apt-get update \
-
-
-## apt pkgs
-  && apt-get update --fix-missing && apt-get install -y \
-    man \
-    telnet \
-    tcpdump \
-    traceroute \
-    jq \
-    tig \
-    g++ \
-    gfortran \
-    silversearcher-ag \
-    nkf \
-    htop \
-    tree \
-    git-extras \
-    exuberant-ctags \
-    shellcheck \
-    language-pack-ja-base \
-    language-pack-ja \
-    dbus \
-    ibus
+  && apt-get install neovim -y
 
 
 ## go pkgs
-RUN mkdir /usr/local/go \
-  && mkdir /usr/local/go/src \
-  && mkdir /usr/local/go/bin \
-  && mkdir /usr/local/go/pkg \
+RUN export GOROOT=${DEVENVROOT}/.go \
+  && export PATH=${DEVENVROOT}/.go/bin:$PATH \
+  && mkdir -p /usr/local/go \
+  && mkdir -p /usr/local/go/src \
+  && mkdir -p /usr/local/go/bin \
+  && mkdir -p /usr/local/go/pkg \
   && export GOPATH=/usr/local/go \
   && go get -u github.com/motemen/ghq \
   && go get -u github.com/laurent22/massren \
   && go get -u github.com/dinedal/textql/... \
   && go get -u github.com/derekparker/delve/cmd/dlv \
-  && go get github.com/mholt/archiver/cmd/archiver
-ENV PATH /usr/local/go/bin:$PATH
+  && go get -u github.com/mholt/archiver/cmd/archiver \
 
 
 ## nodejs
-ENV N_PREFIX=/usr/local/n
-ENV PATH /usr/local/n/bin:$PATH
-RUN curl -L https://git.io/n-install | bash -s -- -y \
-  && chmod +x /usr/local/n/bin/n \
-  && npm install --global eslint babel-eslint tern
+  && export N_PREFIX=${DEVENVROOT}/.n \
+  && curl -L https://git.io/n-install | bash -s -- -y \
+  && chmod +x ${DEVENVROOT}/.n/bin/n \
+  && export PATH=${DEVENVROOT}/.n/bin:$PATH \
+  && ${DEVENVROOT}/.n/bin/npm install --global eslint babel-eslint tern \
 
 
 ## pips
-RUN pip2 install --upgrade pip && pip2 install --upgrade \
-  jedi \
-  requests \
-  pylint \
-  cython \
-  awscli \
-  mycli \
-  docker-compose \
-  numpy scipy \
-  virtualenv \
-  flake8 \
-  autopep8 \
-  neovim \
- && pip install --upgrade pip && pip install --upgrade \
+  && pip2 install --upgrade pip && pip2 install --upgrade \
+    jedi \
+    requests \
+    pylint \
+    cython \
+    awscli \
+    mycli \
+    docker-compose \
+    numpy scipy \
+    virtualenv \
+    flake8 \
+    autopep8 \
+    neovim \
+  && pip install --upgrade pip && pip install --upgrade \
     jedi \
     requests \
     pylint \
@@ -137,82 +143,75 @@ RUN pip2 install --upgrade pip && pip2 install --upgrade \
     autopep8 \
     virtualenv \
     neovim \
+
+
 ## borg
   && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O /usr/local/bin/borg \
   && chmod +x /usr/local/bin/borg \
-  && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
-  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
-ENV LANG=ja_JP.UTF-8
-
-## clean apt
-RUN apt-get clean \
-  && apt-get autoremove \
-  && dpkg -l 'linux-*' \
-    | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
-    | xargs sudo apt-get -y purge
-
-
-## create user
-ARG USER=kazukgw
-ARG PASSWORD=P@55w0rd
-ARG HOMEDIR=/Users/kazukgw
-
-RUN groupadd -g 1000 $USER \
-  && mkdir -p $HOMEDIR \
-  && useradd -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
-  && echo "$USER:$PASSWORD" | chpasswd \
-  && mkdir $HOMEDIR/src \
-  && mkdir $HOMEDIR/bin \
-  && mkdir $HOMEDIR/pkg \
-  && usermod -aG docker $USER \
-## mv node to home
-  && mv /usr/local/n $HOMEDIR/.n \
-## mv goroot to home
-  && mv /usr/local/goroot/go $HOMEDIR/.go
-
-## set go & nodejs env var
-ENV GOROOT $HOMEDIR/.go
-ENV N_PREFIX $HOMEDIR/.n
-ENV PATH $GOROOT/bin:$HOMEDIR/.n/bin:$PATH
 
 
 ## fzf
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git $HOMEDIR/.fzf \
-  && $HOMEDIR/.fzf/install --all
-ENV PATH $HOMEDIR/.fzf/bin:$PATH
-ADD fzf.bash $HOMEDIR/.fzf.bash
+  && git clone --depth 1 https://github.com/junegunn/fzf.git ${DEVENVROOT}/.fzf \
+  && ${DEVENVROOT}/.fzf/install --all \
 
 
-## go path
-ENV GOPATH $HOMEDIR
-ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
+## lang
+  && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
+  && export LANG=ja_JP.UTF-8
 
 
-## config
-RUN mkdir $HOMEDIR/.config
+## nvim & dotfiles
+ADD nvim ${DEVENVROOT}/.config/nvim
+ADD bash_profile ${DEVENVROOT}/.bash_profile
+ADD bash_prompt ${DEVENVROOT}/.bash_prompt
+ADD templates ${DEVENVROOT}/.templates
+ADD functions ${DEVENVROOT}/.functions
+ADD tmux.conf ${DEVENVROOT}/.tmux.conf
+ADD git-completion ${DEVENVROOT}/.git-completion
+ADD gitconfig ${DEVENVROOT}/.gitconfig
+ADD tigrc ${DEVENVROOT}/.tigrc
+ADD docker-config.json ${DEVENVROOT}/.docker/config.json
+ADD fzf.bash ${DEVENVROOT}/.fzf.bash
 
 
-## nvim
-ADD nvim $HOMEDIR/.config/nvim
+## clean
+# RUN apt-get clean \
+#   && apt-get autoremove \
+#   && dpkg -l 'linux-*' \
+#     | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
+#     | xargs sudo apt-get -y purge
 
 
-## dotfiles
-ADD bash_profile $HOMEDIR/.bash_profile
-ADD bash_prompt $HOMEDIR/.bash_prompt
-ADD templates $HOMEDIR/.templates
-ADD functions $HOMEDIR/.functions
-ADD tmux.conf $HOMEDIR/.tmux.conf
-ADD git-completion $HOMEDIR/.git-completion
-ADD gitconfig $HOMEDIR/.gitconfig
-ADD tigrc $HOMEDIR/.tigrc
-RUN mkdir $HOMEDIR/.docker
-ADD docker-config.json $HOMEDIR/.docker/config.json
 
+##########################
+## create user
+ONBUILD ARG USER
+ONBUILD ARG PASSWORD
+ONBUILD ARG HOMEDIR
+
+ONBUILD RUN groupadd -g 1000 $USER \
+    && mkdir -p $HOMEDIR \
+    && useradd -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
+    && echo "$USER:$PASSWORD" | chpasswd \
+    && usermod -aG docker $USER \
+    && mv ${DEVENVROOT}/* $HOMEDIR/ \
+    && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
+
+## env go
+ONBUILD ENV GOROOT $HOMEDIR/.go
+ONBUILD ENV GOPATH $HOMEDIR
+ONBUILD ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
+
+## env node
+ONBUILD ENV N_PREFIX $HOMEDIR/.n
+ONBUILD ENV PATH $HOMEDIR/.n/bin:$PATH
+
+## PATH
+ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
 
 ## change permission
-RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:$USER $HOMEDIR
+ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:$USER $HOMEDIR
 
-USER $USER
-
-WORKDIR $HOMEDIR
-
+ONBUILD USER $USER
+ONBUILD WORKDIR $HOMEDIR
