@@ -36,6 +36,7 @@ RUN apt-get update --fix-missing \
     ibus \
     git \
     curl \
+    iputils-ping \
     make \
     gawk \
     connect-proxy \
@@ -189,6 +190,7 @@ ADD nvim ${DEVENVROOT}/.config/nvim
 ADD bash_profile ${DEVENVROOT}/.bash_profile
 ADD bash_prompt ${DEVENVROOT}/.bash_prompt
 ADD templates ${DEVENVROOT}/.templates
+ADD note ${DEVENVROOT}/.note
 ADD functions ${DEVENVROOT}/.functions
 ADD tmux.conf ${DEVENVROOT}/.tmux.conf
 ADD git-completion ${DEVENVROOT}/.git-completion
