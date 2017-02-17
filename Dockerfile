@@ -74,7 +74,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.8beta2 \
+  && export GOVERSION=1.8 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
