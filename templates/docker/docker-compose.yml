@@ -1,4 +1,5 @@
-version: '2'
+version: '3'
+# .env とかのサポートは 2.1 から
 
 services:
   yourcontainerimage:
@@ -89,3 +90,32 @@ services:
     stdin_open: true
     tty: true
 
+    # cap_add, cap_drop
+    # Add or drop container capabilities.
+    # See man 7 capabilities for a full list.
+    cap_add:
+      - ALL
+
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+volumes:
+  data-volume:
+    driver: local
+  external-volume:
+    external: true
+
+networks:
+  a_net:
+    driver: bridge # overlay
+  a_net2:
+    driver: custom-driver
+    driver_opts:
+      foo: "1"
+      bar: "2"
+  a_net3:
+    # If you want your containers to join a pre-existing network,
+    # use the external option
+    external:
+      name: my-pre-existing-network
