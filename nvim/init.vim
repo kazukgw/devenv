@@ -489,6 +489,16 @@ let g:neomake_python_flake8_maker = {
         \ '%-G%.%#',
     \ }
 let g:neomake_python_enabled_makers = ['flake8']
+
+let g:neomake_go_golint_maker = {
+    \ 'exe': 'golint',
+    \ 'args': ['-min_confidence 0.9'],
+    \ 'errorformat':
+        \ '%W%f:%l:%c: %m,' .
+        \ '%-G%.%#'
+    \ }
+let g:neomake_go_enabled_makers = ['go', 'golint', 'govet']
+
 """ }}}
 
 
