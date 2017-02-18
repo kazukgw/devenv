@@ -123,3 +123,7 @@ function ff() {
 function note() {
   vim ~/.note
 }
+
+function dhost() {
+ ip route | head -n 1 | awk '{print $3}'
+}
