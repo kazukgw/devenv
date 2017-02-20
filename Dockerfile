@@ -213,13 +213,16 @@ ADD fzf.bash ${DEVENVROOT}/.fzf.bash
 ### ONBUILD ############### {{{
 ## create user
 ONBUILD ARG USER
+ONBUILD ARG USERID
+ONBUILD ARG DOCKER_GID
 ONBUILD ARG PASSWORD
 ONBUILD ARG HOMEDIR
 
-ONBUILD RUN groupadd -g 1000 $USER \
+ONBUILD RUN groupadd -g $USERID $USER \
     && mkdir -p $HOMEDIR \
     && useradd -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
     && echo "$USER:$PASSWORD" | chpasswd \
+    && groupadd -g $DOKER_GID docker
     && usermod -aG docker $USER \
     && mv ${DEVENVROOT}/* $HOMEDIR/ \
     && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
