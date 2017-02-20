@@ -222,7 +222,7 @@ ONBUILD RUN groupadd -g $USERID $USER \
     && mkdir -p $HOMEDIR \
     && useradd -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
     && echo "$USER:$PASSWORD" | chpasswd \
-    && groupadd -g $DOKER_GID docker
+    && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \
     && usermod -aG docker $USER \
     && mv ${DEVENVROOT}/* $HOMEDIR/ \
     && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
