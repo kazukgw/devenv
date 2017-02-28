@@ -1539,12 +1539,12 @@ Todo
 
 - nohop
 - disown
-- netstat
 - trap
 - here doc
 - dstat
 - jq
 - csvkit
+- netstat
 - s3cmd
 - cut,paste,join
 - tee
@@ -1554,6 +1554,9 @@ Todo
 - tar gz
 - curl と wget
 - vmstat
+- iostat
+- mpstat
+- netstat
 - traceroute と mtr
 - du -sh と ncdu
 - iftop と nethogs
@@ -1563,6 +1566,10 @@ Todo
 - strace や ltrace
 - /proc 以下にはなにがあるか
 - sar
+- tcpdump
+- blktrace
+- systemtap
+- per
 
 -------------------------------------------------------
 
