@@ -125,5 +125,13 @@ function note() {
 }
 
 function dhost() {
- ip route | head -n 1 | awk '{print $3}'
+  ip route | head -n 1 | awk '{print $3}'
+}
+
+function srcgrep() {
+  if [[ -n "$1" ]]; then
+    find . -type f | grep -v \.git\/ | grep -e "$1" | xargs grep -n -e . | fzf
+  else
+    find . -type f | grep -v \.git\/ | xargs grep -n -e . | fzf
+  fi
 }
