@@ -38,7 +38,7 @@ function dcom() {
     ;;
 
     build | kill | start | stop | restart | scale | pause | unpause | logs | rm)
-      if [[ $(parse_yaml docker-compose.yml | grep version | awk -F'=' '{print $2}') =~ [\"\'][2345\.]+[\"\'] ]];
+      if [[ $(parse_yaml docker-compose.yml | grep version | awk -F'=' '{print $2}') =~ [\"\'][12345\.]+[\"\'] ]];
       then
         local selected=$(parse_yaml docker-compose.yml | grep services | awk -F'___' '{print $2}' | uniq |\
                          fzf_add_header $all | fzf)
