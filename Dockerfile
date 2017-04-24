@@ -57,7 +57,7 @@ RUN apt-get update --fix-missing \
     python3-dev \
     python3-setuptools \
     python-software-properties \
-    openjdk-9-jdk-headless \
+    openjdk-8-jdk-headless \
     ant \
     ivy \
   && easy_install pip \
