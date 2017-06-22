@@ -504,7 +504,7 @@ let g:neomake_go_enabled_makers = ['go', 'golint', 'govet']
 
 """"""" autopep8 {{{
 " original http://stackoverflow.com/questions/12374200/using-uncrustify-with-vim/15513829#15513829
-function! Preserve(command)
+function! Autopep8wrap()
    " Save the last search.
    let search = @/
    " Save the current cursor position.
@@ -514,7 +514,8 @@ function! Preserve(command)
    let window_position = getpos('.')
    call setpos('.', cursor_position)
    " Execute the command.
-   execute a:command
+   "
+   :Autopep8
    " Restore the last search.
    let @/ = search
    " Restore the previous window position.
@@ -523,12 +524,7 @@ function! Preserve(command)
    " Restore the previous cursor position.
    call setpos('.', cursor_position)
 endfunction
-
-function! Autopep8()
-   call Preserve(':silent %!autopep8 -')
-endfunction
-
-autocmd! BufWritePre *.py Autopep8
+autocmd! BufWritePre *.py call Autopep8wrap()
 let g:autopep8_disable_show_diff=1
 """ }}}
 
