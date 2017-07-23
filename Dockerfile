@@ -168,10 +168,17 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 # }}}
 
 
+### java {{{
+  && wget http://ftp.riken.jp/net/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz \
+  && tar xvfs apache-maven-3.5.0-bin.tar.gz \
+  && mv apache-maven-3.5.0 ${DEVENVROOT}/.apache-maven-3.5.0 \
+  && rm -f apache-maven-3.5.0-bin.tar.gz \
+# }}}
+
+
 ### borg {{{
   && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O /usr/local/bin/borg \
   && chmod +x /usr/local/bin/borg \
-
 # }}}
 
 
@@ -241,6 +248,7 @@ ONBUILD ENV N_PREFIX $HOMEDIR/.n
 ONBUILD ENV PATH $HOMEDIR/.n/bin:$PATH
 
 ## PATH
+ONBUILD ENV PATH $HOMEDIR/.apache-maven-3.5.0/bin:$PATH
 ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
 
 ## change permission
