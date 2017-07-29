@@ -68,6 +68,10 @@ fi;
 export PATH=~/.fzf/bin:$PATH
 
 
+## sdkman
+source ~/.sdkman/bin/sdkman-init.sh
+
+
 ## prompt
 source ~/.bash_prompt
 

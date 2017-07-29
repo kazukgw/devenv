@@ -57,9 +57,6 @@ RUN apt-get update --fix-missing \
     python3-dev \
     python3-setuptools \
     python-software-properties \
-    openjdk-8-jdk-headless \
-    ant \
-    ivy \
   && easy_install pip \
   && easy_install3 pip \
 # }}}
@@ -169,10 +166,8 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### java {{{
-  && wget http://ftp.riken.jp/net/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz \
-  && tar xvfs apache-maven-3.5.0-bin.tar.gz \
-  && mv apache-maven-3.5.0 ${DEVENVROOT}/.apache-maven-3.5.0 \
-  && rm -f apache-maven-3.5.0-bin.tar.gz \
+  && export SDKMAN_DIR=${DEVENVROOT}/.sdkman \
+  && curl -s "https://get.sdkman.io" | bash \
 # }}}
 
 
