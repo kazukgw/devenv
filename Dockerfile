@@ -45,6 +45,9 @@ RUN apt-get update --fix-missing \
     software-properties-common \
     mysql-client \
     bzip2 \
+    zip \
+    unzip \
+    less \
     tmux \
     jq \
     tig \
