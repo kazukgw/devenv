@@ -171,12 +171,6 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 # }}}
 
 
-### borg {{{
-  && wget https://github.com/ok-borg/borg/releases/download/v0.0.2/borg_linux_amd64 -O /usr/local/bin/borg \
-  && chmod +x /usr/local/bin/borg \
-# }}}
-
-
 ### fzf {{{
   && git clone --depth 1 https://github.com/junegunn/fzf.git ${DEVENVROOT}/.fzf \
   && ${DEVENVROOT}/.fzf/install --all \
