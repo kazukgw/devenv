@@ -125,6 +125,9 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 
+" java
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 Plug 'rking/ag.vim', { 'on': 'Ag' }
