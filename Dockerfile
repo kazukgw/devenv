@@ -196,6 +196,7 @@ ADD templates ${DEVENVROOT}/.templates
 ADD note ${DEVENVROOT}/.note
 ADD functions ${DEVENVROOT}/.functions
 ADD tmux.conf ${DEVENVROOT}/.tmux.conf
+ADD git-prompt ${DEVENVROOT}/.git-prompt
 ADD git-completion ${DEVENVROOT}/.git-completion
 ADD gitconfig ${DEVENVROOT}/.gitconfig
 ADD tigrc ${DEVENVROOT}/.tigrc

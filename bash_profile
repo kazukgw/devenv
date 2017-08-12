@@ -73,5 +73,6 @@ source ~/.sdkman/bin/sdkman-init.sh
 
 
 ## prompt
+source ~/.git-prompt
 source ~/.bash_prompt
 
