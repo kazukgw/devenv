@@ -180,6 +180,14 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 #}}}
 
 
+### terraform {{{
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.10.3/terraform_0.10.3_linux_amd64.zip \
+  && unzip ./terraform.zip \
+  && chmod +x ./terraform \
+  && mv ./terraform ${DEVENVROOT}/bin/ \
+#}}}
+
+
 ### lang {{{
   && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
