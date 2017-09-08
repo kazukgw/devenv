@@ -354,6 +354,12 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 """ }}}
 
 
+""""""" gist.vim {{{
+let g:gist_show_privates = 1
+let g:gist_post_privates = 1
+""" }}}
+
+
 """"""" Gitv {{{
 let g:Gitv_OpenPreviewOnLaunch = 0
 """ }}}
