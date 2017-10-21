@@ -258,6 +258,10 @@ ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:
 ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR
 
+ONBUILD RUN sdk install java 8u144 \
+  && sdk install scala \
+  && sdk install sbt
+
 # }}}
 
 # vim: foldmethod=marker foldlevel=0
