@@ -249,8 +249,8 @@ ONBUILD ENV N_PREFIX $HOMEDIR/.n
 ONBUILD ENV PATH $HOMEDIR/.n/bin:$PATH
 
 ## PATH
-ONBUILD ENV PATH $HOMEDIR/.apache-maven-3.5.0/bin:$PATH
 ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
+ONBUILD ENV PATH $HOMEDIR/.sdkman/bin:$PATH
 
 ## change permission
 ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:$USER $HOMEDIR
@@ -258,8 +258,8 @@ ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:
 ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR
 
-ONBUILD ENV PATH $HOMEDIR/.sdkman/bin:$PATH
-ONBUILD RUN sdk install java 8u144 \
+ONBUILD RUN source $HOMEDIR/.sdkman/bin/sdkman-init.sh \
+  && sdk install java 8u144 \
   && sdk install scala \
   && sdk install sbt
 
