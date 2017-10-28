@@ -258,7 +258,7 @@ ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:
 ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR
 
-ONBUILD RUN source $HOMEDIR/.sdkman/bin/sdkman-init.sh \
+ONBUILD RUN /bin/bash $HOMEDIR/.sdkman/bin/sdkman-init.sh \
   && sdk install java 8u144 \
   && sdk install scala \
   && sdk install sbt
