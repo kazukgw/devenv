@@ -259,7 +259,7 @@ ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR
 
 ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
-  && sdk install java 8u144 \
+  && sdk install java 8u144-zulu \
   && sdk install scala \
   && sdk install sbt'
 
