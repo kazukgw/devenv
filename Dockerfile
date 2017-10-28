@@ -48,6 +48,7 @@ RUN apt-get update --fix-missing \
     zip \
     unzip \
     less \
+    bc \
     tmux \
     jq \
     tig \
