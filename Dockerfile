@@ -1,5 +1,7 @@
 FROM ubuntu
 
+ENV DEVENV_VERSION=1.0
+
 ENV DEVENVROOT=/home/devenv
 
 ### do apt-get update and install wget due to get repository {{{
