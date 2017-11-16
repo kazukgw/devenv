@@ -54,7 +54,7 @@ else
 fi;
 
 PS1="\[${cyan}\][devenv] \[\033]0;\w\007\]";
-PS1+="\[${blue}\][$(date '+%m-%d %H:%M')] "; # username
+PS1+="\[${blue}\][\$(date '+%m-%d %H:%M')] "; # username
 # PS1+="\[${blue}\][\t] \[${userStyle}\]\u"; # username
 # PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\W"; # working directory
