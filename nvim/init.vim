@@ -497,7 +497,7 @@ autocmd! BufWritePost * Neomake
     "
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_python_flake8_maker = {
-    \ 'args': ['--format=default'],
+    \ 'args': ['--format=default --max-line-length=119'],
     \ 'errorformat':
         \ '%E%f:%l: could not compile,%-Z%p^,' .
         \ '%A%f:%l:%c: %t%n %m,' .
@@ -519,6 +519,8 @@ let g:neomake_go_enabled_makers = ['go', 'golint', 'govet']
 
 
 """"""" autopep8 {{{
+let g:autopep8_max_line_length=119
+
 " original http://stackoverflow.com/questions/12374200/using-uncrustify-with-vim/15513829#15513829
 function! Autopep8wrap()
    " Save the last search.
