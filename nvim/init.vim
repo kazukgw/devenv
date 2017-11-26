@@ -52,6 +52,8 @@ set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 " set clipboard+=unnamedplus
 set ambiwidth=double
 
+let mapleader = "\<Space>"
+
 """ color scheme
 augroup color_scheme
   autocmd!
@@ -91,6 +93,7 @@ Plug 'majutsushi/tagbar'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'scrooloose/syntastic'
 Plug 'neomake/neomake'
 Plug 'tpope/vim-dispatch'
@@ -671,6 +674,46 @@ endif
 """ }}}
 
 
+""""""" fzf {{{
+
+nnoremap <C-p> :FZF<CR>
+
+command! FZFMru call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+nnoremap <Leader>r :FZFMru<CR>
+
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <Leader>b :call fzf#run({
+      \ 'source':  reverse(<sid>buflist()),
+      \ 'sink':    function('<sid>bufopen'),
+      \ 'options': '+m',
+      \ 'down':    len(<sid>buflist()) + 2
+      \ })<CR>
+
+function! s:pjopen(e)
+  exec 'e ' . $GOPATH. '/src/' .a:e
+endfunction
+command! Pj call fzf#run({
+      \ 'source': 'find $GOPATH/src -maxdepth 4 -type d | sed -E "s/.*\/src\///g"',
+      \ 'sink': function('<sid>pjopen'),
+      \ 'down': '40%' })
+
+""" }}}
+
+
 """"""" MySettings {{{
 let mapleader = "\<Space>"
 command! Vimrc :e ~/.config/nvim/init.vim
@@ -747,35 +790,6 @@ au BufNewFile,BufRead *.es6 set filetype=javascript
 
 """ go
 command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
-
-""" fzf
-
-nnoremap <C-p> :FZF<CR>
-
-function! PjCD(e)
-  exec 'cd ' . $GOPATH . '/src/' . a:e
-endfunction
-
-function! PjCDedit_(e)
-  exec 'e ' . $GOPATH. '/src/' .a:e
-endfunction
-
-function! PjCDedit(e)
-  let dirpath = $GOPATH . '/src/' . a:e
-  call fzf#run({
-        \ 'source': 'find '. dirpath. ' -maxdepth 10 -type f | sed -E "s/.*\/src\///g"',
-        \ 'sink': function('PjCDedit_')
-        \})
-endfunction
-
-command! Pj call fzf#run({
-      \ 'source': 'find $GOPATH/src -maxdepth 3 -type d | sed -E "s/.*\/src\///g"',
-      \ 'sink': function('PjCD')
-      \ })
-command! Pje call fzf#run({
-      \ 'source': 'find $GOPATH/src -maxdepth 3 -type d | sed -E "s/.*\/src\///g"',
-      \ 'sink': function('PjCDedit')
-      \})
 
 """ template
 function! TemplateListFile(A, L, P)
