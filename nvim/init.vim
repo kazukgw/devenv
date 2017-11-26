@@ -676,32 +676,16 @@ endif
 
 """"""" fzf {{{
 
-nnoremap <C-p> :FZF<CR>
+let g:fzf_files_options =
+   \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 
-command! FZFMru call fzf#run({
-\  'source':  v:oldfiles,
-\  'sink':    'e',
-\  'options': '-m -x +s',
-\  'down':    '40%'})
-nnoremap <Leader>r :FZFMru<CR>
+nnoremap <C-p> :Files<CR>
 
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
+nnoremap <Leader>r :History<CR>
 
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
+nnoremap <Leader>b :Buffers<CR>
 
-nnoremap <Leader>b :call fzf#run({
-      \ 'source':  reverse(<sid>buflist()),
-      \ 'sink':    function('<sid>bufopen'),
-      \ 'options': '+m',
-      \ 'down':    len(<sid>buflist()) + 2
-      \ })<CR>
+nnoremap <Leader>s :Lines<CR>
 
 function! s:pjopen(e)
   exec 'e ' . $GOPATH. '/src/' .a:e
@@ -715,7 +699,6 @@ command! Pj call fzf#run({
 
 
 """"""" MySettings {{{
-let mapleader = "\<Space>"
 command! Vimrc :e ~/.config/nvim/init.vim
 command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
 command! Cpc CtrlPClearAllCaches
