@@ -1,0 +1,22 @@
+# if use docker for mac, this command enable use docker client in other docker container.
+function enable_dind() {
+  killed=$(docker ps --format '{{.Image}} {{.Names}} {{.Status}}' | grep Exited | awk 'match($1, /bobrik/) {print $2} ')
+  if [[ -n $killed ]]; then
+    echo "==> remove exited containers."
+    echo "==> $ docker rm $killed"
+    docker rm $killed
+  fi
+
+  cname=$(docker ps --format '{{.Image}} {{.Names}} {{.Status}}' | awk 'match($1, /bobrik/) {print $2} ')
+  if [[ -n $cname ]]; then
+    echo "==> kill running socat container."
+    echo "==> $ docker kill $cname"
+    docker kill $cname
+  fi
+
+  docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 0.0.0.0:1234:1234 bobrik/socat TCP-LISTEN:1234,fork UNIX-CONNECT:/var/run/docker.sock
+  echo ""
+  echo "==> exec following command in your container."
+  echo '$ export DOCKER_HOST=tcp://$(ip route | head -n 1 | awk '"'"'{print $3}'"'"'):1234'
+  echo ""
+}
