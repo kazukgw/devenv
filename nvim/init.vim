@@ -835,6 +835,30 @@ vmap <silent> <expr> p <sid>Repl()
 " fakeclip経由で tmuxにcopy
 map <Leader>y "&y
 
+" Note
+function NoteAdd_(...)
+  let suffix = ""
+  if a:0 > 0
+    let suffix = a:1
+  end
+python << EOF
+def note_note_add():
+    import vim
+    import os
+    import datetime
+    npath = os.environ.get('NOTE_PATH')
+    suf = vim.eval('l:suffix') or 'tmp'
+    if not npath:
+        vim.command('echo "$NOTE_PATH is undefined"')
+    else:
+        dt = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        fname = npath + '/_inbox/' + dt + '_' + suf + '.md'
+        vim.command(':w ' + fname)
+note_note_add()
+EOF
+endfunction
+
+command! -nargs=? NoteAdd call NoteAdd_(<f-args>)
 """ }}}
 
 
