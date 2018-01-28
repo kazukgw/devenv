@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.1
+ENV DEVENV_VERSION=1.2
 
 ENV DEVENVROOT=/home/devenv
 
@@ -77,7 +77,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.8 \
+  && export GOVERSION=1.9.3 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -113,6 +113,15 @@ RUN apt-get update --fix-missing \
   && add-apt-repository -y ppa:neovim-ppa/stable \
   && apt-get update \
   && apt-get install neovim -y
+# }}}
+
+
+### clean {{{
+  && apt-get clean \
+  && apt-get autoremove \
+  && dpkg -l 'linux-*' \
+    | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
+    | xargs sudo apt-get -y purge
 # }}}
 
 
@@ -184,7 +193,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.10.3/terraform_0.10.3_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.10.3/terraform_0.11.2_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
@@ -202,6 +211,7 @@ ENV LANG ja_JP.UTF-8
 ### nvim & dotfiles {{{
 ADD nvim ${DEVENVROOT}/.config/nvim
 ADD bash_profile ${DEVENVROOT}/.bash_profile
+ADD bashrc ${DEVENVROOT}/.bashrc
 ADD bash_prompt ${DEVENVROOT}/.bash_prompt
 ADD templates ${DEVENVROOT}/.templates
 ADD note ${DEVENVROOT}/.note
@@ -217,11 +227,7 @@ ADD fzf.bash ${DEVENVROOT}/.fzf.bash
 
 
 ### clean (disabled) {{{
-# RUN apt-get clean \
-#   && apt-get autoremove \
-#   && dpkg -l 'linux-*' \
-#     | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
-#     | xargs sudo apt-get -y purge
+# RUN
 # }}}
 
 
@@ -256,7 +262,7 @@ ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
 ONBUILD ENV PATH $HOMEDIR/.sdkman/bin:$PATH
 
 ## change permission
-ONBUILD RUN echo 'source ~/.bash_profile' >> $HOMEDIR/.bashrc && chown -R $USER:$USER $HOMEDIR
+ONBUILD RUN chown -R $USER:$USER $HOMEDIR
 
 ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR

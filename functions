@@ -1,20 +1,5 @@
 # vim: set ft=sh
 
-# alias
-alias l='ls -G -a --color=auto'
-alias ls='ls -G -a --color=auto'
-alias ll='ls -G -lah --color=auto'
-alias tmux='tmux -u'
-alias t='tmux'
-alias ttt='tmux new -s dev'
-alias g='git'
-alias tiga='tig --all'
-
-alias vim=nvim
-alias vi=nvim
-alias v=nvim
-alias vimrc='nvim $HOME/.config/nvim/init.vim'
-
 # docker
 function dcom() {
   local all="__ALL__"
