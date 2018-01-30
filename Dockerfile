@@ -184,7 +184,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.10.3/terraform_0.11.2_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.11.2/terraform_0.11.2_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
