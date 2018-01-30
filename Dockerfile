@@ -116,15 +116,6 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### clean {{{
-  && apt-get clean \
-  && apt-get autoremove \
-  && dpkg -l 'linux-*' \
-    | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' \
-    | xargs sudo apt-get -y purge
-# }}}
-
-
 ### go pkgs {{{
 RUN export GOROOT=${DEVENVROOT}/.go \
   && export PATH=${DEVENVROOT}/.go/bin:$PATH \
