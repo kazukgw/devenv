@@ -112,7 +112,7 @@ RUN apt-get update --fix-missing \
 ### neovim {{{
   && add-apt-repository -y ppa:neovim-ppa/stable \
   && apt-get update \
-  && apt-get install neovim -y \
+  && apt-get install neovim -y
 # }}}
 
 
