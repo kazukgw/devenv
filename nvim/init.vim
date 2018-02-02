@@ -102,6 +102,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tyru/caw.vim'
 Plug 'kana/vim-fakeclip'
+Plug 'junegunn/gv.vim'
+Plug 'kassio/neoterm'
 
 " ruby
 Plug 'tpope/vim-haml', { 'for': 'ruby' }
