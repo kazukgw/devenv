@@ -29,11 +29,11 @@ EOS
 
 
 ## git config
-if [[ -n "$GIT_NAME" ]]; then git config --global user.name "$GIT_NAME"; fi
-if [[ -n "$GIT_EMAIL" ]]; then git config --global user.email "$GIT_EMAIL"; fi
-if [[ -n "$GITHUB_USER" ]]; then git config --global github.user "$GITHUB_USER"; fi
-if [[ -n "$http_proxy" ]]; then git config --global http.proxy "$http_proxy"; fi
-if [[ -n "$https_proxy" ]]; then git config --global https.proxy "$https_proxy"; fi
+[ -n "$GIT_NAME" ] && git config --global user.name "$GIT_NAME"
+[ -n "$GIT_EMAIL" ] && git config --global user.email "$GIT_EMAIL"
+[ -n "$GITHUB_USER" ] && git config --global github.user "$GITHUB_USER"
+[ -n "$http_proxy" ] && git config --global http.proxy "$http_proxy"
+[ -n "$https_proxy" ] && git config --global https.proxy "$https_proxy"
 
 
 ## completion
@@ -85,7 +85,5 @@ alias vimrc='nvim $HOME/.config/nvim/init.vim'
 
 
 ## devenv_profile
-if [[ -f "~/.config/devenv_profile" ]]; then
-  source ~/.config/devenv_profile
-fi
+[ -f "~/.config/devenv_profile" ] && source ~/.config/devenv_profile
 
