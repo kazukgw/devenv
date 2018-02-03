@@ -4,6 +4,7 @@ export HISTSIZE=10000
 export TERM=xterm-color
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
+export DOCKER_HOST=tcp://$(ip route | head -n 1 | awk '{print $3}'):1234
 
 
 if [ "$PS1" ]; then
