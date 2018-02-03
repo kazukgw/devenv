@@ -1,3 +1,5 @@
+if [ -z NVIM_LISTEN_ADDRESS ]; then
+
 cat << EOS
 
   ██╗   ██╗ ██████╗ ██╗   ██╗     █████╗ ██████╗ ███████╗    ██╗███╗   ██╗
@@ -23,6 +25,8 @@ cat << EOS
 
 
 EOS
+
+fi
 
 
 ## prompt
