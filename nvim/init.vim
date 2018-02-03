@@ -47,6 +47,7 @@ set completeopt-=preview
 set modeline
 set modelines=4
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
+set sh=bash
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
 " set clipboard+=unnamedplus
@@ -711,6 +712,9 @@ command! Neotags NeoCompleteTagMakeCache
 
 noremap <Space>git :Gitv --all<CR>
 noremap <Space>gitf :Gitv! --all<CR>
+
+" terminal
+tnoremap <ESC> <C-\><C-n>
 
 command! Reload :source ~/.config/nvim/init.vim
 
