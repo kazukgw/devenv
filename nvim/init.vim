@@ -370,11 +370,6 @@ let g:gist_post_privates = 1
 """ }}}
 
 
-""""""" Gitv {{{
-let g:Gitv_OpenPreviewOnLaunch = 0
-""" }}}
-
-
 """"""" tagbar {{{
 nnoremap <C-]> g<C-]>
 noremap tb :TagbarToggle <CR>
@@ -710,11 +705,10 @@ command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
 command! Cpc CtrlPClearAllCaches
 command! Neotags NeoCompleteTagMakeCache
 
-noremap <Space>git :Gitv --all<CR>
-noremap <Space>gitf :Gitv! --all<CR>
-
 " terminal
+autocmd BufWinEnter,WinEnter term://* startinsert
 tnoremap <ESC> <C-\><C-n>
+command! -nargs=* Ts :below 10sp term://$SHELL
 
 command! Reload :source ~/.config/nvim/init.vim
 
