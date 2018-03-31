@@ -51,6 +51,7 @@ RUN apt-get update --fix-missing \
     unzip \
     less \
     bc \
+    dnsutils \
     tmux \
     jq \
     tig \
