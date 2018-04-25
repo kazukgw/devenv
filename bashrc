@@ -1,4 +1,4 @@
-if [ -z NVIM_LISTEN_ADDRESS ]; then
+if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
 
 cat << EOS
 
