@@ -25,6 +25,7 @@ RUN apt-get update --fix-missing \
     telnet \
     tcpdump \
     traceroute \
+    netcat \
     g++ \
     gfortran \
     htop \
