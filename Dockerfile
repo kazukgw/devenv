@@ -6,7 +6,7 @@ ENV DEVENVROOT=/home/devenv
 
 ### do apt-get update and install wget due to get repository {{{
 RUN apt-get update --fix-missing \
-  && apt-get install -y wget \
+  && apt-get install -y wget gnupg \
 # }}}
 
 
@@ -22,7 +22,6 @@ RUN apt-get update --fix-missing \
   && apt-get update --fix-missing && apt-get install -y \
     sudo \
     man \
-    gnupg \
     telnet \
     tcpdump \
     traceroute \
