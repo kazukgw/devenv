@@ -22,10 +22,12 @@ RUN apt-get update --fix-missing \
   && apt-get update --fix-missing && apt-get install -y \
     sudo \
     man \
+    gnupg \
     telnet \
     tcpdump \
     traceroute \
     netcat \
+    strace \
     g++ \
     gfortran \
     htop \
