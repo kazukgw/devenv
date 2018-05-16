@@ -6,7 +6,7 @@ ENV DEVENVROOT=/home/devenv
 
 ### do apt-get update and install wget due to get repository {{{
 RUN apt-get update --fix-missing \
-  && apt-get install -y wget gnupg \
+  && apt-get install -y wget software-properties-common gnupg \
 # }}}
 
 
