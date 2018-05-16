@@ -65,7 +65,6 @@ RUN apt-get update --fix-missing \
     python3 \
     python3-dev \
     python3-setuptools \
-    python-software-properties \
   && easy_install pip \
   && easy_install3 pip \
 # }}}
