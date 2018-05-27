@@ -88,3 +88,5 @@ alias vimrc='nvim $HOME/.config/nvim/init.vim'
 ## devenv_profile
 [ -f "~/.config/devenv_profile" ] && source ~/.config/devenv_profile
 
+## extenstion
+[ -f ~/.bashrc_extension ] && source $HOME/.bashrc_extension
