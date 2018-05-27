@@ -1,12 +1,12 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.3
+ENV DEVENV_VERSION=1.5
 
 ENV DEVENVROOT=/home/devenv
 
 ### do apt-get update and install wget due to get repository {{{
 RUN apt-get update --fix-missing \
-  && apt-get install -y wget \
+  && apt-get install -y wget software-properties-common gnupg \
 # }}}
 
 
@@ -25,6 +25,8 @@ RUN apt-get update --fix-missing \
     telnet \
     tcpdump \
     traceroute \
+    netcat \
+    strace \
     g++ \
     gfortran \
     htop \
@@ -63,7 +65,6 @@ RUN apt-get update --fix-missing \
     python3 \
     python3-dev \
     python3-setuptools \
-    python-software-properties \
   && easy_install pip \
   && easy_install3 pip \
 # }}}
