@@ -88,10 +88,11 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
-  && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
-  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-  && apt-get update && apt-get install google-cloud-sdk -y \
+  && export CLOUD_SDK_VERSION=202.0.0 \
+  && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+  && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+  && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+  && mv /google-cloud-sdk ${DEVENVROOT}/.google-cloud-sdk \
 #}}}
 
 
@@ -252,6 +253,7 @@ ONBUILD ENV PATH $HOMEDIR/.n/bin:$PATH
 ## PATH
 ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
 ONBUILD ENV PATH $HOMEDIR/.sdkman/bin:$PATH
+ONBUILD ENV PATH $HOMEDIR/.google-cloud-sdk/bin:$PATH
 
 ## change permission
 ONBUILD RUN chown -R $USER:$USER $HOMEDIR
