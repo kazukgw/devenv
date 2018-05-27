@@ -62,11 +62,11 @@ RUN apt-get update --fix-missing \
     python \
     python-dev \
     python-setuptools \
+    python-pip \
     python3 \
     python3-dev \
     python3-setuptools \
-  && easy_install pip \
-  && easy_install3 pip \
+    python3-pip \
 # }}}
 
 
