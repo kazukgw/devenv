@@ -25,6 +25,7 @@ RUN apt-get update --fix-missing \
     telnet \
     tcpdump \
     traceroute \
+    lsof \
     netcat \
     strace \
     g++ \
@@ -106,7 +107,7 @@ RUN apt-get update --fix-missing \
     software-properties-common -y \
   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \
   && add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable test edge" \
   && apt-get update \
   && apt-get install docker-ce -y \
 # }}}
