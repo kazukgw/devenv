@@ -146,7 +146,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### pips {{{
-  && pip2 install --upgrade pip && pip2 install --upgrade \
+  && pip2 install --upgrade \
     jedi \
     requests \
     pylint \
@@ -159,7 +159,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
     flake8 \
     autopep8 \
     neovim \
-  && pip install --upgrade pip && pip install --upgrade \
+  && pip install --upgrade \
     jedi \
     requests \
     pylint \
