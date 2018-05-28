@@ -196,7 +196,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### lang {{{
-  && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
+  # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 ENV LANG ja_JP.UTF-8
