@@ -22,6 +22,7 @@ RUN apt-get update --fix-missing \
   && apt-get update --fix-missing && apt-get install -y \
     sudo \
     man \
+    iproute2 \
     telnet \
     tcpdump \
     traceroute \
