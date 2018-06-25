@@ -495,12 +495,7 @@ autocmd! BufWritePost * Neomake
     "
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_python_flake8_maker = {
-    \ 'args': ['--format=default --max-line-length=119'],
-    \ 'errorformat':
-        \ '%E%f:%l: could not compile,%-Z%p^,' .
-        \ '%A%f:%l:%c: %t%n %m,' .
-        \ '%A%f:%l: %t%n %m,' .
-        \ '%-G%.%#',
+    \ 'args': ['--format=default", "--max-line-length=119']
     \ }
 let g:neomake_python_enabled_makers = ['flake8']
 
