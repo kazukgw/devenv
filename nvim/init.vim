@@ -495,7 +495,7 @@ autocmd! BufWritePost * Neomake
     "
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_python_flake8_maker = {
-    \ 'args': ['--format=default", "--max-line-length=119']
+    \ 'args': ['--format=default', '--max-line-length=119']
     \ }
 let g:neomake_python_enabled_makers = ['flake8']
 
