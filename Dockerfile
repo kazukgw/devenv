@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.5
+ENV DEVENV_VERSION=1.6
 
 ENV DEVENVROOT=/home/devenv
 
@@ -20,47 +20,44 @@ RUN apt-get update --fix-missing \
 
 ### apt pkgs {{{
   && apt-get update --fix-missing && apt-get install -y \
-    sudo \
-    man \
-    iproute2 \
-    telnet \
-    tcpdump \
-    traceroute \
-    lsof \
-    netcat \
-    strace \
-    g++ \
-    gfortran \
-    htop \
-    tree \
-    git-extras \
-    exuberant-ctags \
-    shellcheck \
-    language-pack-ja-base \
-    language-pack-ja \
-    dbus \
-    ibus \
-    git \
-    curl \
-    iputils-ping \
-    make \
-    gawk \
-    connect-proxy \
     apt-transport-https \
-    ca-certificates \
-    software-properties-common \
-    mysql-client \
-    bzip2 \
-    zip \
-    unzip \
-    less \
     bc \
+    build-essential\
+    bzip2 \
+    ca-certificates \
+    connect-proxy \
+    curl \
+    dbus \
     dnsutils \
-    tmux \
+    exuberant-ctags \
+    g++ \
+    gawk \
+    gfortran \
+    git \
+    git-extras \
+    htop \
+    ibus \
+    iproute2 \
+    iputils-ping \
     jq \
-    tig \
+    language-pack-ja \
+    language-pack-ja-base \
+    less \
+    libbz2-dev\
+    libffi-dev\
+    libncurses5-dev\
+    libreadline-dev\
+    libsqlite3-dev\
+    libssl-dev\
+    libxml2-dev\
+    libxmlsec1-dev\
+    llvm\
+    lsof \
+    make \
+    man \
+    mysql-client \
+    netcat \
     nkf \
-    silversearcher-ag \
     python \
     python-dev \
     python-setuptools \
@@ -69,6 +66,23 @@ RUN apt-get update --fix-missing \
     python3-dev \
     python3-setuptools \
     python3-pip \
+    shellcheck \
+    silversearcher-ag \
+    software-properties-common \
+    strace \
+    sudo \
+    tcpdump \
+    telnet \
+    tig \
+    tk-dev\
+    tmux \
+    traceroute \
+    tree \
+    unzip \
+    wget\
+    xz-utils\
+    zip \
+    zlib1g-dev\
 # }}}
 
 
@@ -81,7 +95,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.9.3 \
+  && export GOVERSION=1.11.1 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -91,7 +105,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=202.0.0 \
+  && export CLOUD_SDK_VERSION=222.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -146,7 +160,9 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 # }}}
 
 
-### pips {{{
+### python {{{
+  && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python \
+  && rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip \
   && pip2 install --upgrade \
     jedi \
     requests \
@@ -244,28 +260,15 @@ ONBUILD RUN groupadd -g $USERID $USER \
     && mv ${DEVENVROOT}/* $HOMEDIR/ \
     && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
 
-## env go
-ONBUILD ENV GOROOT $HOMEDIR/.go
-ONBUILD ENV GOPATH $HOMEDIR
-ONBUILD ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
-
-## env node
-ONBUILD ENV N_PREFIX $HOMEDIR/.n
-ONBUILD ENV PATH $HOMEDIR/.n/bin:$PATH
-
-## PATH
-ONBUILD ENV PATH $HOMEDIR/.fzf/bin:$PATH
-ONBUILD ENV PATH $HOMEDIR/.sdkman/bin:$PATH
-ONBUILD ENV PATH $HOMEDIR/.google-cloud-sdk/bin:$PATH
-
 ## change permission
 ONBUILD RUN chown -R $USER:$USER $HOMEDIR
 
 ONBUILD USER $USER
 ONBUILD WORKDIR $HOMEDIR
 
+ONBUILD ENV PATH $HOME/.sdkman/bin:$PATH
 ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
-  && sdk install java 8u144-zulu \
+  && sdk install java \
   && sdk install scala \
   && sdk install sbt'
 
