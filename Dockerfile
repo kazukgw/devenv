@@ -1,8 +1,11 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.6
+ENV DEVENV_VERSION=1.6.1
 
 ENV DEVENVROOT=/home/devenv
+
+## for ubuntu 18.04 tzdata
+ENV DEBIAN_FRONTEND=noninteractive
 
 ### do apt-get update and install wget due to get repository {{{
 RUN apt-get update --fix-missing \
