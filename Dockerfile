@@ -107,6 +107,15 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### lemonade {{{
+  && export LEMONADE_VERSION=v1.1.1 \
+  && wget https://github.com/lemonade-command/lemonade/releases/download/${LEMONADE_VERSION}/lemonade_linux_amd64.tar.gz \
+  && tar -zxvf lemonade_linux_amd64.tar.gz \
+  && mv lemonade ${DEVENVROOT}/bin/ \
+  && rm lemonade_linux_amd64.tar.gz \
+# }}}
+
+
 ### google cloud sdk {{{
   && export CLOUD_SDK_VERSION=228.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
