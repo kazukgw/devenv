@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.6.1
+ENV DEVENV_VERSION=1.7.1
 
 ENV DEVENVROOT=/home/devenv
 
@@ -98,7 +98,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.11.1 \
+  && export GOVERSION=1.11.4 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -108,7 +108,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=222.0.0 \
+  && export CLOUD_SDK_VERSION=228.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -271,6 +271,7 @@ ONBUILD WORKDIR $HOMEDIR
 
 ONBUILD ENV PATH $HOME/.sdkman/bin:$PATH
 ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
+  && sdk update \
   && sdk install java \
   && sdk install scala \
   && sdk install sbt'
