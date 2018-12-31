@@ -150,7 +150,6 @@ RUN export GOROOT=${DEVENVROOT}/.go \
   && go get -u github.com/laurent22/massren \
   && go get -u github.com/dinedal/textql/... \
   && go get -u github.com/derekparker/delve/cmd/dlv \
-  && go get -u github.com/mholt/archiver/cmd/archiver \
 # }}}
 
 
