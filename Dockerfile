@@ -116,6 +116,13 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### gdrive {{{
+  && curl -fsL -o gdrive https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download \
+  && chmod +x gdrive
+  && mv gdrive ${DEVENVROOT}/bin/ \
+# }}}
+
+
 ### google cloud sdk {{{
   && export CLOUD_SDK_VERSION=228.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
