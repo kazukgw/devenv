@@ -50,7 +50,7 @@ set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 set sh=bash
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
-" set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 set ambiwidth=double
 
 let mapleader = "\<Space>"
