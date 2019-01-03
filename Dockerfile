@@ -118,7 +118,7 @@ RUN apt-get update --fix-missing \
 
 
 ### gdrive {{{
-  && curl -fsL -o gdrive https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download \
+  && curl -fsL -o gdrive 'https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download' \
   && chmod +x gdrive \
   && mv gdrive ${DEVENVROOT}/bin/ \
 # }}}
