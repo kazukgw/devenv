@@ -7,6 +7,7 @@ ENV DEVENVROOT=/home/devenv
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 ### do apt-get update and install wget due to get repository {{{
 RUN apt-get update --fix-missing \
   && apt-get install -y wget software-properties-common gnupg \
@@ -118,7 +119,7 @@ RUN apt-get update --fix-missing \
 
 ### gdrive {{{
   && curl -fsL -o gdrive https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download \
-  && chmod +x gdrive
+  && chmod +x gdrive \
   && mv gdrive ${DEVENVROOT}/bin/ \
 # }}}
 
