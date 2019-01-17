@@ -124,6 +124,16 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### tldr {{{
+  && export TLDR_VERSION=0.5.0 \
+  && curl -OL https://github.com/isacikgoz/tldr/releases/download/v${TLDR_VERSION}/tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
+  && tar xzf tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
+  && chmod +x tldr \
+  && mv tldr ${DEVENVROOT}/bin/ \
+  && rm tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
+# }}}
+
+
 ### google cloud sdk {{{
   && export CLOUD_SDK_VERSION=228.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
