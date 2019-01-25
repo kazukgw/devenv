@@ -45,7 +45,7 @@ fi;
 
 ## init tools
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export PATH=~/.fzf/bin:$PATH
+export PATH=~/.fzf/bin:$HOME/.google-cloud-sdk/bin:$PATH
 
 
 ## sdkman
