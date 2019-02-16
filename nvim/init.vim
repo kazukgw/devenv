@@ -48,6 +48,11 @@ set modeline
 set modelines=4
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 set sh=bash
+
+" backupskip は backup を作らないファイルを指定するが
+" mac で crontab -e でvimを使う場合はこの設定が必要ぽい
+set backupskip=/tmp/*,/private/tmp/*
+
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
 set clipboard+=unnamedplus
@@ -106,6 +111,12 @@ Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
 
+" lsp
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
 " ruby
 Plug 'tpope/vim-haml', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -126,10 +137,10 @@ Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
 " go
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+" Plug 'zchee/deoplete-go', { 'do': 'make' }
 
 " python
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 
 " java
@@ -489,7 +500,10 @@ let g:markdown_fenced_languages = [
 
 
 """"""" neomake {{{
-autocmd! BufWritePost * Neomake
+augroup neomake
+  autocmd!
+  autocmd BufWritePost * Neomake
+augroup END
 
 "\ 'args': ['--ignore=E221,E241,E272,E251,W702,E203,E201,E202',  '--format=default'],
     "
@@ -563,15 +577,14 @@ endif
 
 """"""" vim-json {{{
 let g:vim_json_syntax_conceal = 0
-au BufNewFile,BufReadPost *.json set conceallevel=0
 """ }}}
 
 
 """"""" FoldCC {{{
 set foldtext=FoldCCtext()
 set fillchars=vert:\|
-hi Folded gui=bold term=standout ctermbg=236 ctermfg=DarkBlue guibg=Grey30 guifg=Grey80
-hi FoldColumn gui=bold term=standout ctermbg=236 ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
+hi Folded gui=bold term=standout ctermbg=236 ctermfg=75 guibg=Grey30 guifg=Grey80
+hi FoldColumn gui=bold term=standout ctermbg=236 ctermfg=75 guibg=Grey guifg=DarkBlue
 """ }}}
 
 
@@ -584,7 +597,32 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
+let g:go_fmt_command = "goimports"
+" 以下は lsp で行うので disable
+let g:go_def_mapping_enabled = 0
+let g:go_doc_keywordprg_enabled = 0
 """ }}}
+
+
+""""""" lsp {{{
+
+if executable('pyls')
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'pyls',
+      \ 'cmd': {server_info->['pyls']},
+      \ 'whitelist': ['python'],
+      \ })
+endif
+
+if executable('bingo')
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'bingo',
+      \ 'cmd': {server_info->['bingo', '-mode', 'stdio']},
+      \ 'whitelist': ['go'],
+      \ })
+endif
+
+" }}}
 
 
 """"""" cursor {{{
@@ -696,32 +734,23 @@ command! Pj call fzf#run({
 
 """"""" MySettings {{{
 command! Vimrc :e ~/.config/nvim/init.vim
-command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
-command! Cpc CtrlPClearAllCaches
-command! Neotags NeoCompleteTagMakeCache
-
-" terminal
-autocmd BufWinEnter,WinEnter term://* startinsert
-tnoremap <ESC> <C-\><C-n>
-command! -nargs=* Ts :below 10sp term://$SHELL
-
 command! Reload :source ~/.config/nvim/init.vim
 
-" backupskip は backup を作らないファイルを指定するが
-" mac で crontab -e でvimを使う場合はこの設定が必要ぽい
-set backupskip=/tmp/*,/private/tmp/*
+" terminal {{{
+augroup my_term
+  autocmd!
+  autocmd BufWinEnter,WinEnter term://* startinsert
+augroup END
+tnoremap <ESC> <C-\><C-n>
+command! -nargs=* Ts :below 10sp term://$SHELL
+" }}}
+
 
 """ カーソル
 " カーソル形状がすぐに元に戻らないのでタイムアウト時間を調整
 set ttimeoutlen=10
 " 挿入モードを抜けた時にカーソルが見えなくなる現象対策(なぜかこれで治る)
 inoremap <ESC> <ESC>
-" insert mode でemacs風な動き
-inoremap <C-a> <C-o>^
-inoremap <C-e> <C-o>$
-inoremap <C-f> <C-o>w
-inoremap <C-b> <C-o>b
-inoremap <C-d> <C-o>x
 
 """ tab
 nnoremap tt :tabnew<CR>
@@ -741,9 +770,6 @@ augroup END
 
 """ current buffer を vimgrep
 command! -nargs=1 S exec 'vimgrep '. string(<q-args>). ' %'
-
-""" current buffer の /// or ### でコメントしている部分を vimgrep
-command! M exec 'vimgrep "\(\/\/\/\|###\)" %'
 
 """ gj(k) と j(k) を入れかえ
 nnoremap j gj
@@ -765,9 +791,6 @@ command! -nargs=+ -bang -complete=file Rename let pbnr=fnamemodify(bufname('%'),
 
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
-
-""" es6
-au BufNewFile,BufRead *.es6 set filetype=javascript
 
 """ go
 command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
@@ -887,6 +910,19 @@ EOF
 endfunction
 command! -nargs=* NoteSave call NoteSave_(<f-args>)
 
+
+""" }}}
+
+
+"""""" File Type Settings {{{
+augroup file_type_settings
+  au FileType json setlocal conceallevel=0
+  au FileType text setlocal shiftwidth=4 tabstop=4 softtabstop=4 noet
+  au FileType markdown setlocal softtabstop=2
+  au FileType go setlocal expandtab! tabstop=4 shiftwidth=4
+
+  au BufNewFile,BufRead *.vim,.vimrc setlocal foldmethod=marker foldlevel=0
+augroup END
 
 """ }}}
 

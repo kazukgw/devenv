@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.ace set filetype=ace
+au BufRead,BufNewFile *.ace setlocal filetype=ace

@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead *.pde set ft=processing
+au BufNewFile,BufRead *.pde setlocal ft=processing
