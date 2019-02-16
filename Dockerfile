@@ -190,33 +190,20 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### python {{{
+  && git clone https://github.com/pyenv/pyenv.git $DEVENVROOT/.pyenv \
+  && $DEVENVROOT/.pyenv/bin/pyenv install 3 \
   && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python \
   && rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip \
-  && pip2 install --upgrade \
-    jedi \
-    requests \
-    pylint \
-    cython \
-    awscli \
-    mycli \
-    docker-compose \
-    numpy scipy \
-    virtualenv \
-    flake8 \
-    autopep8 \
-    neovim \
   && pip install --upgrade \
-    jedi \
+    pipenv \
     requests \
     pylint \
-    cython \
     awscli \
     mycli \
     docker-compose \
-    numpy scipy \
+    virtualenv \
     flake8 \
     autopep8 \
-    virtualenv \
     neovim \
 # }}}
 
