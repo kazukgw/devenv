@@ -191,7 +191,8 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 ### python {{{
   && git clone https://github.com/pyenv/pyenv.git $DEVENVROOT/.pyenv \
-  && $DEVENVROOT/.pyenv/bin/pyenv install 3 \
+  && eval "$($DEVENVROOT/.pyenv/bin/pyenv init -)" \
+  && pyenv install 3.7 \
   && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python \
   && rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip \
   && pip install --upgrade \
