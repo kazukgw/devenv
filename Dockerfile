@@ -191,8 +191,6 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 ### python {{{
   && git clone https://github.com/pyenv/pyenv.git $DEVENVROOT/.pyenv \
-  && eval "$($DEVENVROOT/.pyenv/bin/pyenv init -)" \
-  && pyenv install 3.7 \
   && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python \
   && rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip \
   && pip install --upgrade \
@@ -289,6 +287,10 @@ ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install java \
   && sdk install scala \
   && sdk install sbt'
+
+ONBUILD RUN /bin/bash -c 'source ~/.bash_profile \
+  && pyenv install 3.7
+
 
 # }}}
 
