@@ -229,7 +229,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 ### code-server {{{
   && curl -o ./code-server.tar.gz -L https://github.com/cdr/code-server/releases/download/1.939-vsc1.33.1/code-server1.939-vsc1.33.1-linux-x64.tar.gz \
-  && tar -zxvf code-server.tar.gz
+  && tar -zxvf code-server.tar.gz \
   && chmod +x ./code-server/code-server \
   && mv ./code-server/code-server ${DEVENVROOT}/bin/ \
 #}}}
