@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.7.1
+ENV DEVENV_VERSION=1.8.1
 
 ENV DEVENVROOT=/home/devenv
 
@@ -99,7 +99,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.11.4 \
+  && export GOVERSION=1.12.4 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -224,6 +224,14 @@ RUN export GOROOT=${DEVENVROOT}/.go \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
+#}}}
+
+
+### code-server {{{
+  && curl -o ./code-server.tar.gz -L https://github.com/cdr/code-server/releases/download/1.939-vsc1.33.1/code-server1.939-vsc1.33.1-linux-x64.tar.gz \
+  && tar -zxvf code-server.tar.gz
+  && chmod +x ./code-server/code-server \
+  && mv ./code-server/code-server ${DEVENVROOT}/bin/ \
 #}}}
 
 

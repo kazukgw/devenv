@@ -111,43 +111,43 @@ Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
 
-" lsp
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-" ruby
-Plug 'tpope/vim-haml', { 'for': 'ruby' }
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'tpope/vim-endwise', { 'for': 'ruby' }
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
-
-" JS
-Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'mtscout6/syntastic-local-eslint.vim', { 'for': 'javascript' }
-
-" JSX
-Plug 'pangloss/vim-javascript', { 'for': 'jsx' }
-Plug 'mxw/vim-jsx', { 'for': 'jsx' }
-
-" HTML
-Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
-
-" go
-Plug 'fatih/vim-go', { 'for': 'go' }
-" Plug 'zchee/deoplete-go', { 'do': 'make' }
-
-" python
-" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'tell-k/vim-autopep8', { 'for': 'python' }
-
-" java
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-
-" scala
-Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+" " lsp
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" 
+" " ruby
+" Plug 'tpope/vim-haml', { 'for': 'ruby' }
+" Plug 'tpope/vim-rails', { 'for': 'ruby' }
+" Plug 'tpope/vim-endwise', { 'for': 'ruby' }
+" Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+" 
+" " JS
+" Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+" Plug 'mtscout6/syntastic-local-eslint.vim', { 'for': 'javascript' }
+" 
+" " JSX
+" Plug 'pangloss/vim-javascript', { 'for': 'jsx' }
+" Plug 'mxw/vim-jsx', { 'for': 'jsx' }
+" 
+" " HTML
+" Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
+" 
+" " go
+" " Plug 'fatih/vim-go', { 'for': 'go' }
+" " Plug 'zchee/deoplete-go', { 'do': 'make' }
+" 
+" " python
+" " Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+" Plug 'tell-k/vim-autopep8', { 'for': 'python' }
+" 
+" " java
+" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+" 
+" " scala
+" Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
