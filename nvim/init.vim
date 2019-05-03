@@ -98,7 +98,6 @@ Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -784,3 +783,4 @@ command! -nargs=* NoteSave call NoteSave_(<f-args>)
 """"""""""""""""""""""""""""""
 filetype plugin indent on
 
+" vim: foldmethod=marker foldlevel=0
