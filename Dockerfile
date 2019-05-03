@@ -288,7 +288,7 @@ ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install sbt'
 
 ONBUILD RUN /bin/bash -c 'source ~/.bash_profile \
-  && pyenv install 3.7
+  && pyenv install 3.7'
 
 
 # }}}
