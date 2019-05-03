@@ -99,7 +99,6 @@ Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/syntastic'
-" Plug 'neomake/neomake'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -107,14 +106,17 @@ Plug 'tyru/caw.vim'
 Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
-" completion
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
+" coc.nvim
+" Install nightly build, replace ./install.sh with install.cmd on windows
+Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+" coc.nvim extensions
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
-" " HTML
+" HTML
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
 " on command
