@@ -86,7 +86,7 @@ function pj() {
 
 function ff() {
   local targ=$(find . \
-    -maxdepth 5 \
+    -maxdepth 2 \
     -path "*.git" -prune \
     -o -path "*node_modules" -prune \
     -o -path "*site-packages" -prune \
@@ -103,10 +103,6 @@ function ff() {
     cd $(dirname $targ)
     echo $(dirname $targ)
   fi
-}
-
-function note() {
-  vim ~/.note
 }
 
 function dhost() {

@@ -135,7 +135,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=228.0.0 \
+  && export CLOUD_SDK_VERSION=244.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -185,7 +185,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
   && curl -L https://git.io/n-install | bash -s -- -y \
   && chmod +x ${DEVENVROOT}/.n/bin/n \
   && export PATH=${DEVENVROOT}/.n/bin:$PATH \
-  && ${DEVENVROOT}/.n/bin/npm install --global eslint babel-eslint tern \
+  && ${DEVENVROOT}/.n/bin/npm install --global eslint yarn \
 # }}}
 
 
@@ -227,14 +227,6 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 #}}}
 
 
-### code-server {{{
-  && curl -o ./code-server.tar.gz -L https://github.com/cdr/code-server/releases/download/1.939-vsc1.33.1/code-server1.939-vsc1.33.1-linux-x64.tar.gz \
-  && mkdir code-server && tar -zxvf code-server.tar.gz -C code-server --strip-components=1 \
-  && chmod +x ./code-server/code-server \
-  && mv ./code-server/code-server ${DEVENVROOT}/bin/ \
-#}}}
-
-
 ### lang {{{
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
@@ -249,7 +241,6 @@ ADD bash_profile ${DEVENVROOT}/.bash_profile
 ADD bashrc ${DEVENVROOT}/.bashrc
 ADD bash_prompt ${DEVENVROOT}/.bash_prompt
 ADD templates ${DEVENVROOT}/.templates
-ADD note ${DEVENVROOT}/.note
 ADD functions ${DEVENVROOT}/.functions
 ADD tmux.conf ${DEVENVROOT}/.tmux.conf
 ADD git-prompt ${DEVENVROOT}/.git-prompt

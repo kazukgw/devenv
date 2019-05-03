@@ -49,9 +49,6 @@ set modelines=4
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 set sh=bash
 
-" backupskip は backup を作らないファイルを指定するが
-" mac で crontab -e でvimを使う場合はこの設定が必要ぽい
-set backupskip=/tmp/*,/private/tmp/*
 
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
@@ -87,7 +84,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'LeafCage/foldCC.vim'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins' }
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'elzr/vim-json'
@@ -101,8 +98,8 @@ Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-" Plug 'scrooloose/syntastic'
-Plug 'neomake/neomake'
+Plug 'scrooloose/syntastic'
+" Plug 'neomake/neomake'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -110,44 +107,15 @@ Plug 'tyru/caw.vim'
 Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
+" completion
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
-" " lsp
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" 
-" " ruby
-" Plug 'tpope/vim-haml', { 'for': 'ruby' }
-" Plug 'tpope/vim-rails', { 'for': 'ruby' }
-" Plug 'tpope/vim-endwise', { 'for': 'ruby' }
-" Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
-" 
-" " JS
-" Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
-" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-" Plug 'mtscout6/syntastic-local-eslint.vim', { 'for': 'javascript' }
-" 
-" " JSX
-" Plug 'pangloss/vim-javascript', { 'for': 'jsx' }
-" Plug 'mxw/vim-jsx', { 'for': 'jsx' }
-" 
 " " HTML
-" Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
-" 
-" " go
-" " Plug 'fatih/vim-go', { 'for': 'go' }
-" " Plug 'zchee/deoplete-go', { 'do': 'make' }
-" 
-" " python
-" " Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Plug 'tell-k/vim-autopep8', { 'for': 'python' }
-" 
-" " java
-" Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-" 
-" " scala
-" Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
@@ -162,24 +130,24 @@ call plug#end()
 
 """"""" deoplete {{{
 
-" neocomplete like
-set completeopt+=noinsert
-" deoplete.nvim recommend
-set completeopt+=noselect
-
-" Path to python interpreter for neovim
-" let g:python3_host_prog  = '/usr/local/bin/python3'
-" Skip the check of neovim module
-" let g:python3_host_skip_check = 1
-
-" Run deoplete.nvim automatically
-let g:deoplete#enable_at_startup = 1
-
-" deoplete-go settings
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+" " neocomplete like
+" set completeopt+=noinsert
+" " deoplete.nvim recommend
+" set completeopt+=noselect
+"
+" " Path to python interpreter for neovim
+" " let g:python3_host_prog  = '/usr/local/bin/python3'
+" " Skip the check of neovim module
+" " let g:python3_host_skip_check = 1
+"
+" " Run deoplete.nvim automatically
+" let g:deoplete#enable_at_startup = 1
+"
+" " deoplete-go settings
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+" let g:deoplete#sources#go#use_cache = 1
+" let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 """ }}}
 
 
@@ -333,18 +301,6 @@ let g:indentLine_char = '¦'
 """ }}}
 
 
-""""""" tern_for_vim {{{
-let g:tern#is_show_argument_hints_enabled = 0
-" Use tern_for_vim.
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
-" Use deoplete.
-let g:tern_request_timeout = 1
-let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on autocomplete
-
-""" }}}
-
-
 """"""" vim-gitgutter {{{
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '~'
@@ -487,75 +443,8 @@ let g:markdown_fenced_languages = [
 """ }}}
 
 
-""""""" syntastic **(replaced with neomake)** {{{
-" let g:syntastic_enable_signs = 1
-" let g:syntastic_check_on_open = 1
-"
-" let g:syntastic_mode_map = { 'mode': 'passive',
-"             \ 'active_filetypes': ['javascript', 'python', 'go'] }
-" let g:syntastic_javascript_checkers = ["eslint"]
-" let g:syntastic_python_checkers = ["python"]
-" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-""" }}}
-
-
-""""""" neomake {{{
-augroup neomake
-  autocmd!
-  autocmd BufWritePost * Neomake
-augroup END
-
-"\ 'args': ['--ignore=E221,E241,E272,E251,W702,E203,E201,E202',  '--format=default'],
-    "
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--format=default', '--max-line-length=119']
-    \ }
-let g:neomake_python_enabled_makers = ['flake8']
-
-let g:neomake_go_golint_maker = {
-    \ 'exe': 'golint',
-    \ 'args': ['-min_confidence 0.9'],
-    \ 'errorformat':
-        \ '%W%f:%l:%c: %m,' .
-        \ '%-G%.%#'
-    \ }
-let g:neomake_go_enabled_makers = ['go', 'golint', 'govet']
-
-""" }}}
-
-
-""""""" autopep8 {{{
-let g:autopep8_max_line_length=119
-
-" original http://stackoverflow.com/questions/12374200/using-uncrustify-with-vim/15513829#15513829
-function! Autopep8wrap()
-   " Save the last search.
-   let search = @/
-   " Save the current cursor position.
-   let cursor_position = getpos('.')
-   " Save the current window position.
-   normal! H
-   let window_position = getpos('.')
-   call setpos('.', cursor_position)
-   " Execute the command.
-   "
-   :Autopep8
-   " Restore the last search.
-   let @/ = search
-   " Restore the previous window position.
-   call setpos('.', window_position)
-   normal! zt
-   " Restore the previous cursor position.
-   call setpos('.', cursor_position)
-endfunction
-autocmd! BufWritePre *.py call Autopep8wrap()
-let g:autopep8_disable_show_diff=1
-""" }}}
-
-
 """"""" quickrun {{{
-let g:quickrun_config = {}
+" let g:quickrun_config = {}
 """ }}}
 
 
@@ -577,52 +466,14 @@ endif
 
 """"""" vim-json {{{
 let g:vim_json_syntax_conceal = 0
+au BufNewFile,BufReadPost *.json set conceallevel=0
 """ }}}
 
 
 """"""" FoldCC {{{
 set foldtext=FoldCCtext()
 set fillchars=vert:\|
-hi Folded gui=bold term=standout ctermbg=236 ctermfg=75 guibg=Grey30 guifg=Grey80
-hi FoldColumn gui=bold term=standout ctermbg=236 ctermfg=75 guibg=Grey guifg=DarkBlue
 """ }}}
-
-
-""""""" vim-go {{{
-au FileType go nmap <Leader>ds <Plug>(go-def-split)
-au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-" let g:gocomplete#system_function = 'vimproc#system2'
-let g:go_autodetect_gopath = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_operators = 1
-let g:go_fmt_command = "goimports"
-" 以下は lsp で行うので disable
-let g:go_def_mapping_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
-""" }}}
-
-
-""""""" lsp {{{
-
-if executable('pyls')
-  au User lsp_setup call lsp#register_server({
-      \ 'name': 'pyls',
-      \ 'cmd': {server_info->['pyls']},
-      \ 'whitelist': ['python'],
-      \ })
-endif
-
-if executable('bingo')
-  au User lsp_setup call lsp#register_server({
-      \ 'name': 'bingo',
-      \ 'cmd': {server_info->['bingo', '-mode', 'stdio']},
-      \ 'whitelist': ['go'],
-      \ })
-endif
-
-" }}}
 
 
 """"""" cursor {{{
@@ -709,9 +560,8 @@ endif
 
 
 """"""" fzf {{{
-
 let g:fzf_files_options =
-   \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
+  \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 
 nnoremap <C-p> :Files<CR>
 
@@ -725,32 +575,41 @@ function! s:pjopen(e)
   exec 'e ' . $GOPATH. '/src/' .a:e
 endfunction
 command! Pj call fzf#run({
-      \ 'source': 'find $GOPATH/src -maxdepth 4 -type d | sed -E "s/.*\/src\///g"',
-      \ 'sink': function('<sid>pjopen'),
-      \ 'down': '40%' })
+     \ 'source': 'find $GOPATH/src -maxdepth 4 -type d | sed -E "s/.*\/src\///g"',
+     \ 'sink': function('<sid>pjopen'),
+     \ 'down': '40%' })
 
 """ }}}
 
 
 """"""" MySettings {{{
 command! Vimrc :e ~/.config/nvim/init.vim
-command! Reload :source ~/.config/nvim/init.vim
+command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
+command! Cpc CtrlPClearAllCaches
+command! Neotags NeoCompleteTagMakeCache
 
-" terminal {{{
-augroup my_term
-  autocmd!
-  autocmd BufWinEnter,WinEnter term://* startinsert
-augroup END
+" terminal
+autocmd BufWinEnter,WinEnter term://* startinsert
 tnoremap <ESC> <C-\><C-n>
 command! -nargs=* Ts :below 10sp term://$SHELL
-" }}}
 
+command! Reload :source ~/.config/nvim/init.vim
+
+" backupskip は backup を作らないファイルを指定するが
+" mac で crontab -e でvimを使う場合はこの設定が必要ぽい
+set backupskip=/tmp/*,/private/tmp/*
 
 """ カーソル
 " カーソル形状がすぐに元に戻らないのでタイムアウト時間を調整
 set ttimeoutlen=10
 " 挿入モードを抜けた時にカーソルが見えなくなる現象対策(なぜかこれで治る)
 inoremap <ESC> <ESC>
+" insert mode でemacs風な動き
+inoremap <C-a> <C-o>^
+inoremap <C-e> <C-o>$
+inoremap <C-f> <C-o>w
+inoremap <C-b> <C-o>b
+inoremap <C-d> <C-o>x
 
 """ tab
 nnoremap tt :tabnew<CR>
@@ -770,6 +629,9 @@ augroup END
 
 """ current buffer を vimgrep
 command! -nargs=1 S exec 'vimgrep '. string(<q-args>). ' %'
+
+""" current buffer の /// or ### でコメントしている部分を vimgrep
+command! M exec 'vimgrep "\(\/\/\/\|###\)" %'
 
 """ gj(k) と j(k) を入れかえ
 nnoremap j gj
@@ -791,6 +653,9 @@ command! -nargs=+ -bang -complete=file Rename let pbnr=fnamemodify(bufname('%'),
 
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
+
+""" es6
+au BufNewFile,BufRead *.es6 set filetype=javascript
 
 """ go
 command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
@@ -831,7 +696,7 @@ command! -nargs=0 ClipDir  call s:Clip(expand('%:p:h'))
 
 " 最後に保存した状態とのDiff
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
-  \ | diffthis | wincmd p | diffthis
+ \ | diffthis | wincmd p | diffthis
 
 augroup yankhook
   autocmd!
@@ -911,40 +776,6 @@ endfunction
 command! -nargs=* NoteSave call NoteSave_(<f-args>)
 
 
-""" }}}
-
-
-"""""" File Type Settings {{{
-augroup file_type_settings
-  au FileType json setlocal conceallevel=0
-  au FileType text setlocal shiftwidth=4 tabstop=4 softtabstop=4 noet
-  au FileType markdown setlocal softtabstop=2
-  au FileType go setlocal expandtab! tabstop=4 shiftwidth=4
-
-  au BufNewFile,BufRead *.vim,.vimrc setlocal foldmethod=marker foldlevel=0
-augroup END
-
-""" }}}
-
-
-""""""" custom lib path for jedi-vim {{{
-function LoadCurrentPathAsLibPath()
-python << EOF
-import os
-import sys
-import vim
-cwd = vim.eval('getcwd()')
-path = os.path.expanduser(os.path.join(cwd, 'site-packages'))
-if not path in sys.path:
-  sys.path.insert(1, path)
-
-path = os.path.expanduser(os.path.join(cwd, 'libs', 'site-packages'))
-if not path in sys.path:
-  sys.path.insert(1, path)
-EOF
-endfunction
-
-command! JediLoadLib call LoadCurrentPathAsLibPath()
 """ }}}
 
 
