@@ -282,8 +282,8 @@ ONBUILD ENV PATH $HOME/.sdkman/bin:$PATH
 ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
   && sdk install java \
-  && sdk install scala \
-  && sdk install sbt'
+  && sdk install maven'
+  && sdk install gradle'
 
 ONBUILD RUN /bin/bash -c 'source ~/.bash_profile \
   && pyenv install 3.7'
