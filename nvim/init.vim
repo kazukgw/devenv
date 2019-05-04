@@ -583,6 +583,27 @@ command! Pj call fzf#run({
 """ }}}
 
 
+"""""" coc.nvim {{{
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>d  :<C-u>CocList diagnostics<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+
+" }}}
+
+
 """"""" MySettings {{{
 command! Vimrc :e ~/.config/nvim/init.vim
 command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
@@ -718,64 +739,6 @@ vmap <silent> <expr> p <sid>Repl()
 
 " fakeclip経由で tmuxにcopy
 map <Leader>y "&y
-
-" Note
-function NoteAdd_(...)
-python << EOF
-def note_note_add():
-    import vim
-    import os
-    import datetime
-    npath = os.environ.get('NOTE_PATH')
-    if not npath:
-        vim.command('echo "$NOTE_PATH is undefined"')
-        return
-
-    suf = 'tmp'
-    if int(vim.eval('a:0')) > 0:
-      suf = vim.eval('a:1')
-    dt = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    fname = npath + '/_inbox/' + dt + '_' + suf + '.md'
-    vim.command(':w ' + fname)
-note_note_add()
-EOF
-endfunction
-command! -nargs=? NoteAdd call NoteAdd_(<f-args>)
-
-function NoteSave_(...)
-python << EOF
-def note_note_save():
-    import vim
-    import os
-    import datetime
-    import re
-    npath = os.environ.get('NOTE_PATH')
-    if not npath:
-        vim.command('echo "$NOTE_PATH is undefined"')
-
-    argnum = int(vim.eval('a:0'))
-    d = '_inbox'
-    fname = datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_tmp'
-    ext = '.md'
-    # npath + '/' + d + '/' +
-    if argnum == 1:
-      d = vim.eval('a:1')
-    elif argnum > 1:
-      d = vim.eval('a:1')
-      fname = vim.eval('a:2')
-      if re.match(r'\.[^\.]+$', fname):
-        ext = ''
-
-    dirpath = npath + '/' + d
-    if not os.path.exists(dirpath):
-      os.system('mkdir -p ' + dirpath)
-    fpath = dirpath + '/' + fname + ext
-    vim.command(':w ' + fpath)
-note_note_save()
-EOF
-endfunction
-command! -nargs=* NoteSave call NoteSave_(<f-args>)
-
 
 """ }}}
 
