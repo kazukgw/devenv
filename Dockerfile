@@ -284,7 +284,7 @@ ONBUILD ENV PATH $HOME/.sdkman/bin:$PATH
 ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
   && sdk install java \
-  && sdk install maven' \
+  && sdk install maven \
   && sdk install gradle'
 
 ONBUILD RUN /bin/bash -c 'source ~/.bash_profile \
