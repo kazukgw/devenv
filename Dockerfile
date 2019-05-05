@@ -265,7 +265,9 @@ ONBUILD ARG DOCKER_GID
 ONBUILD ARG PASSWORD
 ONBUILD ARG HOMEDIR
 
-ONBUILD RUN groupadd -g $USERID $USER \ && mkdir -p $HOMEDIR \ && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
+ONBUILD RUN groupadd -g $USERID $USER \ 
+    && mkdir -p $HOMEDIR \ 
+    && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
     && echo "$USER:$PASSWORD" | chpasswd \
     && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \
     && usermod -aG docker $USER \
