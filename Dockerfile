@@ -220,7 +220,7 @@ RUN export GOROOT=${DEVENVROOT}/.go \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.11.2/terraform_0.11.2_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
@@ -265,8 +265,8 @@ ONBUILD ARG DOCKER_GID
 ONBUILD ARG PASSWORD
 ONBUILD ARG HOMEDIR
 
-ONBUILD RUN groupadd -g $USERID $USER \ 
-    && mkdir -p $HOMEDIR \ 
+ONBUILD RUN groupadd -g $USERID $USER \
+    && mkdir -p $HOMEDIR \
     && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
     && echo "$USER:$PASSWORD" | chpasswd \
     && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \

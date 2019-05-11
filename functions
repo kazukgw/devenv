@@ -86,10 +86,12 @@ function pj() {
 
 function ff() {
   local targ=$(find . \
-    -maxdepth 2 \
+    -maxdepth 4 \
     -path "*.git" -prune \
     -o -path "*node_modules" -prune \
     -o -path "*site-packages" -prune \
+    -o -path "*vendors" -prune \
+    -o -path '*/\.*' -prune \
     -o -type f -o -type d | sed -e 's/^\.\///g' | fzf)
 
   if [[ ! -e $targ ]]; then
@@ -97,22 +99,17 @@ function ff() {
   fi
 
   if [[ -d $targ ]]; then
-    cd $targ
-    echo $targ
+    cd $targ && echo $(basename $targ)
   else
-    cd $(dirname $targ)
-    echo $(dirname $targ)
+    cd $(dirname $targ) && echo $(basename $targ)
   fi
+}
+
+function ffv() {
+  vim $(ff)
 }
 
 function dhost() {
   ip route | head -n 1 | awk '{print $3}'
 }
 
-function srcgrep() {
-  if [[ -n "$1" ]]; then
-    find . -type f | grep -v \.git\/ | grep -e "$1" | xargs grep -n -e . | fzf
-  else
-    find . -type f | grep -v \.git\/ | xargs grep -n -e . | fzf
-  fi
-}
