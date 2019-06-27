@@ -110,6 +110,8 @@ Plug 'kassio/neoterm'
 " Install nightly build, replace ./install.sh with install.cmd on windows
 Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
 " coc.nvim extensions
+Plug 'neoclide/coc-lists', {'do': './install.sh nightly'}
+Plug 'neoclide/coc-git', {'do': './install.sh nightly'}
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
