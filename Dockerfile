@@ -23,7 +23,7 @@ RUN apt-get update --fix-missing \
 
 
 ### apt pkgs {{{
-  && apt-get update --fix-missing && apt-get install -y \
+  && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
     apt-transport-https \
     bc \
     build-essential\
@@ -82,12 +82,14 @@ RUN apt-get update --fix-missing \
     tmux \
     traceroute \
     tree \
+    tshark \
     unzip \
     wget\
     xz-utils\
     zip \
-    zlib1g-dev\
+    zlib1g-dev \
 # }}}
+
 
 
 ### devenv {{{
@@ -161,12 +163,18 @@ RUN apt-get update --fix-missing \
 ### neovim {{{
   && add-apt-repository -y ppa:neovim-ppa/stable \
   && apt-get update \
-  && apt-get install neovim -y
+  && apt-get install neovim -y \
+# }}}
+
+
+### apt clean {{{
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
 # }}}
 
 
 ### go pkgs {{{
-RUN export GOROOT=${DEVENVROOT}/.go \
+  && export GOROOT=${DEVENVROOT}/.go \
   && export PATH=${DEVENVROOT}/.go/bin:$PATH \
   && mkdir -p /usr/local/go \
   && mkdir -p /usr/local/go/src \
@@ -236,24 +244,20 @@ ENV LANG ja_JP.UTF-8
 
 
 ### nvim & dotfiles {{{
-ADD nvim ${DEVENVROOT}/.config/nvim
-ADD bash_profile ${DEVENVROOT}/.bash_profile
-ADD bashrc ${DEVENVROOT}/.bashrc
-ADD bash_prompt ${DEVENVROOT}/.bash_prompt
-ADD templates ${DEVENVROOT}/.templates
-ADD functions ${DEVENVROOT}/.functions
-ADD tmux.conf ${DEVENVROOT}/.tmux.conf
-ADD git-prompt ${DEVENVROOT}/.git-prompt
-ADD git-completion ${DEVENVROOT}/.git-completion
-ADD gitconfig ${DEVENVROOT}/.gitconfig
-ADD tigrc ${DEVENVROOT}/.tigrc
-ADD docker-config.json ${DEVENVROOT}/.docker/config.json
-ADD fzf.bash ${DEVENVROOT}/.fzf.bash
-# }}}
-
-
-### clean (disabled) {{{
-# RUN
+COPY nvim ${DEVENVROOT}/.config/nvim
+COPY bash_profile ${DEVENVROOT}/.bash_profile
+COPY bashrc ${DEVENVROOT}/.bashrc
+COPY bash_prompt ${DEVENVROOT}/.bash_prompt
+COPY templates ${DEVENVROOT}/.templates
+COPY functions ${DEVENVROOT}/.functions
+COPY tmux.conf ${DEVENVROOT}/.tmux.conf
+COPY git-prompt ${DEVENVROOT}/.git-prompt
+COPY git-completion ${DEVENVROOT}/.git-completion
+COPY gitconfig ${DEVENVROOT}/.gitconfig
+COPY tigrc ${DEVENVROOT}/.tigrc
+COPY docker-config.json ${DEVENVROOT}/.docker/config.json
+COPY fzf.bash ${DEVENVROOT}/.fzf.bash
+COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
 # }}}
 
 
