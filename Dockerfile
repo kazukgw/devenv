@@ -235,6 +235,14 @@ RUN apt-get update --fix-missing \
 #}}}
 
 
+### termshark {{{
+  && wget https://github.com/gcla/termshark/releases/download/v1.0.0/termshark_1.0.0_linux_x64.tar.gz
+  && tar -zxvf termshark_1.0.0_linux_x64.tar.gz \
+  && mv termshark_1.0.0_linux_x64/termshark  ${DEVENVROOT}/bin \
+  && rm -r termshark_1.0.0_linux_x64* \
+# }}}
+
+
 ### lang {{{
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
