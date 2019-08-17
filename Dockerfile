@@ -64,15 +64,16 @@ RUN apt-get update --fix-missing \
     nkf \
     python \
     python-dev \
-    python-setuptools \
     python-pip \
+    python-setuptools \
     python3 \
     python3-dev \
-    python3-setuptools \
     python3-pip \
+    python3-setuptools \
     shellcheck \
     silversearcher-ag \
     software-properties-common \
+    ssh \
     strace \
     sudo \
     tcpdump \
@@ -89,7 +90,6 @@ RUN apt-get update --fix-missing \
     zip \
     zlib1g-dev \
 # }}}
-
 
 
 ### devenv {{{
