@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ENV DEVENV_VERSION=1.9.1
+ENV DEVENV_VERSION=1.10.1
 
 ENV DEVENVROOT=/home/devenv
 
@@ -101,7 +101,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.12.6 \
+  && export GOVERSION=1.13.1 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -137,7 +137,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=253.0.0 \
+  && export CLOUD_SDK_VERSION=266.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -228,7 +228,7 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.3_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.10_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
