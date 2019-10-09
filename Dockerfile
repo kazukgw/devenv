@@ -228,7 +228,7 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.10_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.10/terraform_0.12.10_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
