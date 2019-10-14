@@ -11,7 +11,7 @@
 [ghq]
   root = ~/src
 [merge]
-  tool = vimdiff
+  tool = fugitive
 [mergetool]
   prompt = true
 [mergetool "vimdiff"]
@@ -20,3 +20,5 @@
   prompt = false
 [diff]
   tool = vimdiff
+[mergetool "fugitive"]
+  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
