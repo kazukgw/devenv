@@ -308,10 +308,14 @@ let g:indentLine_char = '¦'
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '~'
 let g:gitgutter_sign_removed = '✘'
-let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
+let g:gitgutter_async = 1
 let g:gitgutter_map_keys = 0
-let g:gitgutter_async = 0
+let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_override_sign_column_highlight = 0
+highlight SignColumn ctermbg=237
+highlight GitGutterAdd    ctermfg=2 ctermbg=237
+highlight GitGutterChange ctermfg=3 ctermbg=237
+highlight GitGutterDelete ctermfg=1 ctermbg=237
 """ }}}
 
 
@@ -608,9 +612,7 @@ nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 
 """"""" MySettings {{{
 command! Vimrc :e ~/.config/nvim/init.vim
-command! -nargs=1 -complete=file NSS NeoSnippetSource <args>
 command! Cpc CtrlPClearAllCaches
-command! Neotags NeoCompleteTagMakeCache
 
 " terminal
 autocmd BufWinEnter,WinEnter term://* startinsert
