@@ -1,0 +1,39 @@
+
+FROM kazukgw/devenv
+
+### ONBUILD ############### {{{
+## create user
+ARG USER
+ARG USERID
+ARG DOCKER_GID
+ARG PASSWORD
+ARG HOMEDIR
+
+RUN groupadd -g $USERID $USER \
+    && mkdir -p $HOMEDIR \
+    && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
+    && echo "$USER:$PASSWORD" | chpasswd \
+    && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \
+    && usermod -aG docker $USER \
+    && mv ${DEVENVROOT}/* $HOMEDIR/ \
+    && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
+
+## change permission
+RUN chown -R $USER:$USER $HOMEDIR
+
+USER $USER
+WORKDIR $HOMEDIR
+
+ENV PATH $HOME/.sdkman/bin:$PATH
+RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
+  && sdk update \
+  && sdk install java \
+  && sdk install maven \
+  && sdk install gradle'
+
+RUN /bin/bash -c 'source ~/.bashrc\
+  && pyenv install 3.7.3'
+
+# }}}
+
+# vim: foldmethod=marker foldlevel=0

@@ -256,40 +256,4 @@ COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
 # }}}
 
 
-### ONBUILD ############### {{{
-## create user
-ONBUILD ARG USER
-ONBUILD ARG USERID
-ONBUILD ARG DOCKER_GID
-ONBUILD ARG PASSWORD
-ONBUILD ARG HOMEDIR
-
-ONBUILD RUN groupadd -g $USERID $USER \
-    && mkdir -p $HOMEDIR \
-    && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
-    && echo "$USER:$PASSWORD" | chpasswd \
-    && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \
-    && usermod -aG docker $USER \
-    && mv ${DEVENVROOT}/* $HOMEDIR/ \
-    && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
-
-## change permission
-ONBUILD RUN chown -R $USER:$USER $HOMEDIR
-
-ONBUILD USER $USER
-ONBUILD WORKDIR $HOMEDIR
-
-ONBUILD ENV PATH $HOME/.sdkman/bin:$PATH
-ONBUILD RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
-  && sdk update \
-  && sdk install java \
-  && sdk install maven \
-  && sdk install gradle'
-
-ONBUILD RUN /bin/bash -c 'source ~/.bashrc\
-  && pyenv install 3.7.3'
-
-
-# }}}
-
 # vim: foldmethod=marker foldlevel=0
