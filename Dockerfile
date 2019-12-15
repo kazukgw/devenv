@@ -258,7 +258,6 @@ ENV LANG ja_JP.UTF-8
 
 ### nvim & dotfiles {{{
 COPY nvim ${DEVENVROOT}/.config/nvim
-COPY bash_profile ${DEVENVROOT}/.bash_profile
 COPY bashrc ${DEVENVROOT}/.bashrc
 COPY bash_prompt ${DEVENVROOT}/.bash_prompt
 COPY templates ${DEVENVROOT}/.templates
