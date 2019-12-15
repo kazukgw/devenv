@@ -1,2 +1,2 @@
-build:
-	docker build -t devenv .
+build_base:
+	docker build -t kazukgw/devenv .
