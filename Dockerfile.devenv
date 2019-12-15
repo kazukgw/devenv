@@ -1,7 +1,5 @@
-
 FROM kazukgw/devenv
 
-### ONBUILD ############### {{{
 ## create user
 ARG USER
 ARG USERID
@@ -31,9 +29,13 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install maven \
   && sdk install gradle'
 
-RUN /bin/bash -c 'source ~/.bashrc\
-  && pyenv install 3.7.3'
+RUN /bin/bash -c '\
+  export PYENV_ROOT="$HOME/.pyenv" \
+&& export PATH="$PYENV_ROOT/bin:$PATH" \
+&& if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
+&& pyenv install 3.7.3\
+'
 
-# }}}
+
 
 # vim: foldmethod=marker foldlevel=0
