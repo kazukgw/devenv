@@ -62,10 +62,6 @@ RUN apt-get update --fix-missing \
     mysql-client \
     netcat \
     nkf \
-    python \
-    python-dev \
-    python-pip \
-    python-setuptools \
     python3 \
     python3-dev \
     python3-pip \
@@ -101,7 +97,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.13.1 \
+  && export GOVERSION=1.13.5 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -126,18 +122,8 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### tldr {{{
-  && export TLDR_VERSION=0.6.1 \
-  && curl -OL https://github.com/isacikgoz/tldr/releases/download/v${TLDR_VERSION}/tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
-  && tar xzf tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
-  && chmod +x tldr \
-  && mv tldr ${DEVENVROOT}/bin/ \
-  && rm tldr_${TLDR_VERSION}_linux_amd64.tar.gz \
-# }}}
-
-
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=266.0.0 \
+  && export CLOUD_SDK_VERSION=273.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -168,6 +154,7 @@ RUN apt-get update --fix-missing \
 
 
 ### apt clean {{{
+  && apt-get autoremove \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
 # }}}
@@ -181,10 +168,6 @@ RUN apt-get update --fix-missing \
   && mkdir -p /usr/local/go/bin \
   && mkdir -p /usr/local/go/pkg \
   && export GOPATH=/usr/local/go \
-  && go get -u github.com/motemen/ghq \
-  && go get -u github.com/laurent22/massren \
-  && go get -u github.com/dinedal/textql/... \
-  && go get -u github.com/derekparker/delve/cmd/dlv \
 # }}}
 
 
@@ -228,7 +211,7 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.10/terraform_0.12.10_linux_amd64.zip \
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
@@ -236,10 +219,10 @@ RUN apt-get update --fix-missing \
 
 
 ### termshark {{{
-  && wget https://github.com/gcla/termshark/releases/download/v1.0.0/termshark_1.0.0_linux_x64.tar.gz \
-  && tar -zxvf termshark_1.0.0_linux_x64.tar.gz \
-  && mv termshark_1.0.0_linux_x64/termshark  ${DEVENVROOT}/bin \
-  && rm -r termshark_1.0.0_linux_x64* \
+  && wget https://github.com/gcla/termshark/releases/download/v2.0.0/termshark_2.0.0_linux_x64.tar.gz \
+  && tar -zxvf termshark_2.0.0_linux_x64.tar.gz \
+  && mv termshark_2.0.0_linux_x64/termshark  ${DEVENVROOT}/bin \
+  && rm -r termshark_2.0.0_linux_x64* \
 # }}}
 
 
