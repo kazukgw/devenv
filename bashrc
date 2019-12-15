@@ -9,8 +9,8 @@ cat << EOS
   ██║  ██║██║   ██║██║╚██╗██║   ██║       ██╔═══╝ ██╔══██║██║╚██╗██║██║██║
   ██████╔╝╚██████╔╝██║ ╚████║   ██║       ██║     ██║  ██║██║ ╚████║██║╚██████╗██╗
   ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝       ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝ ╚═════╝╚═╝
-EOS 
-fi 
+EOS
+fi
 
 ## variables
 export HISTCONTROL=ignoreboth
@@ -103,3 +103,5 @@ alias vimrc='nvim $HOME/.config/nvim/init.vim'
 
 ## extenstion
 [ -f ~/.bashrc_extension ] && source $HOME/.bashrc_extension
+
+
