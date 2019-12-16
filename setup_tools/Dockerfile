@@ -1,12 +1,12 @@
 FROM kazukgw/devenv
 
-## create user
 ARG USER
 ARG USERID
 ARG DOCKER_GID
 ARG PASSWORD
 ARG HOMEDIR
 
+## create user, group, home
 RUN groupadd -g $USERID $USER \
     && mkdir -p $HOMEDIR \
     && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
@@ -22,6 +22,7 @@ RUN chown -R $USER:$USER $HOMEDIR
 USER $USER
 WORKDIR $HOMEDIR
 
+# sdkman & java
 ENV PATH $HOME/.sdkman/bin:$PATH
 RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
@@ -29,22 +30,18 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install maven \
   && sdk install gradle'
 
-## env go
+# golang
 ENV GOROOT $HOME/.go
 ENV GOPATH $HOME
 ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
 
-## env node
+# node
 ENV N_PREFIX $HOME/.n
 ENV PATH $HOME/.n/bin:$PATH
 
-## env pyenv
+## pyenv
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/bin:$PATH
-
 RUN /bin/bash -c '\
 if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
 && pyenv install 3.7.3'
-
-
-# vim: foldmethod=marker foldlevel=0

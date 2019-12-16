@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  devenv:
+    image: devenv
+    ports:
+      - "8080:8080"
+      - "8888:8888"
+      - "9000:9000"
+      - "9001:9001"
+      - "9002:9002"
+      - "9003:9003"
+      - "9004:9004"
+
+    volumes:
+      # ssh
+      - /Users/__user__/devenv/.ssh:/Users/__user__/devenv/.ssh
+      # src
+      - /Users/__user__/devenv/src:/Users/__user__/devenv/src
+      # bin
+      - /Users/__user__/devenv/bin:/Users/__user__/devenv/bin
+      # pkg
+      - /Users/__user__/devenv/pkg:/Users/__user__/devenv/pkg
+      # nvim
+      - /Users/__user__/devenv/.config/nvim/plugged:/Users/__user__/devenv/.config/nvim/plugged
+      # nvim coc settings
+      - /Users/__user__/devenv/.config/nvim/coc-settings.json:/Users/__user__/devenv/.config/nvim/coc-settings.json
+      # pip pacakges
+      - /Users/__user__/devenv/.local:/Users/__user__/devenv/.local
+      # share
+      - /Users/__user__/devenv/tmp:/Users/__user__/devenv/tmp
+      # .gsutil
+      - /Users/__user__/devenv/.gsutil:/Users/__user__/devenv/.gsutil
+      # .gcloud
+      - /Users/__user__/devenv/.config/gcloud:/Users/__user__/devenv/.config/gcloud
+      # devenv_profile
+      - /Users/__user__/devenv/.config/devenv_profile:/Users/__user__/devenv/.config/devenv_profile
+      # lemonade config
+      - /Users/__user__/devenv/.config/lemonade.toml:/Users/__user__/devenv/.config/lemonade.toml
+      # vscode-server
+      - /Users/__user__/devenv/.vscode-server:/Users/__user__/devenv/.vscode-server
+      # entrypoint for vscode Remote - Containers
+      - /Users/__user__/devenv/entrypoint:/Users/__user__/devenv/entrypoint
+
+      # n(node)
+      # config/gcloud
+      # timezone
+      # - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      # http_proxy: xxxx
+      # https_proxy: xxxx
+      GIT_EMAIL: __user__@gmail.com
+      GIT_NAME: __user__
+      GITHUB_USER: __user__
+      GO111MODULE: "on"
+      DOCKER_HOST: tcp://docker.for.mac.host.internal:1234
+
+    command: tail -f /dev/null
+
+    security_opt:
+      - seccomp:unconfined

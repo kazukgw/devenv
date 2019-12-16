@@ -1,64 +1,27 @@
-# devenv
+# Setup Tools
 
-## Objectives
+ホスト側はこのディレクトリにあるファイルを利用して devenv の環境を構築します。
 
-* CLIのツールやGoやPythonなどを利用した開発環境を Docker によって Containerize することによってポータビリティを向上
-* Docker (あるいは Docker for Mac) の機能によってホスト側とファイルシステムをシェアすることで柔軟な作業環境を実現
-* vscode の `Remote - Containers` Extension によって、リッチな UI によるコーディング環境を実現
+## 手順
 
-## Overview
-
-TODO
-
-## Build base image
+### 1. コンテナの作成
 
 ```
-$ make build_base
-# あるいは 当リポジトリの master に push すれば dockerhub で build される
-```
-
-## Setup devenv
-
-```
-# devenv を git clone
-$ mkdir devenv # (もしくは任意の名前) で devenv 環境 (ホスト側と共有するディレクトリ) を作成
-$ cd devenv
-$ git clone git@github.com:kazukgw/devenv.git
-
-# コンテナの作成
-$ cp devenv/setup_tools/Dockerfile ./
-$ vim Dockerfile # 必要があればカスタマイズ
-$ vim .dockerignore  # 必要があれば作成
 $ docker pull kazukgw/devenv # devenv コンテナのベースイメージを pull
 $ vim build_devenv_container.bash # build-arg の値を設定
 ...
 $ bash build_devenv_container.bash # devenv コンテナを作成
-
-# docker-compose.yaml に環境変数や Port の設定などを記述
-$ cp devenv/setup_tools/docker-compose.yaml ./
-$ vim docker-compose.yaml # 各種パラメータを設定
-
-# entrypoint ディレクトリ(後述) を作成
-$ mkdir entrypoint
-$ cp -r devenv/setup_tools/.devcontainer entrypoint/
-$ vim entrypoint/.devcontainer/devcontainer.json
-
-# その他の準備 1
-$ mkdir src
-$ mkdir pkg
-$ mkdir bin
-$ mkdir tmp
-$ mkdir .vscode-server # 必要あれば
-... # そのほか 自分の好みでカスタマイズ
-
-# その他の準備 2
-$ cp devenv/setup_tools/docker-config.json ~/
-$ cp devenv/setup_tools/run_devenv.bash ~/ # devenv 環境を terminal で直接起動するためのスクリプト
 ```
 
-## 使い方
+### 2. ホスト側の準備
 
-vscode の `Remote - Contaienrs` で Open Folder in Contaienr で entrypoint フォルダを開く
+```
+$ mkdir devenv # devenv 環境 (ホスト側と共有するディレクトリ) を作成
+
+```
+* build_devev_container.bash
+* `.devcontainer`: entrypoint ディレクトリに配置
+
 
 ## 補足
 

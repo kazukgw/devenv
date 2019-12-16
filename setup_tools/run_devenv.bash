@@ -21,6 +21,6 @@ else
   echo ""
   echo "==> run new devenv container"
   echo ""
-  docker-compose -f $DEVENV_COMPOSE_FILE run --name devenv devenv
+  docker-compose -f $DEVENV_COMPOSE_FILE run --name devenv devenv /bin/bash
 fi
 # }
