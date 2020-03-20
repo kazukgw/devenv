@@ -97,7 +97,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.13.5 \
+  && export GOVERSION=1.14.1 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -123,7 +123,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=273.0.0 \
+  && export CLOUD_SDK_VERSION=285.0.1 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -211,7 +211,8 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip \
+  && export TERRAFORM_VERSION=0.12.24
+  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
   && mv ./terraform ${DEVENVROOT}/bin/ \
@@ -219,10 +220,11 @@ RUN apt-get update --fix-missing \
 
 
 ### termshark {{{
-  && wget https://github.com/gcla/termshark/releases/download/v2.0.0/termshark_2.0.0_linux_x64.tar.gz \
-  && tar -zxvf termshark_2.0.0_linux_x64.tar.gz \
-  && mv termshark_2.0.0_linux_x64/termshark  ${DEVENVROOT}/bin \
-  && rm -r termshark_2.0.0_linux_x64* \
+  && export TERMSHARK_VERSION=2.1.1 \
+  && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+  && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+  && mv termshark_${TERMSHARK_VERSION}_linux_x64/termshark  ${DEVENVROOT}/bin \
+  && rm -r termshark_${TERMSHARK_VERSION}_linux_x64* \
 # }}}
 
 
