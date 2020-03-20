@@ -211,7 +211,7 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && export TERRAFORM_VERSION=0.12.24
+  && export TERRAFORM_VERSION=0.12.24 \
   && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
