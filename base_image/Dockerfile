@@ -252,7 +252,6 @@ COPY git-prompt ${DEVENVROOT}/.git-prompt
 COPY git-completion ${DEVENVROOT}/.git-completion
 COPY gitconfig ${DEVENVROOT}/.gitconfig
 COPY tigrc ${DEVENVROOT}/.tigrc
-COPY docker-config.json ${DEVENVROOT}/.docker/config.json
 COPY fzf.bash ${DEVENVROOT}/.fzf.bash
 COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
 # }}}
