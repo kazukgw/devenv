@@ -61,6 +61,7 @@ RUN apt-get update --fix-missing \
     make \
     man \
     mysql-client \
+    neovim \
     netcat \
     nkf \
     python3 \
@@ -141,11 +142,11 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### neovim {{{
-  && add-apt-repository -y ppa:neovim-ppa/stable \
-  && apt-get update \
-  && apt-get install neovim -y \
-# }}}
+# ### neovim {{{
+#   && add-apt-repository -y ppa:neovim-ppa/stable \
+#   && apt-get update \
+#   && apt-get install neovim -y \
+# # }}}
 
 
 ### apt clean {{{
