@@ -149,6 +149,11 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
 " Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
 " Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+"
+" Prettier
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " HTML
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
@@ -691,6 +696,13 @@ vmap <silent> <expr> p <sid>Repl()
 " fakeclip経由で tmuxにcopy
 map <Leader>y "&y
 
+""" }}}
+
+
+""""""" vimrc_extra {{{
+if filereadable(expand($VIMRC_EXTRA))
+  source $VIMRC_EXTRA
+endif
 """ }}}
 
 
