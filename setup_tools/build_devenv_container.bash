@@ -1,8 +1,8 @@
 docker build -t devenv \
-  --build-arg USER= \
+  --build-arg USER=developer \
   --build-arg USERID=501 \
   --build-arg DOCKER_GID=999 \
-  --build-arg PASSWORD= \
-  --build-arg HOMEDIR=/Users/__user__/devenv \
+  --build-arg PASSWORD=password \
+  --build-arg HOMEDIR=/Users/developer/devenv \
   .
 

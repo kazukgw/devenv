@@ -1,26 +1,20 @@
 #!/bin/bash
+export DEVENV_COMPOSE_FILE="/Users/developer/devenv/docker-compose.yaml"
+export DEVENV_CONTAINER_NAME="devenv_container"
+
 # function devenv() {
-cname=$(docker ps -a --format '{{.Image}} {{.Names}} {{.Status}}' | awk 'match($1, /devenv/) {print $2} ')
-if [[ -n "$cname" ]]; then
-  status=$(docker ps -a --format '{{.Image}} {{.Names}} {{.Status}}' | awk 'match($1, /devenv/) {print $3} ')
+status=$(docker inspect $DEVENV_CONTAINER_NAME --format {{.State.Status}})
+echo ""
+echo "==> status: $status"
+
+if [[ $status =~ ^running.* ]]; then
+  echo "==> docker attach $DEVENV_CONTAINER_NAME"
   echo ""
-  echo "==> status: $status"
-  if [[ $status =~ ^Up.* ]]; then
-    echo "==> exec $cname"
-    echo ""
-    docker attach $cname
-  elif [[ $status =~ ^Exited.* ]]; then
-    echo "==> start and attach $cname"
-    echo ""
-    docker attach $(docker start $cname)
-  else
-    echo "==> undefined status: $status"
-    echo ""
-  fi
+  docker attach $DEVENV_CONTAINER_NAME
 else
   echo ""
   echo "==> run new devenv container"
-  echo ""
-  docker-compose -f $DEVENV_COMPOSE_FILE run --name devenv devenv /bin/bash
+  echo "==> docker-compose -f $DEVENV_COMPOSE_FILE up -d"
+  docker-compose -f $DEVENV_COMPOSE_FILE up -d
 fi
 # }

@@ -3,44 +3,40 @@ version: '3'
 services:
   devenv:
     image: devenv
+    container_name: devenv_container
+
     ports:
       - "8080:8080"
       - "8888:8888"
       - "9000:9000"
-      - "9001:9001"
-      - "9002:9002"
-      - "9003:9003"
-      - "9004:9004"
 
     volumes:
       # ssh
-      - /Users/__user__/devenv/.ssh:/Users/__user__/devenv/.ssh
+      - /Users/developer/devenv/.ssh:/Users/developer/devenv/.ssh
       # src
-      - /Users/__user__/devenv/src:/Users/__user__/devenv/src
+      - /Users/developer/devenv/src:/Users/developer/devenv/src
       # bin
-      - /Users/__user__/devenv/bin:/Users/__user__/devenv/bin
+      - /Users/developer/devenv/bin:/Users/developer/devenv/bin
       # pkg
-      - /Users/__user__/devenv/pkg:/Users/__user__/devenv/pkg
+      - /Users/developer/devenv/pkg:/Users/developer/devenv/pkg
       # nvim
-      - /Users/__user__/devenv/.config/nvim/plugged:/Users/__user__/devenv/.config/nvim/plugged
+      - /Users/developer/devenv/.config/nvim/plugged:/Users/developer/devenv/.config/nvim/plugged
       # nvim coc settings
-      - /Users/__user__/devenv/.config/nvim/coc-settings.json:/Users/__user__/devenv/.config/nvim/coc-settings.json
+      - /Users/developer/devenv/.config/nvim/coc-settings.json:/Users/developer/devenv/.config/nvim/coc-settings.json
+      # coc.nvim extension
+      - /Users/kazukgw/devenv/.config/coc:/Users/kazukgw/devenv/.config/coc
       # pip pacakges
-      - /Users/__user__/devenv/.local:/Users/__user__/devenv/.local
+      - /Users/developer/devenv/.local:/Users/developer/devenv/.local
       # share
-      - /Users/__user__/devenv/tmp:/Users/__user__/devenv/tmp
+      - /Users/developer/devenv/tmp:/Users/developer/devenv/tmp
       # .gsutil
-      - /Users/__user__/devenv/.gsutil:/Users/__user__/devenv/.gsutil
+      - /Users/developer/devenv/.gsutil:/Users/developer/devenv/.gsutil
       # .gcloud
-      - /Users/__user__/devenv/.config/gcloud:/Users/__user__/devenv/.config/gcloud
+      - /Users/developer/devenv/.config/gcloud:/Users/developer/devenv/.config/gcloud
       # devenv_profile
-      - /Users/__user__/devenv/.config/devenv_profile:/Users/__user__/devenv/.config/devenv_profile
+      - /Users/developer/devenv/.config/devenv_profile:/Users/developer/devenv/.config/devenv_profile
       # lemonade config
-      - /Users/__user__/devenv/.config/lemonade.toml:/Users/__user__/devenv/.config/lemonade.toml
-      # vscode-server
-      - /Users/__user__/devenv/.vscode-server:/Users/__user__/devenv/.vscode-server
-      # entrypoint for vscode Remote - Containers
-      - /Users/__user__/devenv/entrypoint:/Users/__user__/devenv/entrypoint
+      - /Users/developer/devenv/.config/lemonade.toml:/Users/developer/devenv/.config/lemonade.toml
 
       # n(node)
       # config/gcloud
@@ -50,13 +46,16 @@ services:
     environment:
       # http_proxy: xxxx
       # https_proxy: xxxx
-      GIT_EMAIL: __user__@gmail.com
-      GIT_NAME: __user__
-      GITHUB_USER: __user__
+      GIT_EMAIL: developer@xxxxmail.com
+      GIT_NAME: developer
+      GITHUB_USER: developer
       GO111MODULE: "on"
       DOCKER_HOST: tcp://docker.for.mac.host.internal:1234
 
-    command: tail -f /dev/null
+    command: /bin/bash
+    tty: true
+    stdin_open: true
+
 
     security_opt:
       - seccomp:unconfined
