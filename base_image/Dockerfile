@@ -68,7 +68,7 @@ RUN apt-get update --fix-missing \
     python3-setuptools \
     shellcheck \
     silversearcher-ag \
-    software-properties-common \
+    ripgrep \
     ssh \
     strace \
     sudo \
@@ -229,15 +229,13 @@ RUN apt-get update --fix-missing \
 
 
 ### timezone {{{
-  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
+  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime
 # }}}
 
 
 ### lang {{{
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
-  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
-
-ENV LANG ja_JP.UTF-8
+  # && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 # }}}
 
 
