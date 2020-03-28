@@ -1,6 +1,6 @@
-FROM ubuntu
+FROM ubuntu:20.04
 
-ENV DEVENV_VERSION=1.10.1
+ENV DEVENV_VERSION=2.0.0
 
 ENV DEVENVROOT=/home/devenv
 
