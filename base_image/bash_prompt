@@ -17,13 +17,13 @@ if tput setaf 1 &> /dev/null; then
   black=$(tput setaf 0);
   blue=$(tput setaf 33);
   cyan=$(tput setaf 37);
-  green=$(tput setaf 64);
+  green=$(tput setaf 35);
   orange=$(tput setaf 166);
   purple=$(tput setaf 125);
   red=$(tput setaf 124);
   violet=$(tput setaf 61);
   white=$(tput setaf 15);
-  yellow=$(tput setaf 136);
+  yellow=$(tput setaf 172);
 else
   bold='';
   reset="\e[0m";
@@ -53,8 +53,8 @@ else
   hostStyle="${yellow}";
 fi;
 
-PS1="\[${cyan}\][devenv] \[\033]0;\w\007\]";
-PS1+="\[${blue}\][\$(date '+%m-%d %H:%M') JST] "; # username
+PS1="\[${blue}\][devenv] \[\033]0;\w\007\]";
+PS1+="\[${yellow}\][\$(date '+%m-%d %H:%M') JST] "; # username
 # PS1+="\[${blue}\][\t] \[${userStyle}\]\u"; # username
 # PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\W"; # working directory
