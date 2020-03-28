@@ -1,19 +1,50 @@
+""""""" vimrc の基礎メモ {{{
+"
+"    # vim script 基礎
+"    - https://mattn.kaoriya.net/software/vim/20111202085236.htm
+"
+"
+"    # map/noremap の違い
+"    - https://cocopon.me/blog/2013/10/vim-map-noremap/
+"    - 基本は noremap (remap しない) でよい
+"
+"
+"    # <Plug>, <SID>
+"    - https://www.reddit.com/r/vim/comments/78izt4/please_help_understand_how_to_use_plug_mapping/
+"    plugin 側では
+"        nnoremap <Plug>(HelloWorld) :echo "Hello world!"<CR>
+"    としておいて
+"    ユーザ側で
+"        nmap s <Plug>(HelloWorld)
+"    とすることで で :echo "Hello world!"<CR> がよびだせる
+"    Plugin が利用する Keymap の Interface 的なものである
+"    なので ユーザ側では noremap ではなく nmap などで再マップさせる必要がある
+"
+"    # <silent>
+"    実行するコマンドがコマンドラインに表示されないようにするには、マップコマンドの
+"    引数に "<silent>" を指定します。例: map <silent> ,h /Header<CR>
+"
+"
+""" }}}
+
+
 """"""" set config {{{
 syntax enable
 syntax on
 syntax sync minlines=200
 
 set t_Co=256                " 256色
-set title
+set title                   " vim を使ってくれてありがとう
 set nocompatible            " Be iMproved
-set gfn=Ricty:h12
 set number                  " 行数を表示
-set fileencodings=utf-8,sjis
-" set encoding=utf-8
-set tabstop=2               " tab はだいたい`soft` の `2`
-set expandtab               " softtab 有効
-set softtabstop=2
-set shiftwidth=2
+set encoding=utf-8          " 内部の文字コード
+" set fileencoding=utf-8    " 書き込み時の文字コード, 指定しなければ encoding
+                            " と同じになる
+set fileencodings=utf-8,sjis  " 読み込み時の文字コード, 左から順に評価する
+set tabstop=2               " 何個分のスペースで 1 つのタブとしてカウントするか
+set expandtab               " softtabstop で指定した値分スペースが入力されても <TAB> に変換しない
+set softtabstop=2           " <Tab> を押した時, 何個分のスペースを挿入するかを設定するオプションです
+set shiftwidth=2            " デフォルトのインデントのスペースの数
 set autoindent
 set noequalalways           " window サイズの自動調整を無効化
 set incsearch               " インクリメンタルサーチ有効
@@ -49,15 +80,18 @@ set modelines=4
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 set sh=bash
 
-
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
 set clipboard+=unnamedplus
 set ambiwidth=double
 
+" mapleaderに設定してあるものが <Leader> に置き換わる
+" map 時の <Leader> は評価時の値がそのまま利用されるので vimrc の先頭のほうで書いておく
 let mapleader = "\<Space>"
+"}}}
 
-""" color scheme
+
+""""""" color scheme {{{
 augroup color_scheme
   autocmd!
   """ カラースキーム適用時に実行される
@@ -69,17 +103,14 @@ colorscheme molokai
 
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
-
 "}}}
 
-
-""""""""""""""""""""""""""""""
 " filetype の判定と typeによる plugin, indent を一旦 off
 " ファイル終端で ON にしている
 filetype off
 
 
-""""""" plugins {{{
+""""""" plugins (vim-plug) {{{
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'LeafCage/foldCC.vim'
@@ -105,20 +136,25 @@ Plug 'tyru/caw.vim'
 Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
+" Plug 'ryanoasis/vim-devicons' " 見た目はよくなるがフォントインストールされてない環境でも使いたいので off
 
 " coc.nvim
-" Install nightly build, replace ./install.sh with install.cmd on windows
-Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
-" coc.nvim extensions
-Plug 'neoclide/coc-lists', {'do': './install.sh nightly'}
-Plug 'neoclide/coc-git', {'do': './install.sh nightly'}
-Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+" " Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" coc.nvim extensions  " CocIntall でいれるので 以下は コメントアウト
+" Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-git', {'do': './install.sh'}
+" Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
+" Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 " HTML
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
+
+" TypeScript
+Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったので
 
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
@@ -131,29 +167,6 @@ call plug#end()
 """ }}}
 
 
-""""""" deoplete {{{
-
-" " neocomplete like
-" set completeopt+=noinsert
-" " deoplete.nvim recommend
-" set completeopt+=noselect
-"
-" " Path to python interpreter for neovim
-" " let g:python3_host_prog  = '/usr/local/bin/python3'
-" " Skip the check of neovim module
-" " let g:python3_host_skip_check = 1
-"
-" " Run deoplete.nvim automatically
-" let g:deoplete#enable_at_startup = 1
-"
-" " deoplete-go settings
-" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-" let g:deoplete#sources#go#use_cache = 1
-" let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
-""" }}}
-
-
 """"""" NERDTree {{{
 noremap nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden = 1
@@ -161,6 +174,9 @@ let NERDTreeShowHidden = 1
 
 
 """"""" Lightline {{{
+" https://github.com/itchyny/lightline.vim
+" 以下は https://qiita.com/yuyuchu3333/items/20a0acfe7e0d0e167ccc を参考とした
+
 let g:lightline = {
   \ 'separator': { 'left': '', 'right': ''  },
   \ 'subseparator': { 'left': '', 'right': ''  },
@@ -326,6 +342,8 @@ vmap ,, <Plug>(caw:i:toggle)
 
 
 """"""" vim-submode {{{
+" https://github.com/kana/vim-submode
+" 設定は下記を参考 https://thinca.hatenablog.com/entry/20130131/1359567419
 " window のリサイズを自動でできるように
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
 call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
@@ -339,52 +357,38 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 
 
 """"""" gist.vim {{{
+" https://github.com/mattn/vim-gist
 let g:gist_show_privates = 1
 let g:gist_post_privates = 1
 """ }}}
 
 
 """"""" tagbar {{{
-nnoremap <C-]> g<C-]>
 noremap tb :TagbarToggle <CR>
 let g:tagbar_ctags_bin='/usr/bin/ctags'
 
-let g:tagbar_type_objc = {
-    \ 'ctagstype' : 'ObjectiveC',
-    \ 'kinds'     : [
-        \ 'i:interface',
-        \ 'I:implementation',
-        \ 'p:Protocol',
-        \ 'm:Object_method',
-        \ 'c:Class_method',
-        \ 'v:Global_variable',
-        \ 'F:Object field',
-        \ 'f:function',
-        \ 'p:property',
-        \ 't:type_alias',
-        \ 's:type_structure',
-        \ 'e:enumeration',
-        \ 'M:preprocessor_macro',
-    \ ],
-    \ 'sro'        : ' ',
-    \ 'kind2scope' : {
-        \ 'i' : 'interface',
-        \ 'I' : 'implementation',
-        \ 'p' : 'Protocol',
-        \ 's' : 'type_structure',
-        \ 'e' : 'enumeration'
-    \ },
-    \ 'scope2kind' : {
-        \ 'interface'      : 'i',
-        \ 'implementation' : 'I',
-        \ 'Protocol'       : 'p',
-        \ 'type_structure' : 's',
-        \ 'enumeration'    : 'e'
-    \ }
+" https://github.com/majutsushi/tagbar/wiki#typescript
+"   npm install --global git+https://github.com/Perlence/tstags.git
+" しておく必要がある
+let g:tagbar_type_typescript = {
+  \ 'ctagsbin' : 'tstags',
+  \ 'ctagsargs' : '-f-',
+  \ 'kinds': [
+    \ 'e:enums:0:1',
+    \ 'f:function:0:1',
+    \ 't:typealias:0:1',
+    \ 'M:Module:0:1',
+    \ 'I:import:0:1',
+    \ 'i:interface:0:1',
+    \ 'C:class:0:1',
+    \ 'm:method:0:1',
+    \ 'p:property:0:1',
+    \ 'v:variable:0:1',
+    \ 'c:const:0:1',
+  \ ],
+  \ 'sort' : 0
 \ }
 
-
-" for golang
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -413,7 +417,6 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
-" for markdown
 let g:tagbar_type_markdown = {
     \ 'ctagstype' : 'markdown',
     \ 'ctagsbin' : '/Users/kazukgw/Dropbox/kazukgw/bin/markdown2ctags.py',
@@ -451,6 +454,9 @@ let g:markdown_fenced_languages = [
 
 
 """"""" quickrun {{{
+" https://github.com/thinca/vim-quickrun
+" https://github.com/thinca/vim-quickrun/blob/master/doc/quickrun.jax
+" 設定はデフォルトを利用するので以下はコメントアウト
 " let g:quickrun_config = {}
 """ }}}
 
@@ -471,98 +477,9 @@ endif
 """ }}}
 
 
-""""""" vim-json {{{
-let g:vim_json_syntax_conceal = 0
-au BufNewFile,BufReadPost *.json set conceallevel=0
-""" }}}
-
-
 """"""" FoldCC {{{
 set foldtext=FoldCCtext()
 set fillchars=vert:\|
-""" }}}
-
-
-""""""" cursor {{{
-" Cursor support for terminals
-" ============================
-"
-" Defaulting vertical line for insert mode and block for other modes.
-
-" TODO: Support for gnome-terminal and xterm
-
-" for neovim
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-
-" GUI environments don't require any action.
-if has("gui_running")
-  finish
-endif
-
-" Environments are additive so we store the current escape sequences in temp
-" vars.
-let s:si=''
-let s:ei=''
-
-" iTerm
-" -----
-
-" iTerm escape sequence for cursor shape is:
-"
-"   \<Esc>]50;CursorShape={N}\x7
-"
-" Where {N} is:
-"  - 0 for block
-"  - 1 for vertical bar
-"  - 2 for underline
-"
-" Reference:
-"   https://code.google.com/p/iterm2/wiki/ProprietaryEscapeCodes#Set_cursor_shape
-if exists('$ITERM_PROFILE')
-  let s:si="\<Esc>]50;CursorShape=1\x7"
-  let s:ei="\<Esc>]50;CursorShape=0\x7"
-endif
-
-" OS X Terminal
-" -------------
-"
-" Inspired by: http://www.damtp.cam.ac.uk/user/rbw/vim-osx-cursor.html
-"
-" Simulate cursor shapes by highlighting the current character in normal mode.
-" Terminal cursor must be set to 'Vertical line'.
-"
-" FIXME:
-"  - Cursor in empty lines are not highlighted
-"  - Match parenthesis have precedence over cursor highlight
-if $TERM_PROGRAM == 'Apple_Terminal'
-  " Turn 'cursorline' on to update cursor regularly
-  " set cursorline
-
-  " Enable Cursor highlight for term
-  highlight Cursor cterm=reverse
-
-  " Un-highlight cursor for unfocused buffers and insert mode
-  autocmd WinLeave,InsertEnter * match none /\%#/
-
-  " Highlight cursor position in other modes only for focused windows
-  autocmd BufEnter,WinEnter,InsertLeave * match Cursor /\%#/
-endif
-
-" tmux
-" ----
-"
-" tmux captures escape sequences sent from vim, so we need to forward them to
-" the emulator.
-if exists('$TMUX') && s:si != '' && s:ei != ''
-  let s:si="\<Esc>Ptmux;\<Esc>".s:si."\<Esc>\\"
-  let s:ei="\<Esc>Ptmux;\<Esc>".s:ei."\<Esc>\\"
-endif
-
-" Use escape sequencess if they where declared.
-if s:si != '' && s:ei != ''
-  let &t_SI=s:si
-  let &t_EI=s:ei
-endif
 """ }}}
 
 
@@ -599,30 +516,61 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Using CocList
 " Show all diagnostics
-nnoremap <silent> <space>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
+" Search workLeader symbols
+nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
 
 " }}}
 
 
+""""""" vim-json {{{
+let g:vim_json_syntax_conceal = 0
+augroup VimJson
+  autocmd!
+  autocmd BufNewFile,BufReadPost *.json set conceallevel=0
+augroup END
+""" }}}
+
+
+""""""" javascript {{{
+augroup MyJavascript
+  autocmd!
+  autocmd BufNewFile,BufRead *.es6 set filetype=javascript
+augroup END
+"""}}}
+
+
+""""""" go {{{
+command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
+"""}}}
+
+
+""""""" python {{{
+" pyenv
+let g:python3_host_prog = $PYENV_ROOT . '/shims/python3'
+let g:python_host_prog = $PYENV_ROOT . '/shims/python'
+"""}}}
+
+
 """"""" MySettings {{{
 command! Vimrc :e ~/.config/nvim/init.vim
-command! Cpc CtrlPClearAllCaches
+command! Reload :source ~/.config/nvim/init.vim
 
-" terminal
-autocmd BufWinEnter,WinEnter term://* startinsert
+""" terminal
+augroup MyTerminal
+  autocmd!
+  autocmd BufWinEnter,WinEnter term://* startinsert
+augroup END
 tnoremap <ESC> <C-\><C-n>
 command! -nargs=* Ts :below 10sp term://$SHELL
 
-command! Reload :source ~/.config/nvim/init.vim
 
 " backupskip は backup を作らないファイルを指定するが
-" mac で crontab -e でvimを使う場合はこの設定が必要ぽい
+" mac で crontab -e でvimを使う場合はこの設定が必要ぽい ??
 set backupskip=/tmp/*,/private/tmp/*
 
 """ カーソル
@@ -648,16 +596,13 @@ vnoremap < <gv
 vnoremap > >gv
 
 """ grep したら QuickFixを自動で開く
-augroup grepopen
+augroup MyGrepOpen
   autocmd!
   autocmd QuickFixCmdPost vimgrep cw
 augroup END
 
 """ current buffer を vimgrep
 command! -nargs=1 S exec 'vimgrep '. string(<q-args>). ' %'
-
-""" current buffer の /// or ### でコメントしている部分を vimgrep
-command! M exec 'vimgrep "\(\/\/\/\|###\)" %'
 
 """ gj(k) と j(k) を入れかえ
 nnoremap j gj
@@ -670,7 +615,6 @@ nnoremap gk K
 set list
 " Listモード (訳注: オプション 'list' がオンのとき) に使われる文字を設定する。
 set listchars=tab:\▸\       " tab
-
 " 上記特殊文字の文字色
 highlight SpecialKey term=underline ctermfg=darkgray guifg=darkgray
 
@@ -678,13 +622,10 @@ highlight SpecialKey term=underline ctermfg=darkgray guifg=darkgray
 command! -nargs=+ -bang -complete=file Rename let pbnr=fnamemodify(bufname('%'), ':p')|exec 'f '.escape(<q-args>, ' ')|w<bang>|call delete(pbnr)
 
 " 保存時に行末の空白を除去する
-autocmd BufWritePre * :%s/\s\+$//ge
-
-""" es6
-au BufNewFile,BufRead *.es6 set filetype=javascript
-
-""" go
-command! PlayGo :set ft=go | :0r ~/.templates/quickrun_go.go
+augroup MyOthers
+  autocmd!
+  autocmd BufWritePre * :%s/\s\+$//ge
+augroup END
 
 """ template
 function! TemplateListFile(A, L, P)
