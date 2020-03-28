@@ -158,10 +158,10 @@ Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったの�
 
 " on command
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
-Plug 'rking/ag.vim', { 'on': 'Ag' }
 Plug 'thinca/vim-qfreplace', { 'on': 'Qfreplace' }
 Plug 'thinca/vim-quickrun', { 'on': 'QuickRun' }
 Plug 'vim-scripts/Align', { 'on': 'Align' }
+Plug 'mileszs/ack.vim', {'on': 'Ack' }
 
 call plug#end()
 """ }}}
@@ -502,7 +502,11 @@ command! Pj call fzf#run({
      \ 'source': 'find $GOPATH/src -maxdepth 4 -type d | sed -E "s/.*\/src\///g"',
      \ 'sink': function('<sid>pjopen'),
      \ 'down': '40%' })
+""" }}}
 
+
+"""""""" ack.vim {{{
+let g:ackprg = 'rg --column --line-number --hidden --ignore-case --no-heading'
 """ }}}
 
 
@@ -521,8 +525,10 @@ nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
 nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
+
+" FZF の keybind を優先したいのでコメントアウト
 " Search workLeader symbols
-nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
+" nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
 
 " }}}
 
