@@ -225,15 +225,17 @@ RUN apt-get update --fix-missing \
 
 
 ### timezone {{{
-  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime
+  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
 # }}}
 
 
 ### lang {{{
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
-  # && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 # }}}
 
+# 日本語の入力に必要
+ENV LANG=ja_JP.UTF-8
 
 ### nvim & dotfiles {{{
 COPY nvim ${DEVENVROOT}/.config/nvim
