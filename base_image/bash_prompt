@@ -57,9 +57,9 @@ PS1="\[${blue}\][devenv] \[\033]0;\w\007\]";
 PS1+="\[${yellow}\][\$(date '+%m-%d %H:%M') JST] "; # username
 # PS1+="\[${blue}\][\t] \[${userStyle}\]\u"; # username
 # PS1+="\[${white}\] in ";
-PS1+="\[${green}\]\W"; # working directory
+PS1+="\[${green}\]\w"; # working directory
 PS1+='$(__git_ps1 " (%s)")'; # Git repository details
-PS1+="\[${white}\] \[${reset}\]"; # `$` (and reset color)
+PS1+="\[${white}\] \[${reset}\]\n → "; # `$` (and reset color)
 export PS1;
 
 # PS2="\[${yellow}\]→ \[${reset}\]";
