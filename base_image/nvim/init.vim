@@ -83,7 +83,7 @@ set sh=bash
 "" neovim だと以下設定だとおかしくなる
 " set shellcmdflag=-ic
 set clipboard+=unnamedplus
-set ambiwidth=double
+" set ambiwidth=double
 
 " mapleaderに設定してあるものが <Leader> に置き換わる
 " map 時の <Leader> は評価時の値がそのまま利用されるので vimrc の先頭のほうで書いておく
