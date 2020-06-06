@@ -25,6 +25,8 @@ RUN apt-get update --fix-missing \
 ### apt pkgs {{{
   && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
     apt-transport-https \
+    zsh \
+    fzf \
     bc \
     build-essential\
     bzip2 \
@@ -125,7 +127,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=285.0.1 \
+  && export CLOUD_SDK_VERSION=295.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -200,14 +202,8 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### fzf {{{
-  && git clone --depth 1 https://github.com/junegunn/fzf.git ${DEVENVROOT}/.fzf \
-  && ${DEVENVROOT}/.fzf/install --all \
-#}}}
-
-
 ### terraform {{{
-  && export TERRAFORM_VERSION=0.12.24 \
+  && export TERRAFORM_VERSION=0.12.26 \
   && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
