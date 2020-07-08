@@ -16,3 +16,4 @@ steps:
   - 'HOMEDIR=/Users/developer/devenv'
   - 'ttyd-build/.'
 images: ['gcr.io/kazukgw-prvt/devenv-ttyd']
+timeout: 1800s
