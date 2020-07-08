@@ -40,8 +40,8 @@ ENV N_PREFIX $HOME/.n
 ENV PATH $HOME/.n/bin:$PATH
 
 ## pyenv
-ENV PYENV_ROOT $HOME/.pyenv
-ENV PATH $PYENV_ROOT/bin:$PATH
-RUN /bin/bash -c '\
-if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-&& pyenv install 3.7.3'
+# ENV PYENV_ROOT $HOME/.pyenv
+# ENV PATH $PYENV_ROOT/bin:$PATH
+# RUN /bin/bash -c '\
+# if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
+# && pyenv install 3.7.3'
