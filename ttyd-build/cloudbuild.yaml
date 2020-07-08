@@ -8,5 +8,5 @@ steps:
     --build-arg DOCKER_GID=999 \
     --build-arg PASSWORD=password \
     --build-arg HOMEDIR=/Users/developer/devenv \
-    . \
+    .
 images: ['gcr.io/kazukgw-prvt/devenv-ttyd']
