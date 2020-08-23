@@ -18,11 +18,12 @@ RUN groupadd -g $USERID $USER \
 
 ## change permission
 RUN chown -R $USER:$USER $HOMEDIR
+
 USER $USER
 WORKDIR $HOMEDIR
 
 # sdkman & java
-ENV PATH $HOMEDIR/.sdkman/bin:$PATH
+ENV PATH $HOME/.sdkman/bin:$PATH
 RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
   && sdk install java \
@@ -30,19 +31,14 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install gradle'
 
 # golang
-ENV GOROOT $HOMEDIR/.go
-ENV GOPATH $HOMEDIR
+ENV GOROOT $HOME/.go
+ENV GOPATH $HOME
 ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
 
 # node
-ENV N_PREFIX $HOMEDIR/.n
-ENV PATH $HOMEDIR/.n/bin:$PATH
+ENV N_PREFIX $HOME/.n
+ENV PATH $HOME/.n/bin:$PATH
 
 ## pyenv
-ENV PATH $HOMEDIR/.pyenv/bin:$PATH
-ENV PYENV_ROOT $HOMEDIR/.pyenv
+ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/bin:$PATH
-RUN echo $PATH
-RUN /bin/bash -c '\
-if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-&& pyenv install 3.8.2'

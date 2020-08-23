@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/kazukgw-prvt/devenv'
+  - 'bas_image'
+images: ['gcr.io/kazukgw-prvt/devenv']
+timeout: 1800s
