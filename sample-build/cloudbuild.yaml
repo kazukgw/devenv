@@ -3,7 +3,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'gcr.io/kazukgw-prvt/devenv-ttyd'
+  - 'gcr.io/kazukgw-prvt/devenv-sample'
   - '--build-arg'
   - 'USER=developer'
   - '--build-arg'
@@ -14,6 +14,6 @@ steps:
   - 'PASSWORD=password'
   - '--build-arg'
   - 'HOMEDIR=/Users/developer/devenv'
-  - 'ttyd-build/.'
-images: ['gcr.io/kazukgw-prvt/devenv-ttyd']
+  - 'setup_tools'
+images: ['gcr.io/kazukgw-prvt/devenv-sample']
 timeout: 1800s
