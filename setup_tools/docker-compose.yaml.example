@@ -4,7 +4,6 @@ services:
   devenv:
     image: devenv
     container_name: devenv_container
-
     ports:
       - "8080:8080"
       - "8888:8888"
@@ -53,6 +52,7 @@ services:
       DOCKER_HOST: tcp://docker.for.mac.host.internal:1234
 
     command: /bin/bash
+    # command: ttyd -p 8080 tmux new -A -s devenv
     tty: true
     stdin_open: true
 

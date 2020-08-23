@@ -19,13 +19,14 @@ export HISTCONTROL=ignoreboth
 export HISTSIZE=10000
 export TERM=xterm-color
 export EDITOR=nvim
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.devenv_bin:$HOME/.local/bin:$PATH
 
 
 ## env go
 # export GOROOT=$HOME/.go
 # export GOPATH=$HOME
-# export PATH=$GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
+export GOROOT=$HOME/.go
+export PATH=$GOROOT/bin:/usr/local/go/bin:$PATH
 
 ## env node
 export N_PREFIX=$HOME/.n
@@ -39,7 +40,7 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-# export PATH=$HOME/.sdkman/bin:$PATH
+export PATH=$HOME/.sdkman/bin:$PATH
 
 ## PATH
 export PATH=$HOME/.fzf/bin:$PATH

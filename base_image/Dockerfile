@@ -220,7 +220,7 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### termshark {{{
+### ttyd {{{
   && export TTYD_VERSION=1.6.1 \
   && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd_linux.x86_64 \
   && mv ttyd_linux.x86_64 ${DEVENVROOT}/bin/ttyd \
@@ -235,7 +235,12 @@ RUN apt-get update --fix-missing \
 
 ### lang {{{
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
-  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
+# }}}
+
+### move DEVENVROOT/bin to DEVENVROOT/.devenv_bin
+  && mv ${DEVENVROOT}/bin ${DEVENVROOT}/.devenv_bin \
+  && mkdir -p ${DEVENVROOT}/bin
 # }}}
 
 # 日本語の入力に必要
