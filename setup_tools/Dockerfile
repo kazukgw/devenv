@@ -1,4 +1,5 @@
-FROM kazukgw/devenv
+# FROM kazukgw/devenv
+FROM gcr.io/kazukgw-prvt/devenv
 
 ARG USER
 ARG USERID
