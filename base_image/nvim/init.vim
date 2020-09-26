@@ -137,6 +137,7 @@ Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
 " Plug 'ryanoasis/vim-devicons' " 見た目はよくなるがフォントインストールされてない環境でも使いたいので off
+Plug 'rhysd/git-messenger.vim'
 
 " coc.nvim
 " " Use release branch (Recommend)
@@ -536,6 +537,11 @@ nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
 " nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
 
 " }}}
+
+
+"""""" git-messenger.vim {{{
+let g:git_messenger_include_diff = "current"
+""" }}}
 
 
 """"""" vim-json {{{
