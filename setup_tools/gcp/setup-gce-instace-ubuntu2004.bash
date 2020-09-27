@@ -3,7 +3,7 @@
 # Cloud NAT や Firewall の設定(IAPの Range を Allow しておくなど) は事前に設定済みとする
 
 sudo apt update
-sudo apt intall git vim docker.io docker-compose -y
+sudo apt install git vim docker.io docker-compose -y
 
 sudo usermod -aG docker $(whoami)
 
