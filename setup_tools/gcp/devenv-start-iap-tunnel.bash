@@ -4,7 +4,6 @@ INSTANCE=devenv
 PROJECT=
 ZONE=
 
-gcloud compute start-iap-tunnel $INSTANCE 8080 \
+gcloud --project=$PROJECT compute start-iap-tunnel $INSTANCE 8080 \
   --local-host-port=localhost:8080 \
   --zone=$ZONE
-  --project=$PROJECDT
