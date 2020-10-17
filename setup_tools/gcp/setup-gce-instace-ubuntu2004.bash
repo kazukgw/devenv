@@ -3,6 +3,17 @@
 # Cloud NAT や Firewall の設定(IAPの Range を Allow しておくなど) は事前に設定済みとする
 
 echo ""
+echo "Step 0 ===>"
+echo ""
+
+echo ""
+echo "Change /etc/ssh/sshd_config avoid timeout."
+sleep 1
+echo ""
+
+sudo vim /etc/ssh/sshd_config
+
+echo ""
 echo "Step 1 ===>"
 echo ""
 
@@ -12,6 +23,7 @@ sudo apt install git vim docker.io docker-compose -y
 sudo usermod -aG docker $(whoami)
 
 echo "Please login again to activate the docker-group settings."
+sleep 3
 exit 0
 
 echo ""
@@ -43,3 +55,6 @@ vim $HOME/devenv/setup_tools/docker-compose.yaml
 sudo chown -R 501:501 $HOME/devenv
 
 (cd $HOME/devenv/setup_tools/ && docker-compose up -d)
+
+
+
