@@ -50,8 +50,11 @@ services:
       GITHUB_USER: developer
       GO111MODULE: "on"
       DOCKER_HOST: tcp://socat:1234
+      TERM: xterm-256color # 直接 tmux を起動する場合は必須
+      ENABLE_LEMONADE: true
 
-    command: /bin/bash
+    # command: /bin/bash
+    command: tmux new -A -s devenv
     # command: ttyd -p 8080 tmux new -A -s devenv
     tty: true
     stdin_open: true

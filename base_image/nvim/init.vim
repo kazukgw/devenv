@@ -144,13 +144,18 @@ Plug 'rhysd/git-messenger.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " coc.nvim extensions  " CocIntall でいれるので 以下は コメントアウト
-" Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-git', {'do': './install.sh'}
-" Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile' }
-" Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+" coc-lists
+" coc-git
+" coc-json
+" coc-python
+" coc-java
+" coc-go
+" coc-tsserver
+" coc-html
+" coc-css
+" coc-yaml
 "
+
 " Prettier
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
