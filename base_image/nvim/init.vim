@@ -91,20 +91,6 @@ let mapleader = "\<Space>"
 "}}}
 
 
-""""""" color scheme {{{
-augroup color_scheme
-  autocmd!
-  """ カラースキーム適用時に実行される
-  autocmd ColorScheme * highlight Visual term=reverse cterm=reverse
-augroup end
-
-let g:molokai_original=1
-colorscheme molokai
-
-" Skip initialization for vim-tiny or vim-small.
-if !1 | finish | endif
-"}}}
-
 " filetype の判定と typeによる plugin, indent を一旦 off
 " ファイル終端で ON にしている
 filetype off
@@ -112,6 +98,10 @@ filetype off
 
 """"""" plugins (vim-plug) {{{
 call plug#begin('~/.config/nvim/plugged')
+
+" Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'sainnhe/sonokai'
+Plug 'sheerun/vim-polyglot'
 
 Plug 'LeafCage/foldCC.vim'
 Plug 'Lokaltog/vim-easymotion'
@@ -178,6 +168,34 @@ call plug#end()
 """ }}}
 
 
+""""""" color scheme {{{
+" let g:molokai_original=1
+" colorscheme molokai
+
+" Important!!
+if has('termguicolors')
+  set termguicolors
+endif
+
+" The configuration options should be placed before `colorscheme sonokai`.
+" let g:sonokai_style = 'maia'
+" let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+let g:sonokai_diagnostic_line_highlight = 1
+
+colorscheme sonokai
+
+augroup color_scheme
+  autocmd!
+  """ カラースキーム適用時に実行される
+  autocmd ColorScheme * highlight Visual term=reverse cterm=reverse
+augroup end
+
+" Skip initialization for vim-tiny or vim-small.
+" if !1 | finish | endif
+"}}}
+
+
 """"""" NERDTree {{{
 noremap nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden = 1
@@ -215,6 +233,8 @@ let g:lightline = {
   \   'gitgutter': 'MyGitGutter',
   \ }
 \ }
+
+let g:lightline.colorscheme = 'sonokai'
 
 function! MyModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
