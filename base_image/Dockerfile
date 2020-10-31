@@ -258,6 +258,7 @@ COPY nvim ${DEVENVROOT}/.config/nvim
 COPY bashrc ${DEVENVROOT}/.bashrc
 COPY bash_prompt ${DEVENVROOT}/.bash_prompt
 COPY templates ${DEVENVROOT}/.templates
+COPY cheatsheets ${DEVENVROOT}/.cheatsheets
 COPY functions ${DEVENVROOT}/.functions
 COPY tmux.conf ${DEVENVROOT}/.tmux.conf
 COPY git-prompt ${DEVENVROOT}/.git-prompt
