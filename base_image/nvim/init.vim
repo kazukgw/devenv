@@ -41,7 +41,7 @@ set lazyredraw
 set foldmethod=indent
 set foldlevel=1
 set foldcolumn=0
-set colorcolumn=80
+set colorcolumn=120
 set norelativenumber
 set showtabline=2
 set completeopt-=preview
@@ -114,7 +114,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " coc-html
 " coc-css
 " coc-yaml
-"
+" coc-highlight
 
 " Prettier
 Plug 'prettier/vim-prettier', {
@@ -569,6 +569,10 @@ let g:python_host_prog = $PYENV_ROOT . '/shims/python'
 
 
 """"""" MySettings {{{
+hi ColorColumn guibg=Grey25
+hi CursorLine guibg=Grey25
+
+
 command! Vimrc :e ~/.config/nvim/init.vim
 command! Reload :source ~/.config/nvim/init.vim
 
@@ -651,6 +655,21 @@ function! TemplateListFile(A, L, P)
 endfunction
 
 command! -nargs=1 -complete=customlist,TemplateListFile Tmpl :r ~/.templates/<args>
+
+
+""" cheatsheet
+function! CheatSheetFile(A, L, P)
+  let filelist = expand($HOME."/.cheatsheets/".a:A."*")
+  if filelist =~ '\*'
+    return []
+  endif
+  let splitted = split(filelist, "\n")
+  let splitted_and_gsubed = map(splitted, "substitute(v:val, '.*\/\.templates\/', '', 'g')")
+  return splitted_and_gsubed
+endfunction
+
+command! -nargs=1 -complete=customlist,CheatSheetFile Cheat :r ~/.cheatsheets/<args>
+
 
 function! StripEscSeq(str)
   return substitute(a:str, '\v\e\[\?\d+[mhK]', '', 'g')
