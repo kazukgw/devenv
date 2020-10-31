@@ -139,8 +139,11 @@ call plug#end()
 
 
 """"""" color scheme {{{
-" let g:molokai_original=1
-" colorscheme molokai
+augroup color_scheme
+  autocmd!
+  """ カラースキーム適用時に実行される
+  autocmd ColorScheme * highlight Visual term=reverse cterm=reverse gui=reverse
+augroup end
 
 " Important!!
 if has('termguicolors')
@@ -154,12 +157,6 @@ let g:sonokai_disable_italic_comment = 1
 let g:sonokai_diagnostic_line_highlight = 1
 
 colorscheme sonokai
-
-augroup color_scheme
-  autocmd!
-  """ カラースキーム適用時に実行される
-  autocmd ColorScheme * highlight Visual term=reverse cterm=reverse
-augroup end
 
 " Skip initialization for vim-tiny or vim-small.
 " if !1 | finish | endif
