@@ -8,6 +8,8 @@
 * Tmpl
 * Cheat
 * Current
+* QuickRun
+  * ``:'<,'>QuickRun python`` で 選択箇所を python として実行できる
 
 ## coc.nvim の keybind
 ``````
