@@ -664,11 +664,11 @@ function! CheatSheetFile(A, L, P)
     return []
   endif
   let splitted = split(filelist, "\n")
-  let splitted_and_gsubed = map(splitted, "substitute(v:val, '.*\/\.templates\/', '', 'g')")
+  let splitted_and_gsubed = map(splitted, "substitute(v:val, '.*\/\.cheatsheets\/', '', 'g')")
   return splitted_and_gsubed
 endfunction
 
-command! -nargs=1 -complete=customlist,CheatSheetFile Cheat :r ~/.cheatsheets/<args>
+command! -nargs=1 -complete=customlist,CheatSheetFile Cheat :e ~/.cheatsheets/<args>
 
 
 function! StripEscSeq(str)
