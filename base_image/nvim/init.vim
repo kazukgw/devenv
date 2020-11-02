@@ -588,6 +588,10 @@ let g:python_host_prog = $PYENV_ROOT . '/shims/python'
 hi ColorColumn guibg=Grey25
 hi CursorLine guibg=Grey25
 
+hi DiffAdd ctermfg=235 ctermbg=110 guifg=#2c2e34 guibg=#76cce0
+hi DiffChange ctermfg=235 ctermbg=179 guifg=#2c2e34 guibg=#e7c664
+hi DiffDelete ctermfg=235 ctermbg=203 guifg=#fc5d7c guibg=#fc5d7c
+hi DiffText cterm=bold,underline gui=bold,underline ctermfg=235 ctermbg=250 guifg=#2c2e34 guibg=#e2e2e3
 
 command! Vimrc :e ~/.config/nvim/init.vim
 command! Reload :source ~/.config/nvim/init.vim
