@@ -510,6 +510,9 @@ command! Pj call fzf#run({
 
 """""""" ack.vim {{{
 let g:ackprg = "rg --column --line-number --hidden --ignore-case --no-heading -g '!{node_modules,.git}'"
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
+let g:ack_qhandler = "botright copen 30"
 """ }}}
 
 
