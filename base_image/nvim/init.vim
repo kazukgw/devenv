@@ -66,6 +66,11 @@ let mapleader = "\<Space>"
 filetype off
 
 
+"""""" vim-polyglot {{{
+let g:polyglot_disabled = ['md', 'markdown']
+""" }}}
+
+
 """"""" plugins (vim-plug) {{{
 call plug#begin('~/.config/nvim/plugged')
 
@@ -533,11 +538,6 @@ nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
 
 """""" git-messenger.vim {{{
 let g:git_messenger_include_diff = "current"
-""" }}}
-
-
-"""""" vim-polyglot {{{
-let g:polyglot_disabled = ['md', 'markdown']
 """ }}}
 
 
