@@ -13,6 +13,10 @@
 
 * ``:'<,'>GitGutterStageHunk``
 
+## regexp
+
+* very magic: `\v` をつける
+
 ## coc.nvim の keybind
 ``````
 " Remap keys for gotos

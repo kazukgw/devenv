@@ -536,6 +536,11 @@ let g:git_messenger_include_diff = "current"
 """ }}}
 
 
+"""""" vim-polyglot {{{
+let g:polyglot_disabled = ['md', 'markdown']
+""" }}}
+
+
 """"""" vim-json {{{
 let g:vim_json_syntax_conceal = 0
 augroup VimJson
