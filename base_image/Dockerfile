@@ -25,8 +25,6 @@ RUN apt-get update --fix-missing \
 ### apt pkgs {{{
   && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
     apt-transport-https \
-    zsh \
-    fzf \
     bc \
     build-essential\
     bzip2 \
@@ -107,6 +105,12 @@ RUN apt-get update --fix-missing \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
   && mv ${DEVENVROOT}/go  ${DEVENVROOT}/.go \
   && rm go${GOVERSION}.linux-amd64.tar.gz \
+# }}}
+
+
+### fzf {{{
+  && git clone --depth 1 https://github.com/junegunn/fzf.git ${DEVENVROOT}/.fzf \
+  && ${DEVENVROOT}/.fzf/install --bin \
 # }}}
 
 
