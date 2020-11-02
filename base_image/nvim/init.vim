@@ -502,6 +502,13 @@ let g:fzf_colors = {
 \ 'border':  ['fg', 'Comment']
 \ }
 
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   "rg --column --line-number --hidden --no-heading --color=always --smart-case -g '!{node_modules,.git}' -- ".shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+nnoremap <Leader>a :Rg<Space>
+
 function! s:pjopen(e)
   exec 'e ' . $GOPATH. '/src/' .a:e
 endfunction
@@ -515,7 +522,7 @@ command! Pj call fzf#run({
 """""""" ack.vim {{{
 let g:ackprg = "rg --column --line-number --hidden --ignore-case --no-heading -g '!{node_modules,.git}'"
 cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
+" nnoremap <Leader>a :Ack!<Space>
 let g:ack_qhandler = "botright copen 30"
 """ }}}
 
