@@ -498,6 +498,10 @@ nnoremap <Leader>b :Buffers<CR>
 
 nnoremap <Leader>s :Lines<CR>
 
+let g:fzf_colors = {
+\ 'border':  ['fg', 'Comment']
+\ }
+
 function! s:pjopen(e)
   exec 'e ' . $GOPATH. '/src/' .a:e
 endfunction
