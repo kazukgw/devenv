@@ -185,7 +185,7 @@ let g:lightline = {
   \ 'active': {
   \   'left': [
   \     ['mode', 'paste'],
-  \     ['fugitive', 'gitgutter', 'filename'],
+  \     ['fugitive', 'gitversion', 'gitgutter', 'filename'],
   \   ],
   \   'right': [
   \     ['percent'],
@@ -200,6 +200,7 @@ let g:lightline = {
   \   'fileformat': 'MyFileformat',
   \   'filetype': 'MyFiletype',
   \   'fileencoding': 'MyFileencoding',
+  \   'gitversion': 'MyGitversion',
   \   'mode': 'MyMode',
   \   'charcode': 'MyCharCode',
   \   'gitgutter': 'MyGitGutter',
@@ -307,6 +308,22 @@ function! MyCharCode()
   return "'". char ."' ". nr
 endfunction
 
+" https://github.com/itchyny/lightline.vim/issues/172
+function! MyGitversion()
+  let fullname = expand('%')
+  let gitversion = ''
+  if fullname =~? 'fugitive://.*/\.git//0/.*'
+      let gitversion = 'git index'
+  elseif fullname =~? 'fugitive://.*/\.git//2/.*'
+      let gitversion = 'git target'
+  elseif fullname =~? 'fugitive://.*/\.git//3/.*'
+      let gitversion = 'git merge'
+  elseif &diff == 1
+      let gitversion = 'working copy'
+  endif
+  return gitversion
+endfunction
+
 """ }}}
 
 
@@ -326,7 +343,7 @@ let g:indentLine_char = '¦'
 """"""" vim-gitgutter {{{
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '~'
-let g:gitgutter_sign_removed = '✘'
+let g:gitgutter_sign_removed = 'x'
 let g:gitgutter_async = 1
 let g:gitgutter_map_keys = 0
 let g:gitgutter_preview_win_floating = 1
@@ -335,6 +352,57 @@ highlight SignColumn ctermbg=237
 highlight GitGutterAdd    ctermfg=2 ctermbg=237
 highlight GitGutterChange ctermfg=3 ctermbg=237
 highlight GitGutterDelete ctermfg=1 ctermbg=237
+
+command! GGQuickFix :GitGutterQuickFix | cw
+command! GGSHunk :GitGutterStageHunk
+command! GGUHunk :GitGutterUndoHunk
+
+" function! GGGetLocation()
+"   let cmd = g:gitgutter_git_executable.' '.g:gitgutter_git_args.' rev-parse --show-cdup'
+"   let path_to_repo = get(systemlist(cmd), 0, '')
+"   if !empty(path_to_repo) && path_to_repo[-1:] != '/'
+"     let path_to_repo .= '/'
+"   endif
+"
+"   let locations = []
+"   let cmd = g:gitgutter_git_executable.' '.g:gitgutter_git_args.' --no-pager'.
+"         \ ' diff --no-ext-diff --no-color -U0'.
+"         \ ' --src-prefix=a/'.path_to_repo.' --dst-prefix=b/'.path_to_repo.' '.
+"         \ g:gitgutter_diff_args. ' '. g:gitgutter_diff_base
+"   let diff = systemlist(cmd)
+"   let lnum = 0
+"   for line in diff
+"     if line =~ '^diff --git [^"]'
+"       let paths = line[11:]
+"       let mid = (len(paths) - 1) / 2
+"       let [fnamel, fnamer] = [paths[:mid-1], paths[mid+1:]]
+"       let fname = fnamel ==# fnamer ? fnamel : fnamel[2:]
+"     elseif line =~ '^diff --git "'
+"       let [_, fnamel, _, fnamer] = split(line, '"')
+"       let fname = fnamel ==# fnamer ? fnamel : fnamel[2:]
+"     elseif line =~ '^@@'
+"       let lnum = matchlist(line, '+\(\d\+\)')[1]
+"     elseif lnum > 0
+"       call add(locations, fname .':'. lnum .':'. line)
+"       let lnum = 0
+"     endif
+"   endfor
+"   return locations
+" endfunction
+"
+" function! s:GGOpenFile(e)
+"   let words = split(a:e, ':')
+"   exec 'e +' . words[1] . ' ' .words[0]
+" endfunction
+"
+" let s:GGHunksPreviewCommand = 'sh -lc "cat -n {1} | grep --color=always -B10 -A100 -E '.  "'^ *{2}.*'" . '"'
+" command! GGHunks call fzf#run(fzf#wrap({
+"      \ 'source': GGGetLocation(),
+"      \ 'sink': function('<sid>GGOpenFile'),
+"      \ 'options': ['--ansi', '-d:', '--preview', s:GGHunksPreviewCommand]
+"      \ }))
+
+
 """ }}}
 
 
@@ -546,6 +614,18 @@ nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
 " FZF の keybind を優先したいのでコメントアウト
 " Search workLeader symbols
 " nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
+"
+nnoremap <silent> gk :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 
 " }}}
 
