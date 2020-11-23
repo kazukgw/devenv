@@ -63,6 +63,7 @@ RUN apt-get update --fix-missing \
     mysql-client \
     neovim \
     netcat \
+    ngrep \
     nkf \
     python3 \
     python3-dev \
