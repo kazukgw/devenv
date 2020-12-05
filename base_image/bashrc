@@ -15,11 +15,17 @@ EOS
 fi
 
 ## variables
-export HISTCONTROL=ignoreboth
-export HISTSIZE=10000
 export TERM=xterm-color
 export EDITOR=nvim
 export PATH=$HOME/.devenv_bin:$HOME/.local/bin:$PATH
+
+## history
+# https://askubuntu.com/questions/339546/how-do-i-see-the-history-of-the-commands-i-have-run-in-tmux
+export HISTCONTROL=ignoreboth
+export HISTSIZE=10000
+export HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 
 ## env go
