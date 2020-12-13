@@ -103,6 +103,8 @@ Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
 " Plug 'ryanoasis/vim-devicons' " 見た目はよくなるがフォントインストールされてない環境でも使いたいので off
 Plug 'rhysd/git-messenger.vim'
+Plug 'pechorin/any-jump.vim'
+" Plug 'Xuyuanp/scrollbar.nvim' " nvim 0.5+ で利用できる
 
 " coc.nvim
 " " Use release branch (Recommend)
