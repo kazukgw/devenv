@@ -47,6 +47,7 @@ set showtabline=2
 set completeopt-=preview
 set modeline
 set modelines=4
+set inccommand=nosplit
 set viminfo=!,\'100,\"5000,s50,h,n~/.config/nvim/viminfo
 set sh=bash
 
