@@ -547,6 +547,7 @@ let g:asyncomplete_popup_delay = 50
 "   nnoremap <plug>(lsp-status)
 "   nnoremap <plug>(lsp-signature-help)
 
+nmap <silent> ga <Plug>(lsp-code-action)
 nmap <silent> gd <Plug>(lsp-definition)
 nmap <silent> gy <Plug>(lsp-type-definition)
 nmap <silent> gi <Plug>(lsp-implementation)
