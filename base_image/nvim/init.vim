@@ -551,8 +551,8 @@ nmap <silent> gd <Plug>(lsp-definition)
 nmap <silent> gy <Plug>(lsp-type-definition)
 nmap <silent> gi <Plug>(lsp-implementation)
 nmap <silent> gr <Plug>(lsp-references)
-nmap <silent> gdn <Plug>(lsp-next-error)
-nmap <silent> gdp <Plug>(lsp-previous-error)
+nmap <silent> gn <Plug>(lsp-next-diagnostic)
+nmap <silent> gp <Plug>(lsp-previous-diagnostic)
 
 " }}}
 
