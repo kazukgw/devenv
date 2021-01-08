@@ -88,6 +88,7 @@ RUN apt-get update --fix-missing \
     xz-utils\
     zip \
     zlib1g-dev \
+    && apt install -o Dpkg::Options::="--force-overwrite" bat \
 # }}}
 
 

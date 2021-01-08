@@ -75,13 +75,11 @@ let g:polyglot_disabled = ['md', 'markdown']
 """"""" plugins (vim-plug) {{{
 call plug#begin('~/.config/nvim/plugged')
 
-" Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'sainnhe/sonokai'
 Plug 'sheerun/vim-polyglot'
 
 Plug 'LeafCage/foldCC.vim'
 Plug 'Lokaltog/vim-easymotion'
-" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins' }
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'elzr/vim-json'
@@ -90,7 +88,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-submode'
-Plug 'majutsushi/tagbar'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
@@ -102,27 +99,17 @@ Plug 'tyru/caw.vim'
 Plug 'kana/vim-fakeclip'
 Plug 'junegunn/gv.vim'
 Plug 'kassio/neoterm'
-" Plug 'ryanoasis/vim-devicons' " 見た目はよくなるがフォントインストールされてない環境でも使いたいので off
 Plug 'rhysd/git-messenger.vim'
 Plug 'pechorin/any-jump.vim'
 " Plug 'Xuyuanp/scrollbar.nvim' " nvim 0.5+ で利用できる
 
-" coc.nvim
-" " Use release branch (Recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
-" coc.nvim extensions  " CocIntall でいれるので 以下は コメントアウト
-" coc-lists
-" coc-git
-" coc-json
-" coc-python
-" coc-java
-" coc-go
-" coc-tsserver
-" coc-html
-" coc-css
-" coc-yaml
-" coc-highlight
+Plug 'liuchengxu/vista.vim'
 
 " Prettier
 Plug 'prettier/vim-prettier', {
@@ -410,8 +397,8 @@ command! GGUHunk :GitGutterUndoHunk
 
 
 """"""" NERDCommenter {{{
-nmap ,, <Plug>(caw:i:toggle)
-vmap ,, <Plug>(caw:i:toggle)
+nmap ,, <Plug>(caw:hatpos:toggle)
+vmap ,, <Plug>(caw:hatpos:toggle)
 """ }}}
 
 
@@ -434,96 +421,6 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 " https://github.com/mattn/vim-gist
 let g:gist_show_privates = 1
 let g:gist_post_privates = 1
-""" }}}
-
-
-""""""" tagbar {{{
-noremap tb :TagbarToggle <CR>
-let g:tagbar_ctags_bin='/usr/bin/ctags'
-
-" https://github.com/majutsushi/tagbar/wiki#typescript
-"   npm install --global git+https://github.com/Perlence/tstags.git
-" しておく必要がある
-let g:tagbar_type_typescript = {
-  \ 'ctagsbin' : 'tstags',
-  \ 'ctagsargs' : '-f-',
-  \ 'kinds': [
-    \ 'e:enums:0:1',
-    \ 'f:function:0:1',
-    \ 't:typealias:0:1',
-    \ 'M:Module:0:1',
-    \ 'I:import:0:1',
-    \ 'i:interface:0:1',
-    \ 'C:class:0:1',
-    \ 'm:method:0:1',
-    \ 'p:property:0:1',
-    \ 'v:variable:0:1',
-    \ 'c:const:0:1',
-  \ ],
-  \ 'sort' : 0
-\ }
-
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
-
-let g:tagbar_type_markdown = {
-    \ 'ctagstype' : 'markdown',
-    \ 'ctagsbin' : '/Users/kazukgw/Dropbox/kazukgw/bin/markdown2ctags.py',
-    \ 'ctagsargs' : '-f - --sort=yes',
-    \ 'kinds' : [
-      \ 's:sections',
-      \ 'l:links',
-      \ 'i:images'
-    \ ],
-    \ "sro" : '|',
-    \ 'kind2scope' : {
-        \ 's' : 'section',
-    \ },
-    \ "sort" : 0,
-  \ }
-
-let g:markdown_fenced_languages = [
-\  'sql',
-\  'css',
-\  'java',
-\  'cpp',
-\  'c',
-\  'erb=eruby',
-\  'javascript',
-\  'js=javascript',
-\  'json=javascript',
-\  'ruby',
-\  'sass',
-\  'xml',
-\  'go',
-\  'objc',
-\  'python',
-\]
 """ }}}
 
 
@@ -598,37 +495,78 @@ let g:ack_qhandler = "botright copen 30"
 """ }}}
 
 
-"""""" coc.nvim {{{
+"""""" vim-lsp {{{
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
-" Show commands
-nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
-
-" FZF の keybind を優先したいのでコメントアウト
-" Search workLeader symbols
-" nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:asyncomplete_popup_delay = 50
+" set foldmethod=expr
+"   \ foldexpr=lsp#ui#vim#folding#foldexpr()
+"   \ foldtext=lsp#ui#vim#folding#foldtext()
 "
-nnoremap <silent> gk :call <SID>show_documentation()<CR>
+"
+" Available plug mappings are following:
+"
+"   nnoremap <plug>(lsp-code-action)
+"   nnoremap <plug>(lsp-code-lens)
+"   nnoremap <plug>(lsp-declaration)
+"   nnoremap <plug>(lsp-peek-declaration)
+"   nnoremap <plug>(lsp-definition)
+"   nnoremap <plug>(lsp-peek-definition)
+"   nnoremap <plug>(lsp-document-symbol)
+"   nnoremap <plug>(lsp-document-diagnostics)
+"   nnoremap <plug>(lsp-hover)
+"   nnoremap <plug>(lsp-next-diagnostic)
+"   nnoremap <plug>(lsp-next-diagnostic-nowrap)
+"   nnoremap <plug>(lsp-next-error)
+"   nnoremap <plug>(lsp-next-error-nowrap)
+"   nnoremap <plug>(lsp-next-reference)
+"   nnoremap <plug>(lsp-next-warning)
+"   nnoremap <plug>(lsp-next-warning-nowrap)
+"   nnoremap <plug>(lsp-preview-close)
+"   nnoremap <plug>(lsp-preview-focus)
+"   nnoremap <plug>(lsp-previous-diagnostic)
+"   nnoremap <plug>(lsp-previous-diagnostic-nowrap)
+"   nnoremap <plug>(lsp-previous-error)
+"   nnoremap <plug>(lsp-previous-error-nowrap)
+"   nnoremap <plug>(lsp-previous-reference)
+"   nnoremap <plug>(lsp-previous-warning)
+"   nnoremap <plug>(lsp-previous-warning-nowrap)
+"   nnoremap <plug>(lsp-references)
+"   nnoremap <plug>(lsp-rename)
+"   nnoremap <plug>(lsp-workspace-symbol)
+"   nnoremap <plug>(lsp-document-format)
+"   vnoremap <plug>(lsp-document-format)
+"   nnoremap <plug>(lsp-document-range-format)
+"   xnoremap <plug>(lsp-document-range-format)
+"   nnoremap <plug>(lsp-implementation)
+"   nnoremap <plug>(lsp-peek-implementation)
+"   nnoremap <plug>(lsp-type-definition)
+"   nnoremap <plug>(lsp-peek-type-definition)
+"   nnoremap <plug>(lsp-type-hierarchy)
+"   nnoremap <plug>(lsp-status)
+"   nnoremap <plug>(lsp-signature-help)
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
+nmap <silent> gd <Plug>(lsp-definition)
+nmap <silent> gy <Plug>(lsp-type-definition)
+nmap <silent> gi <Plug>(lsp-implementation)
+nmap <silent> gr <Plug>(lsp-references)
+nmap <silent> gdn <Plug>(lsp-next-error)
+nmap <silent> gdp <Plug>(lsp-previous-error)
+
+" }}}
+
+
+"""""" vista {{{
+
+let g:vista_fzf_preview = ['right:50%']
+let g:vista_icon_indent = ["▸ ", ""]
+let g:vista#renderer#enable_icon = 0
+let g:vista_sidebar_width = 45
+let g:vista_default_executive = "vim_lsp"
+
+nnoremap <silent> tb :Vista <cr>
+nnoremap <silent> <Leader>s :Vista finder fzf:vim_lsp<cr>
 
 " }}}
 
@@ -673,9 +611,9 @@ let g:python_host_prog = $PYENV_ROOT . '/shims/python'
 hi ColorColumn guibg=Grey25
 hi CursorLine guibg=Grey25
 
-hi DiffAdd ctermfg=235 ctermbg=110 guifg=#2c2e34 guibg=#76cce0
-hi DiffChange ctermfg=235 ctermbg=179 guifg=#2c2e34 guibg=#e7c664
-hi DiffDelete ctermfg=235 ctermbg=203 guifg=#fc5d7c guibg=#fc5d7c
+hi DiffAdd ctermfg=235 ctermbg=110 guifg=#2c2e34 guibg=#5ba0b0
+hi DiffChange ctermfg=235 ctermbg=179 guifg=#2c2e34 guibg=#c7ab58
+hi DiffDelete ctermfg=235 ctermbg=203 guifg=#fc5d7c guibg=#d4506b
 hi DiffText cterm=bold,underline gui=bold,underline ctermfg=235 ctermbg=250 guifg=#2c2e34 guibg=#e2e2e3
 
 command! Vimrc :e ~/.config/nvim/init.vim
@@ -746,6 +684,7 @@ command! -nargs=+ -bang -complete=file Rename let pbnr=fnamemodify(bufname('%'),
 augroup MyOthers
   autocmd!
   autocmd BufWritePre * :%s/\s\+$//ge
+  autocmd BufWritePre * LspDocumentFormatSync
 augroup END
 
 """ template
