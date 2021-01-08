@@ -566,7 +566,7 @@ let g:vista_sidebar_width = 45
 let g:vista_default_executive = "vim_lsp"
 
 nnoremap <silent> tb :Vista <cr>
-nnoremap <silent> <Leader>s :Vista finder fzf:vim_lsp<cr>
+nnoremap <silent> <Leader>S :Vista finder fzf:vim_lsp<cr>
 
 " }}}
 
