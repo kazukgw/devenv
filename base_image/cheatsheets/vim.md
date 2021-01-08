@@ -17,26 +17,21 @@
 
 * very magic: `\v` をつける
 
-## coc.nvim の keybind
-``````
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+## vim-lsp keybind
 
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
-" Show commands
-nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
-``````
+```
+nmap <silent> gd <Plug>(lsp-definition)
+nmap <silent> gy <Plug>(lsp-type-definition)
+nmap <silent> gi <Plug>(lsp-implementation)
+nmap <silent> gr <Plug>(lsp-references)
+nmap <silent> gdn <Plug>(lsp-next-error)
+nmap <silent> gdp <Plug>(lsp-previous-error)
+
+```
 
 ## fzf の keybind
 
-``````
+```
 let g:fzf_files_options =
   \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 
@@ -47,7 +42,7 @@ nnoremap <Leader>r :History<CR>
 nnoremap <Leader>b :Buffers<CR>
 
 nnoremap <Leader>s :Lines<CR>
-``````
+```
 
 ## vim script 基礎
 - https://mattn.kaoriya.net/software/vim/20111202085236.htm
