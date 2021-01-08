@@ -554,6 +554,7 @@ nmap <silent> gi <Plug>(lsp-implementation)
 nmap <silent> gr <Plug>(lsp-references)
 nmap <silent> gn <Plug>(lsp-next-diagnostic)
 nmap <silent> gp <Plug>(lsp-previous-diagnostic)
+nmap <silent> gR <Plug>(lsp-rename)
 
 " }}}
 
