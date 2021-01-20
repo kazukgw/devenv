@@ -1,0 +1,5 @@
+#!/bin/bash
+pid=$(sudo bash -c "lsof -i:2489" | tail -n 1 ~ awk {'print $2'})
+if [ -n "$pid" ]; then
+  kill $pid
+fi
