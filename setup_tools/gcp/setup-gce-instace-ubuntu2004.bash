@@ -7,7 +7,9 @@ echo "Step 0 ===>"
 echo ""
 
 echo ""
-echo "Change /etc/ssh/sshd_config avoid timeout."
+echo "Change /etc/ssh/sshd_config"
+echo "* avoid timeout"
+echo "* GetewayPorts yes"
 sleep 1
 echo ""
 

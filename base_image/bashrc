@@ -109,7 +109,7 @@ alias vi=nvim
 alias v=nvim
 alias vimrc='nvim $HOME/.config/nvim/init.vim'
 
-if [[ -n $ENABLE_LEMONADE ]]; then
+if [[ -n "$DISABLE_LEMONADE" ]]; then
   if which lemonade >> /dev/null ; then
     mv $(which lemonade) $(which lemonade)-org
   fi
@@ -199,10 +199,6 @@ bind -m vi-insert '"\ec": "\C-z\ec\C-z"'
 
 fi
 
-## devenv_profile
-[ -f "~/.config/devenv_profile" ] && source ~/.config/devenv_profile
-
 ## extenstion
 [ -f ~/.bashrc_extension ] && source $HOME/.bashrc_extension
-
 

@@ -91,7 +91,7 @@ Plug 'kana/vim-submode'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'scrooloose/nerdtree'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -464,7 +464,7 @@ nnoremap <Leader>r :History<CR>
 
 nnoremap <Leader>b :Buffers<CR>
 
-nnoremap <Leader>s :Lines<CR>
+nnoremap <Leader>S :Lines<CR>
 
 let g:fzf_colors = {
 \ 'border':  ['fg', 'Comment']
@@ -568,7 +568,7 @@ let g:vista_sidebar_width = 45
 let g:vista_default_executive = "vim_lsp"
 
 nnoremap <silent> tb :Vista <cr>
-nnoremap <silent> <Leader>S :Vista finder fzf:vim_lsp<cr>
+nnoremap <silent> <Leader>s :Vista finder fzf:vim_lsp<cr>
 
 " }}}
 

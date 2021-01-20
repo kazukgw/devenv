@@ -1,5 +1,13 @@
 version: '3'
 
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24
+
 services:
   devenv:
     image: devenv
@@ -32,8 +40,8 @@ services:
       - /Users/developer/devenv/.gsutil:/Users/developer/devenv/.gsutil
       # .gcloud
       - /Users/developer/devenv/.config/gcloud:/Users/developer/devenv/.config/gcloud
-      # devenv_profile
-      - /Users/developer/devenv/.config/devenv_profile:/Users/developer/devenv/.config/devenv_profile
+      # bashrc_extension
+      - /Users/developer/devenv/.config/devenv_profile:/Users/developer/devenv/.bashrc_extension
       # lemonade config
       - /Users/developer/devenv/.config/lemonade.toml:/Users/developer/devenv/.config/lemonade.toml
 
