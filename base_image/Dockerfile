@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ENV DEVENV_VERSION=2.2.0
+ENV DEVENV_VERSION=2.3.0
 
 ENV DEVENVROOT=/home/devenv
 
@@ -130,6 +130,15 @@ RUN apt-get update --fix-missing \
   && chmod +x gdrive \
   && mv gdrive ${DEVENVROOT}/bin/ \
 # }}}
+
+
+### rclone {{{
+  && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
+  && unzip rclone-current-linux-amd64.zip \
+  && cd rclone-*-linux-amd64 \
+  && chmod +x rclone \
+  && cp rclone ${DEVENVROOT}/bin/ \
+## }}}
 
 
 ### google cloud sdk {{{

@@ -501,8 +501,8 @@ let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:asyncomplete_popup_delay = 50
 " set foldmethod=expr
-"   \ foldexpr=lsp#ui#vim#folding#foldexpr()
-"   \ foldtext=lsp#ui#vim#folding#foldtext()
+"  \ foldexpr=lsp#ui#vim#folding#foldexpr()
+"  \ foldtext=lsp#ui#vim#folding#foldtext()
 "
 "
 " Available plug mappings are following:
