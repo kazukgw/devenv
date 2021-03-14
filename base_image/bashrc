@@ -48,6 +48,9 @@ fi
 
 export PATH=$HOME/.sdkman/bin:$PATH
 
+## tfenv
+export PATH=$HOME/.tfenv/bin:$PATH
+
 ## PATH
 export PATH=$HOME/.fzf/bin:$PATH
 export PATH=$HOME/.google-cloud-sdk/bin:$PATH
