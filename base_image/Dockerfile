@@ -190,7 +190,7 @@ RUN apt-get update --fix-missing \
   && go get -u github.com/x-motemen/ghq \
   && go get -u github.com/itchyny/mmv/cmd/mmv \
   && go get -u github.com/mattn/efm-langserver \
-  && go get -u github.com/derekparker/delve/cmd/dlv \
+  && go get -u github.com/go-delve/delve \
   && go get -u github.com/mholt/archiver/cmd/archiver \
 # }}}
 
