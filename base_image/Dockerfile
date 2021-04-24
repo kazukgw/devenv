@@ -61,7 +61,6 @@ RUN apt-get update --fix-missing \
     make \
     man \
     mysql-client \
-    neovim \
     netcat \
     ngrep \
     nkf \
@@ -159,11 +158,18 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-# ### neovim {{{
-#   && add-apt-repository -y ppa:neovim-ppa/stable \
-#   && apt-get update \
-#   && apt-get install neovim -y \
-# # }}}
+### neovim {{{
+  && add-apt-repository -y ppa:neovim-ppa/unstable \
+  && apt-get update \
+  && apt-get install neovim -y \
+# }}}
+
+
+### terraform-ls {{{
+  && curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - \
+  && sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+  && sudo apt-get update && sudo apt-get install terraform-ls \
+# }}}
 
 
 ### apt clean {{{
@@ -181,6 +187,11 @@ RUN apt-get update --fix-missing \
   && mkdir -p /usr/local/go/bin \
   && mkdir -p /usr/local/go/pkg \
   && export GOPATH=/usr/local/go \
+  && go get -u github.com/motemen/ghq \
+  && go get -u github.com/itchyny/mmv/cmd/mmv \
+  && go get -u github.com/mattn/efm-langserver \
+  && go get -u github.com/derekparker/delve/cmd/dlv \
+  && go get -u github.com/mholt/archiver/cmd/archiver \
 # }}}
 
 
@@ -189,7 +200,16 @@ RUN apt-get update --fix-missing \
   && curl -L https://git.io/n-install | bash -s -- -y \
   && chmod +x ${DEVENVROOT}/.n/bin/n \
   && export PATH=${DEVENVROOT}/.n/bin:$PATH \
-  && ${DEVENVROOT}/.n/bin/npm install --global eslint yarn \
+  && ${DEVENVROOT}/.n/bin/npm install --global \
+  eslint \
+  yarn \
+  prettier \
+  vim-language-server \
+  typescript-language-server \
+  yaml-language-server \
+  bash-language-server \
+  vscode-html-languageserver-bin \
+  vscode-css-languageserver-bin \
 # }}}
 
 
@@ -208,6 +228,7 @@ RUN apt-get update --fix-missing \
     flake8 \
     autopep8 \
     neovim \
+    black \
 # }}}
 
 
@@ -260,6 +281,7 @@ RUN apt-get update --fix-missing \
   # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
 # }}}
+
 
 ### move DEVENVROOT/bin to DEVENVROOT/.devenv_bin {{{
   && mv ${DEVENVROOT}/bin ${DEVENVROOT}/.devenv_bin \

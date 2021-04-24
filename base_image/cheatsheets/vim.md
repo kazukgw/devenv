@@ -17,32 +17,6 @@
 
 * very magic: `\v` をつける
 
-## vim-lsp keybind
-
-```
-nmap <silent> gd <Plug>(lsp-definition)
-nmap <silent> gy <Plug>(lsp-type-definition)
-nmap <silent> gi <Plug>(lsp-implementation)
-nmap <silent> gr <Plug>(lsp-references)
-nmap <silent> gdn <Plug>(lsp-next-error)
-nmap <silent> gdp <Plug>(lsp-previous-error)
-
-```
-
-## fzf の keybind
-
-```
-let g:fzf_files_options =
-  \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
-
-nnoremap <C-p> :Files<CR>
-
-nnoremap <Leader>r :History<CR>
-
-nnoremap <Leader>b :Buffers<CR>
-
-nnoremap <Leader>s :Lines<CR>
-```
 
 ## vim script 基礎
 - https://mattn.kaoriya.net/software/vim/20111202085236.htm
