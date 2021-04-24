@@ -187,7 +187,7 @@ RUN apt-get update --fix-missing \
   && mkdir -p /usr/local/go/bin \
   && mkdir -p /usr/local/go/pkg \
   && export GOPATH=/usr/local/go \
-  && go get -u github.com/motemen/ghq \
+  && go get -u github.com/x-motemen/ghq \
   && go get -u github.com/itchyny/mmv/cmd/mmv \
   && go get -u github.com/mattn/efm-langserver \
   && go get -u github.com/derekparker/delve/cmd/dlv \
