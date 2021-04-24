@@ -134,10 +134,12 @@ RUN apt-get update --fix-missing \
 ### rclone {{{
   && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
   && unzip rclone-current-linux-amd64.zip \
-  && cd rclone-*-linux-amd64 \
-  && chmod +x rclone \
-  && cp rclone ${DEVENVROOT}/bin/ \
-## }}}
+  && ( \
+    cd rclone-*-linux-amd64 \
+    && chmod +x rclone \
+    && cp rclone ${DEVENVROOT}/bin/ \
+  ) \
+# }}}
 
 
 ### google cloud sdk {{{
@@ -262,6 +264,12 @@ RUN apt-get update --fix-missing \
   && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd_linux.x86_64 \
   && mv ttyd_linux.x86_64 ${DEVENVROOT}/bin/ttyd \
   && chmod +x ${DEVENVROOT}/bin/ttyd \
+# }}}
+
+
+### git-now {{{
+  && git clone --recursive git://github.com/iwata/git-now.git \
+  && (cd git-now && make install) \
 # }}}
 
 
