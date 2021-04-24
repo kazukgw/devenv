@@ -191,7 +191,7 @@ RUN apt-get update --fix-missing \
   && go get -u github.com/itchyny/mmv/cmd/mmv \
   && go get -u github.com/mattn/efm-langserver \
   && go get -u github.com/go-delve/delve \
-  && go get -u github.com/mholt/archiver/cmd/archiver \
+  && go get -u go get github.com/mholt/archiver/cmd/arc \
 # }}}
 
 
