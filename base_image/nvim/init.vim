@@ -803,6 +803,10 @@ command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
 
 command! Keymaps :lua require('telescope.builtin').keymaps{}
 
+command! Ls :lua require('telescope.builtin').buffers()
+
+command! BufHist :lua require('telescope.builtin').git_bcommits()
+
 """""""" }}}
 
 """""""" Auto Command {{{

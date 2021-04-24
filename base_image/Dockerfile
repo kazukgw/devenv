@@ -262,7 +262,7 @@ RUN apt-get update --fix-missing \
 ### ttyd {{{
   && export TTYD_VERSION=1.6.3 \
   && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
-  && mv ttyd_linux.x86_64 ${DEVENVROOT}/bin/ttyd \
+  && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
   && chmod +x ${DEVENVROOT}/bin/ttyd \
 # }}}
 
