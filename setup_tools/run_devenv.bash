@@ -8,9 +8,13 @@ echo ""
 echo "==> status: $status"
 
 if [[ $status =~ ^running.* ]]; then
-  echo "==> docker attach $DEVENV_CONTAINER_NAME"
-  echo ""
-  docker attach $DEVENV_CONTAINER_NAME
+  if [[ $1 == "new-session" ]]; then
+    echo "==> docker exec $DEVENV_CONTAINER_NAME"
+    docker exec -it $DEVENV_CONTAINER_NAME tmux new -s devenv-$(date +%s)
+  else
+    echo "==> docker attach $DEVENV_CONTAINER_NAME"
+    docker attach $DEVENV_CONTAINER_NAME
+  fi
 else
   echo ""
   echo "==> run new devenv container"
