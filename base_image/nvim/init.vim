@@ -49,6 +49,7 @@ set showtabline=2
 " set completeopt-=preview
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
+set scl=auto:5
 
 set modeline
 set modelines=4
@@ -97,6 +98,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kassio/neoterm'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'ray-x/lsp_signature.nvim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -192,7 +194,7 @@ local on_attach = function (client, bufnr)
   keymap('n', 'gR', "<cmd>lua require('lspsaga.rename').rename()<CR>", opt)
   keymap('n', 'gk', "<cmd>lua require('lspsaga.diagnostic').show_cursor_diagnostics()<CR>", opt)
   keymap('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", opt)
-  keymap('n', 'gs', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", opt)
+  keymap('n', 'gs', "<cmd>lua require('telescope.builtin').treesitter()<CR>", opt)
   keymap('n', 'ga', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", opt)
   keymap('n', 'ga', ":<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>", opt)
 
@@ -207,6 +209,7 @@ local on_attach = function (client, bufnr)
 
   require('completion').on_attach(client)
   require('illuminate').on_attach(client)
+  require('lsp_signature').on_attach()
 end
 
 local lspconfig = require('lspconfig')
@@ -286,7 +289,6 @@ EOF
 """""""" }}}
 
 """""""" Plugin Settings {{{
-" LSP の設定は Keymap のセクションで設定する
 
 """" nvim-treesitter {{{
 
@@ -623,69 +625,6 @@ cnoreabbrev Ack Ack!
 " nnoremap <Leader>a :Ack!<Space>
 let g:ack_qhandler = "botright copen 30"
 """ }}}
-"""" vim-lsp {{{
-
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-let g:asyncomplete_popup_delay = 50
-" set foldmethod=expr
-"   \ foldexpr=lsp#ui#vim#folding#foldexpr()
-"   \ foldtext=lsp#ui#vim#folding#foldtext()
-"
-"
-" Available plug mappings are following:
-"
-"   nnoremap <plug>(lsp-code-action)
-"   nnoremap <plug>(lsp-code-lens)
-"   nnoremap <plug>(lsp-declaration)
-"   nnoremap <plug>(lsp-peek-declaration)
-"   nnoremap <plug>(lsp-definition)
-"   nnoremap <plug>(lsp-peek-definition)
-"   nnoremap <plug>(lsp-document-symbol)
-"   nnoremap <plug>(lsp-document-diagnostics)
-"   nnoremap <plug>(lsp-hover)
-"   nnoremap <plug>(lsp-next-diagnostic)
-"   nnoremap <plug>(lsp-next-diagnostic-nowrap)
-"   nnoremap <plug>(lsp-next-error)
-"   nnoremap <plug>(lsp-next-error-nowrap)
-"   nnoremap <plug>(lsp-next-reference)
-"   nnoremap <plug>(lsp-next-warning)
-"   nnoremap <plug>(lsp-next-warning-nowrap)
-"   nnoremap <plug>(lsp-preview-close)
-"   nnoremap <plug>(lsp-preview-focus)
-"   nnoremap <plug>(lsp-previous-diagnostic)
-"   nnoremap <plug>(lsp-previous-diagnostic-nowrap)
-"   nnoremap <plug>(lsp-previous-error)
-"   nnoremap <plug>(lsp-previous-error-nowrap)
-"   nnoremap <plug>(lsp-previous-reference)
-"   nnoremap <plug>(lsp-previous-warning)
-"   nnoremap <plug>(lsp-previous-warning-nowrap)
-"   nnoremap <plug>(lsp-references)
-"   nnoremap <plug>(lsp-rename)
-"   nnoremap <plug>(lsp-workspace-symbol)
-"   nnoremap <plug>(lsp-document-format)
-"   vnoremap <plug>(lsp-document-format)
-"   nnoremap <plug>(lsp-document-range-format)
-"   xnoremap <plug>(lsp-document-range-format)
-"   nnoremap <plug>(lsp-implementation)
-"   nnoremap <plug>(lsp-peek-implementation)
-"   nnoremap <plug>(lsp-type-definition)
-"   nnoremap <plug>(lsp-peek-type-definition)
-"   nnoremap <plug>(lsp-type-hierarchy)
-"   nnoremap <plug>(lsp-status)
-"   nnoremap <plug>(lsp-signature-help)
-
-" nmap <silent> ga <Plug>(lsp-code-action)
-" nmap <silent> gl <Plug>(lsp-code-lens)
-" nmap <silent> gd <Plug>(lsp-definition)
-" nmap <silent> gy <Plug>(lsp-type-definition)
-" nmap <silent> gi <Plug>(lsp-implementation)
-" nmap <silent> gr <Plug>(lsp-references)
-" nmap <silent> gn <Plug>(lsp-next-diagnostic)
-" nmap <silent> gp <Plug>(lsp-previous-diagnostic)
-" nmap <silent> gR <Plug>(lsp-rename)
-
-" }}}
 """" git-messenger.vim {{{
 let g:git_messenger_include_diff = "current"
 let g:git_messenger_close_on_cursor_moved = v:false
