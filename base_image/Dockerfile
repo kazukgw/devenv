@@ -267,6 +267,12 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### lf {{{
+  && curl -L https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xzC ${DEVENVROOT}/bin \
+  && mkdir -p ${DEVENVROOT}/.config/lf \
+# }}}
+
+
 ### git-now {{{
   && git clone --recursive git://github.com/iwata/git-now.git \
   && (cd git-now && make install) \
@@ -312,6 +318,9 @@ COPY git-completion ${DEVENVROOT}/.git-completion
 COPY gitconfig ${DEVENVROOT}/.gitconfig
 COPY tigrc ${DEVENVROOT}/.tigrc
 COPY fzf.bash ${DEVENVROOT}/.fzf.bash
+COPY fzf-command.bash ${DEVENVROOT}/.fzf-command.bash
+COPY lfrc ${DEVENVROOT}/.config/lf/lfrc
+COPY lfcd.sh ${DEVENVROOT}/.lfcd.sh
 COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
 # }}}
 
