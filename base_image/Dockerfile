@@ -310,8 +310,8 @@ RUN apt-get update --fix-missing \
     && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
     && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" \
     && tar zxvf krew.tar.gz \
-    && mv ./krew-"${OS}_${ARCH}" ${KREW_ROOT}/bin/krew \
-    && ${KREW_ROOT}/bin/krew install krew \
+    && mv ./krew-"${OS}_${ARCH}" ${KREW_ROOT}/bin/kubectl-krew \
+    && ${KREW_ROOT}/bin/kubectl-krew install krew \
   ) \
 # }}}
 
