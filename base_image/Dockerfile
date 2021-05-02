@@ -302,7 +302,7 @@ RUN apt-get update --fix-missing \
     && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" \
     && tar zxvf krew.tar.gz \
     && KREW=./krew-"${OS}_${ARCH}" \
-    && "$KREW" install krew
+    && "$KREW" install krew \
   ) \
 
   && export PATH=${KREW_ROOT}/bin:$PATH \
