@@ -332,12 +332,12 @@ RUN apt-get update --fix-missing \
   && mkdir -p /usr/local/go/bin \
   && mkdir -p /usr/local/go/pkg \
   && export GOPATH=/usr/local/go \
-  && go get -u github.com/x-motemen/ghq \
-  && go get -u github.com/itchyny/mmv/cmd/mmv \
-  && go get -u github.com/mattn/efm-langserver \
-  && go get -u github.com/go-delve/delve \
-  && go get -u github.com/mholt/archiver/cmd/arc \
-  && go get -u github.com/derailed/k9s \
+  && go install github.com/x-motemen/ghq@latest \
+  && go install github.com/itchyny/mmv/cmd/mmv@latest \
+  && go install github.com/mattn/efm-langserver@latest \
+  && go install github.com/go-delve/delve@latest \
+  && go install github.com/mholt/archiver/cmd/arc@latest \
+  && go install github.com/derailed/k9s@latest \
 # }}}
 
 
