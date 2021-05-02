@@ -325,7 +325,14 @@ RUN apt-get update --fix-missing \
 
 
 ### k9s {{{
-  && curl -sS https://webinstall.dev/k9s | bash \
+  && ( \
+    export K9S_VERSION="0.24.8" \
+    && set -x; cd "$(mktemp -d)" \
+    && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
+    && tar zxvf k9s.tar.gz \
+    && chmod +x k9s/k9s \
+    && mv k9s/k9s ${DEVENV_ROOT}/bin/ \
+  ) \
 # }}}
 
 
@@ -342,6 +349,11 @@ RUN apt-get update --fix-missing \
   && go install github.com/mattn/efm-langserver@latest \
   && go install github.com/go-delve/delve/cmd/dlv@latest \
   && go install github.com/mholt/archiver/cmd/arc@latest \
+# }}}
+
+
+### clean tmpdir {{{
+  && rm -rf /tmp/* \
 # }}}
 
 
