@@ -145,8 +145,9 @@ RUN apt-get update --fix-missing \
     set -x; cd "$(mktemp -d)" \
     && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
     && unzip rclone-current-linux-amd64.zip \
-    && chmod +x rclone-current-linux-amd64/rclone \
-    && cp rclone-current-linux-amd64/rclone ${DEVENVROOT}/bin/ \
+    && cd rclone-*-linux-amd64 \
+    && chmod +x rclone \
+    && cp rclone ${DEVENVROOT}/bin/ \
   ) \
 # }}}
 
