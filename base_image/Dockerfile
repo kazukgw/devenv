@@ -313,10 +313,7 @@ RUN apt-get update --fix-missing \
     && KREW=./krew-"${OS}_${ARCH}" \
     && "$KREW" install krew \
   ) \
-
   && export PATH=${KREW_ROOT}/bin:$PATH \
-  && kubectl krew install ctx \
-  && kubectl krew install ns \
 # }}}
 
 
