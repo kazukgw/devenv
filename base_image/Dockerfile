@@ -181,23 +181,6 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### go pkgs {{{
-  && export GOROOT=${DEVENVROOT}/.go \
-  && export PATH=${DEVENVROOT}/.go/bin:$PATH \
-  && mkdir -p /usr/local/go \
-  && mkdir -p /usr/local/go/src \
-  && mkdir -p /usr/local/go/bin \
-  && mkdir -p /usr/local/go/pkg \
-  && export GOPATH=/usr/local/go \
-  && go get -u github.com/x-motemen/ghq \
-  && go get -u github.com/itchyny/mmv/cmd/mmv \
-  && go get -u github.com/mattn/efm-langserver \
-  && go get -u github.com/go-delve/delve \
-  && go get -u github.com/mholt/archiver/cmd/arc \
-  && go get -u github.com/derailed/k9s \
-# }}}
-
-
 ### nodejs {{{
   && export N_PREFIX=${DEVENVROOT}/.n \
   && curl -L https://git.io/n-install | bash -s -- -y \
@@ -315,6 +298,23 @@ RUN apt-get update --fix-missing \
   && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64 \
   && chmod +x ./kind \
   && mv ./kind ${DEVENV_ROOT}/bin/kind \
+# }}}
+
+
+### go pkgs {{{
+  && export GOROOT=${DEVENVROOT}/.go \
+  && export PATH=${DEVENVROOT}/.go/bin:$PATH \
+  && mkdir -p /usr/local/go \
+  && mkdir -p /usr/local/go/src \
+  && mkdir -p /usr/local/go/bin \
+  && mkdir -p /usr/local/go/pkg \
+  && export GOPATH=/usr/local/go \
+  && go get -u github.com/x-motemen/ghq \
+  && go get -u github.com/itchyny/mmv/cmd/mmv \
+  && go get -u github.com/mattn/efm-langserver \
+  && go get -u github.com/go-delve/delve \
+  && go get -u github.com/mholt/archiver/cmd/arc \
+  && go get -u github.com/derailed/k9s \
 # }}}
 
 
