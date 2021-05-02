@@ -303,7 +303,7 @@ RUN apt-get update --fix-missing \
 
 ### krew {{{
   && ( \
-    export KREW_ROOT=${DEVENV_ROOT}/.krew \
+    export KREW_ROOT=${DEVENVROOT}/.krew \
     && mkdir -p $KREW_ROOT/bin \
     && set -x; cd "$(mktemp -d)" \
     && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
@@ -319,7 +319,7 @@ RUN apt-get update --fix-missing \
 ### kind {{{
   && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64 \
   && chmod +x ./kind \
-  && mv ./kind ${DEVENV_ROOT}/bin/kind \
+  && mv ./kind ${DEVENVROOT}/bin/kind \
 # }}}
 
 
@@ -329,7 +329,7 @@ RUN apt-get update --fix-missing \
     && set -x; cd "$(mktemp -d)" \
     && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
     && chmod +x helmfile \
-    && mv helmfile ${DEVENV_ROOT}/bin/ \
+    && mv helmfile ${DEVENVROOT}/bin/ \
   ) \
 # }}}
 
@@ -341,7 +341,7 @@ RUN apt-get update --fix-missing \
     && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
     && tar zxvf k9s.tar.gz \
     && chmod +x k9s \
-    && mv k9s ${DEVENV_ROOT}/bin/ \
+    && mv k9s ${DEVENVROOT}/bin/ \
   ) \
 # }}}
 

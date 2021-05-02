@@ -118,7 +118,7 @@ if [[ -n "$DISABLE_LEMONADE" ]]; then
 fi
 
 # krew
-export PAHT=$HOME/.krew/bin:$PATH
+export PATH=$HOME/.krew/bin:$PATH
 
 # }}}
 
