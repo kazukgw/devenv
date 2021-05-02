@@ -100,7 +100,7 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.16.1 \
+  && export GOVERSION=1.16.3 \
   && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
   && mkdir -p ${DEVENVPATH}/.go \
   && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
@@ -143,7 +143,7 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=331.0.0 \
+  && export CLOUD_SDK_VERSION=338.0.0 \
   && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
   && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -243,7 +243,7 @@ RUN apt-get update --fix-missing \
 
 ### terraform {{{
   && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
-  && export TERRAFORM_VERSION=0.14.7 \
+  && export TERRAFORM_VERSION=0.15.1 \
   && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
   && unzip ./terraform.zip \
   && chmod +x ./terraform \
