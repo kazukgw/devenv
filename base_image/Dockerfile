@@ -126,7 +126,7 @@ RUN apt-get update --fix-missing \
     && tar -zxvf lemonade_linux_amd64.tar.gz \
     && mv lemonade ${DEVENVROOT}/bin/ \
     && rm lemonade_linux_amd64.tar.gz \
-  ) /
+  ) \
 # }}}
 
 
