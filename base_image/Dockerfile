@@ -306,6 +306,7 @@ RUN apt-get update --fix-missing \
     export KREW_ROOT=${DEVENVROOT}/.krew \
     && mkdir -p $KREW_ROOT/bin \
     && mkdir -p $KREW_ROOT/receipts \
+    && touch $KREW_ROOT/receipts/__dummy.yaml \
     && mkdir -p $KREW_ROOT/store \
     && mkdir -p $KREW_ROOT/index \
     && set -x; cd "$(mktemp -d)" \
