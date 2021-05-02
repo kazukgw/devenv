@@ -1,3 +1,5 @@
+### show DEVENV {{{
+
 if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
 
 cat << EOS
@@ -14,12 +16,20 @@ cat << EOS
 EOS
 fi
 
-### env variables
+# }}}
+
+
+### env variables {{{
+
 export TERM=xterm-color
 export EDITOR=nvim
 export PATH=$HOME/.devenv_bin:$HOME/.local/bin:$PATH
 
-### history
+# }}}
+
+
+### history {{{
+
 # https://askubuntu.com/questions/339546/how-do-i-see-the-history-of-the-commands-i-have-run-in-tmux
 export HISTCONTROL=ignoreboth
 export HISTSIZE=10000
@@ -27,21 +37,29 @@ export HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
+# }}}
 
-### prompt
+
+### prompt {{{
+
 source ~/.git-prompt
 source ~/.bash_prompt
 
+# }}}
 
-### git config
+
+### git config {{{
+
 [ -n "$GIT_NAME" ] && git config --global user.name "$GIT_NAME"
 [ -n "$GIT_EMAIL" ] && git config --global user.email "$GIT_EMAIL"
 [ -n "$GITHUB_USER" ] && git config --global github.user "$GITHUB_USER"
 [ -n "$http_proxy" ] && git config --global http.proxy "$http_proxy"
 [ -n "$https_proxy" ] && git config --global https.proxy "$https_proxy"
 
+# }}}
 
-### completion
+
+### completion {{{
 source ~/.git-completion
 
 # Enable tab completion for `g` by marking it as an alias for `git`
@@ -52,8 +70,10 @@ fi;
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config"  ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
+# }}}
 
-### languages / tools
+
+### languages / tools {{{
 
 # go
 export GOROOT=$HOME/.go
@@ -97,8 +117,13 @@ if [[ -n "$DISABLE_LEMONADE" ]]; then
   fi
 fi
 
+# krew
+export PAHT=$HOME/.krew/bin:$PATH
 
-### alias
+# }}}
+
+
+### alias {{{
 
 alias l='ls -G -a --color=auto'
 alias ls='ls -G -a --color=auto'
@@ -114,13 +139,20 @@ alias vi=nvim
 alias v=nvim
 alias vimrc='nvim $HOME/.config/nvim/init.vim'
 
+# }}}
 
-### custom functions
+
+### custom functions {{{
 
 source $HOME/.functions
 
+# }}}
 
-### extenstion
+
+### extenstion {{{
 
 [ -f ~/.bashrc_extension ] && source $HOME/.bashrc_extension
 
+# }}}
+
+# vim: foldmethod=marker foldlevel=0

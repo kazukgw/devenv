@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ENV DEVENV_VERSION=2.3.0
+ENV DEVENV_VERSION=2.5.0
 
 ENV DEVENVROOT=/home/devenv
 
@@ -194,6 +194,7 @@ RUN apt-get update --fix-missing \
   && go get -u github.com/mattn/efm-langserver \
   && go get -u github.com/go-delve/delve \
   && go get -u github.com/mholt/archiver/cmd/arc \
+  && go get -u github.com/derailed/k9s \
 # }}}
 
 
@@ -283,6 +284,37 @@ RUN apt-get update --fix-missing \
   && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
   && mv kubectl ${DEVENVROOT}/bin/kubectl \
   && chmod +x ${DEVENVROOT}/bin/kubectl \
+# }}}
+
+
+### Helm {{{
+  && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash \
+# }}}
+
+
+### krew {{{
+  && ( \
+    export KREW_ROOT=${DEVENV_ROOT/.krew} &&
+    mkdir -p $KREW_ROOT &&
+    set -x; cd "$(mktemp -d)" &&
+    OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
+    tar zxvf krew.tar.gz &&
+    KREW=./krew-"${OS}_${ARCH}" &&
+    "$KREW" install krew
+  ) \
+
+  && export PATH=${KREW_ROOT}/bin:$PATH \
+  && kubectl krew install ctx \
+  && kubectl krew install ns \
+# }}}
+
+
+### kind {{{
+  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64 \
+  && chmod +x ./kind \
+  && mv ./kind ${DEVENV_ROOT}/bin/kind \
 # }}}
 
 
