@@ -324,6 +324,11 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### k9s {{{
+  && curl -sS https://webinstall.dev/k9s | bash \
+# }}}
+
+
 ### go pkgs {{{
   && export GOROOT=${DEVENVROOT}/.go \
   && export PATH=${DEVENVROOT}/.go/bin:$PATH \
@@ -335,9 +340,8 @@ RUN apt-get update --fix-missing \
   && go install github.com/x-motemen/ghq@latest \
   && go install github.com/itchyny/mmv/cmd/mmv@latest \
   && go install github.com/mattn/efm-langserver@latest \
-  && go install github.com/go-delve/delve@latest \
+  && go install github.com/go-delve/delve/cmd/dlv@latest \
   && go install github.com/mholt/archiver/cmd/arc@latest \
-  && go install github.com/derailed/k9s@latest \
 # }}}
 
 
