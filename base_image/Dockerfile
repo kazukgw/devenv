@@ -330,8 +330,8 @@ RUN apt-get update --fix-missing \
     && set -x; cd "$(mktemp -d)" \
     && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
     && tar zxvf k9s.tar.gz \
-    && chmod +x k9s/k9s \
-    && mv k9s/k9s ${DEVENV_ROOT}/bin/ \
+    && chmod +x k9s \
+    && mv k9s ${DEVENV_ROOT}/bin/ \
   ) \
 # }}}
 
