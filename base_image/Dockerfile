@@ -296,15 +296,14 @@ RUN apt-get update --fix-missing \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
-    && chmod 700 get_helm.sh \
-    && ./get_helm.sh \
+    && bash get_helm.sh \
   ) \
 # }}}
 
 
 ### krew {{{
   && ( \
-    export KREW_ROOT=${DEVENV_ROOT/.krew} \
+    export KREW_ROOT=${DEVENV_ROOT}/.krew \
     && mkdir -p $KREW_ROOT \
     && set -x; cd "$(mktemp -d)" \
     && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
