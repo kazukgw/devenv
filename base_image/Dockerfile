@@ -304,16 +304,15 @@ RUN apt-get update --fix-missing \
 ### krew {{{
   && ( \
     export KREW_ROOT=${DEVENV_ROOT}/.krew \
-    && mkdir -p $KREW_ROOT \
+    && mkdir -p $KREW_ROOT/bin \
     && set -x; cd "$(mktemp -d)" \
     && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
     && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
     && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" \
     && tar zxvf krew.tar.gz \
-    && KREW=./krew-"${OS}_${ARCH}" \
-    && "$KREW" install krew \
+    && mv ./krew-"${OS}_${ARCH}" ${KREW_ROOT}/bin/krew \
+    && ${KREW_ROOT}/bin/krew install krew \
   ) \
-  && export PATH=${KREW_ROOT}/bin:$PATH \
 # }}}
 
 
@@ -321,6 +320,17 @@ RUN apt-get update --fix-missing \
   && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64 \
   && chmod +x ./kind \
   && mv ./kind ${DEVENV_ROOT}/bin/kind \
+# }}}
+
+
+### Helmfile {{{
+  && ( \
+    export HELMFILE_VERSION="0.138.7" \
+    && set -x; cd "$(mktemp -d)" \
+    && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
+    && chmod +x helmfile \
+    && mv helmfile ${DEVENV_ROOT}/bin/ \
+  ) \
 # }}}
 
 
@@ -349,6 +359,7 @@ RUN apt-get update --fix-missing \
   && go install github.com/mattn/efm-langserver@latest \
   && go install github.com/go-delve/delve/cmd/dlv@latest \
   && go install github.com/mholt/archiver/cmd/arc@latest \
+  && go install github.com/laurent22/massren@latest \
 # }}}
 
 
