@@ -100,12 +100,15 @@ RUN apt-get update --fix-missing \
 
 
 ### golang {{{
-  && export GOVERSION=1.16.3 \
-  && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
-  && mkdir -p ${DEVENVPATH}/.go \
-  && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
-  && mv ${DEVENVROOT}/go  ${DEVENVROOT}/.go \
-  && rm go${GOVERSION}.linux-amd64.tar.gz \
+  && ( \
+    export GOVERSION=1.16.3 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
+    && mkdir -p ${DEVENVPATH}/.go \
+    && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
+    && mv ${DEVENVROOT}/go  ${DEVENVROOT}/.go \
+    && rm go${GOVERSION}.linux-amd64.tar.gz \
+  ) \
 # }}}
 
 
@@ -116,26 +119,32 @@ RUN apt-get update --fix-missing \
 
 
 ### lemonade {{{
-  && export LEMONADE_VERSION=v1.1.1 \
-  && wget https://github.com/lemonade-command/lemonade/releases/download/${LEMONADE_VERSION}/lemonade_linux_amd64.tar.gz \
-  && tar -zxvf lemonade_linux_amd64.tar.gz \
-  && mv lemonade ${DEVENVROOT}/bin/ \
-  && rm lemonade_linux_amd64.tar.gz \
+  && ( \
+    export LEMONADE_VERSION=v1.1.1 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://github.com/lemonade-command/lemonade/releases/download/${LEMONADE_VERSION}/lemonade_linux_amd64.tar.gz \
+    && tar -zxvf lemonade_linux_amd64.tar.gz \
+    && mv lemonade ${DEVENVROOT}/bin/ \
+    && rm lemonade_linux_amd64.tar.gz \
+  ) /
 # }}}
 
 
 ### gdrive {{{
-  && curl -fsL -o gdrive 'https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download' \
-  && chmod +x gdrive \
-  && mv gdrive ${DEVENVROOT}/bin/ \
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -fsL -o gdrive 'https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download' \
+    && chmod +x gdrive \
+    && mv gdrive ${DEVENVROOT}/bin/ \
+  ) \
 # }}}
 
 
 ### rclone {{{
-  && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
-  && unzip rclone-current-linux-amd64.zip \
   && ( \
-    cd rclone-*-linux-amd64 \
+    set -x; cd "$(mktemp -d)" \
+    && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
+    && unzip rclone-current-linux-amd64.zip \
     && chmod +x rclone \
     && cp rclone ${DEVENVROOT}/bin/ \
   ) \
@@ -143,12 +152,15 @@ RUN apt-get update --fix-missing \
 
 
 ### google cloud sdk {{{
-  && export CLOUD_SDK_VERSION=338.0.0 \
-  && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
-  && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
-  && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
-  && mv google-cloud-sdk ${DEVENVROOT}/.google-cloud-sdk \
-#}}}
+  && ( \
+    export CLOUD_SDK_VERSION=338.0.0 \
+    && set -x; cd "$(mktemp -d)" \
+    && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+    && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+    && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
+    && mv google-cloud-sdk ${DEVENVROOT}/.google-cloud-sdk \
+  ) \
+# }}}
 
 
 ### docker {{{
@@ -225,29 +237,38 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform {{{
-  && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
-  && export TERRAFORM_VERSION=0.15.1 \
-  && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-  && unzip ./terraform.zip \
-  && chmod +x ./terraform \
-  && mv ./terraform ${DEVENVROOT}/bin/ \
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
+    && export TERRAFORM_VERSION=0.15.1 \
+    && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip ./terraform.zip \
+    && chmod +x ./terraform \
+    && mv ./terraform ${DEVENVROOT}/bin/ \
+  ) \
 #}}}
 
 
 ### termshark {{{
-  && export TERMSHARK_VERSION=2.2.0 \
-  && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
-  && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
-  && mv termshark_${TERMSHARK_VERSION}_linux_x64/termshark  ${DEVENVROOT}/bin \
-  && rm -r termshark_${TERMSHARK_VERSION}_linux_x64* \
+  && ( \
+    export TERMSHARK_VERSION=2.2.0 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+    && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+    && mv termshark_${TERMSHARK_VERSION}_linux_x64/termshark  ${DEVENVROOT}/bin \
+    && rm -r termshark_${TERMSHARK_VERSION}_linux_x64* \
+  ) \
 # }}}
 
 
 ### ttyd {{{
-  && export TTYD_VERSION=1.6.3 \
-  && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
-  && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
-  && chmod +x ${DEVENVROOT}/bin/ttyd \
+  && ( \
+    export TTYD_VERSION=1.6.3 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
+    && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
+    && chmod +x ${DEVENVROOT}/bin/ttyd \
+  ) \
 # }}}
 
 
@@ -271,7 +292,12 @@ RUN apt-get update --fix-missing \
 
 
 ### Helm {{{
-  && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash \
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
+    && chmod 700 get_helm.sh \
+    && ./get_helm.sh \
+  ) \
 # }}}
 
 
