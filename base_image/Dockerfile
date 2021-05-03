@@ -292,6 +292,15 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### kustomize {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash \
+    && mv kustomize ${DEVENVROOT}/bin/
+  ) \
+# }}}
+
+
 ### Helm {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
