@@ -296,7 +296,7 @@ RUN apt-get update --fix-missing \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash \
-    && mv kustomize ${DEVENVROOT}/bin/
+    && mv kustomize ${DEVENVROOT}/bin/ \
   ) \
 # }}}
 
