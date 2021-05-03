@@ -26,6 +26,7 @@ RUN apt-get update --fix-missing \
   && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
     apt-transport-https \
     bc \
+    bison \
     build-essential\
     bzip2 \
     ca-certificates \
@@ -49,6 +50,7 @@ RUN apt-get update --fix-missing \
     language-pack-ja-base \
     less \
     libbz2-dev\
+    libevent-dev \
     libffi-dev\
     libncurses5-dev\
     libreadline-dev\
@@ -61,16 +63,18 @@ RUN apt-get update --fix-missing \
     make \
     man \
     mysql-client \
+    ncurses-dev \
     netcat \
     ngrep \
     nkf \
+    pkg-config \
     python3 \
     python3-dev \
     python3-pip \
     python3-setuptools \
+    ripgrep \
     shellcheck \
     silversearcher-ag \
-    ripgrep \
     ssh \
     strace \
     sudo \
@@ -78,7 +82,7 @@ RUN apt-get update --fix-missing \
     telnet \
     tig \
     tk-dev\
-    tmux \
+    # tmux \
     traceroute \
     tree \
     tshark \
@@ -96,6 +100,18 @@ RUN apt-get update --fix-missing \
   && mkdir -p ${DEVENVROOT}/src \
   && mkdir -p ${DEVENVROOT}/bin \
   && mkdir -p ${DEVENVROOT}/pkg \
+# }}}
+
+
+### tmux {{{
+  && ( \
+    curl -sSL -o tmux-3.2.tar.gz https://github.com/tmux/tmux/releases/download/3.2/tmux-3.2.tar.gz \
+    && tar zxvf tmux-3.2.tar.gz \
+    && cd tmux-3.2 \
+    && ./configure \
+    && make \
+    && make install \
+  ) \
 # }}}
 
 
