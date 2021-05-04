@@ -64,10 +64,11 @@ function toggle_tmux_popup() {
   local _width='85%'
   local _height='85%'
   local _session=$(tmux display-message -p -F "#{session_name}")
+  local _window_id=$(tmux display-message -p -F "#{window_id}" | tr -d @)
 
   if [[ "${_session}" == *"popup"* ]]; then
     tmux detach-client
   else
-    tmux popup -d '#{pane_current_path}' -xC -yC -w${_width} -h${_height} -E "tmux attach -t popup || tmux new -s popup"
+    tmux popup -d '#{pane_current_path}' -xC -yC -w${_width} -h${_height} -E "tmux attach -t popup_${_window_id} || tmux new -s popup_${_window_id}"
   fi
 }
