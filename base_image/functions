@@ -60,3 +60,14 @@ function ffv() {
   vim $(ff)
 }
 
+function toggle_tmux_popup() {
+  local _width='85%'
+  local _height='85%'
+  local _session=$(tmux display-message -p -F "#{session_name}")
+
+  if [[ "${_session}" == *"popup"* ]]; then
+    tmux detach-client
+  else
+    tmux popup -d '#{pane_current_path}' -xC -yC -w${_width} -h${_height} -E "tmux attach -t popup || tmux new -s popup"
+  fi
+}
