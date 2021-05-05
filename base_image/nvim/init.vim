@@ -145,6 +145,9 @@ Plug 'prettier/vim-prettier', {
 " HTML
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
+" Markdown
+Plug 'tpope/vim-markdown'
+
 " TypeScript
 Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったので
 
@@ -212,19 +215,27 @@ local on_attach = function (client, bufnr)
   require('lsp_signature').on_attach()
 end
 
+local disable_formatting_on_init = function(client, initialize_result)
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
+end
+
 local lspconfig = require('lspconfig')
-lspconfig.pyright.setup { on_attach = on_attach }
+lspconfig.pyright.setup {
+  on_attach = on_attach ,
+  on_init = disable_formatting_on_init,
+}
 lspconfig.tsserver.setup {
   on_attach = on_attach,
-  init_options = {documentFormatting = false},
+  on_init = disable_formatting_on_init,
 }
 lspconfig.html.setup {
   on_attach = on_attach,
-  init_options = {documentFormatting = false},
+  on_init = disable_formatting_on_init,
 }
 lspconfig.cssls.setup {
   on_attach = on_attach,
-  init_options = {documentFormatting = false},
+  on_init = disable_formatting_on_init,
 }
 lspconfig.vimls.setup { on_attach = on_attach }
 lspconfig.gopls.setup { on_attach = on_attach }
@@ -251,7 +262,7 @@ end
 lspconfig.efm.setup {
   on_attach = on_attach_efm,
   init_options = {documentFormatting = true},
-  filetypes = {"python", "go", "javascript", "typescript", "html", "css"},
+  filetypes = {"python", "javascript", "typescript", "html", "css"},
   settings = {
     rootMarkers = {".git/"},
     languages = {
@@ -270,9 +281,6 @@ lspconfig.efm.setup {
       python = {
         {formatCommand = "black -", formatStdin = true}
       },
-      go = {
-        {formatCommand = "gofmt", formatStdin = true}
-      }
     }
   }
 }
@@ -685,6 +693,10 @@ let g:far#collapse_result=1
 
 """""""" Language Settings {{{
 
+"""" vim-markdown {{{
+let g:markdown_syntax_conceal = 0
+let g:markdown_folding = 1
+""" }}}
 """" vim-json {{{
 let g:vim_json_syntax_conceal = 0
 augroup VimJson
