@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ENV DEVENV_VERSION=2.5.0
+ENV DEVENV_VERSION=3.0.0
 
 ENV DEVENVROOT=/home/devenv
 
@@ -117,7 +117,7 @@ RUN apt-get update --fix-missing \
 
 ### golang {{{
   && ( \
-    export GOVERSION=1.16.3 \
+    export GOVERSION=1.16.5 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
     && mkdir -p ${DEVENVPATH}/.go \
@@ -170,7 +170,7 @@ RUN apt-get update --fix-missing \
 
 ### google cloud sdk {{{
   && ( \
-    export CLOUD_SDK_VERSION=338.0.0 \
+    export CLOUD_SDK_VERSION=347.0.0 \
     && set -x; cd "$(mktemp -d)" \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
