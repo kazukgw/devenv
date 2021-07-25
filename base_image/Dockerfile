@@ -354,7 +354,7 @@ RUN apt-get update --fix-missing \
 
 ### Helmfile {{{
   && ( \
-    export HELMFILE_VERSION="0.140.0" \
+    export HELMFILE_VERSION="0.139.9" \
     && set -x; cd "$(mktemp -d)" \
     && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
     && chmod +x helmfile \
