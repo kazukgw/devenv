@@ -46,4 +46,4 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 RUN echo $PATH
 RUN /bin/bash -c '\
 if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-&& pyenv install 3.8.2'
+&& pyenv install 3.9.4'

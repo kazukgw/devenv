@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ENV DEVENV_VERSION=3.0.0
+ENV DEVENV_VERSION=3.1.0
 
 ENV DEVENVROOT=/home/devenv
 
@@ -257,7 +257,7 @@ RUN apt-get update --fix-missing \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
-    && export TERRAFORM_VERSION=0.15.1 \
+    && export TERRAFORM_VERSION=1.0.3 \
     && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip ./terraform.zip \
     && chmod +x ./terraform \
@@ -346,7 +346,7 @@ RUN apt-get update --fix-missing \
 
 
 ### kind {{{
-  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64 \
+  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64 \
   && chmod +x ./kind \
   && mv ./kind ${DEVENVROOT}/bin/kind \
 # }}}
@@ -354,7 +354,7 @@ RUN apt-get update --fix-missing \
 
 ### Helmfile {{{
   && ( \
-    export HELMFILE_VERSION="0.138.7" \
+    export HELMFILE_VERSION="0.140.0" \
     && set -x; cd "$(mktemp -d)" \
     && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
     && chmod +x helmfile \
