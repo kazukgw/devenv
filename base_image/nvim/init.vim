@@ -50,6 +50,7 @@ set showtabline=2
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set scl=auto:5
+set updatetime=250
 
 set modeline
 set modelines=4
@@ -264,19 +265,19 @@ lspconfig.efm.setup {
   init_options = {documentFormatting = true},
   filetypes = {"python", "javascript", "typescript", "html", "css"},
   settings = {
-    rootMarkers = {".git/"},
+    rootMarkers = {"package.json", ".git/"},
     languages = {
       javascript = {
-        {formatCommand = "prettier --parser javascript", formatStdin = true}
+        {formatCommand = "prettier --stdin-filepath ${INPUT}", formatStdin = true}
       },
       typescript = {
-        {formatCommand = "prettier --parser typescript", formatStdin = true}
+        {formatCommand = "prettier --stdin-filepath ${INPUT}", formatStdin = true}
       },
       html = {
-        {formatCommand = "prettier --parser html", formatStdin = true}
+        {formatCommand = "prettier --parser html --stdin-filepath ${INPUT}", formatStdin = true}
       },
       css = {
-        {formatCommand = "prettier --parser css", formatStdin = true}
+        {formatCommand = "prettier --parser css --stdin-filepath ${INPUT}", formatStdin = true}
       },
       python = {
         {formatCommand = "black -", formatStdin = true}
@@ -483,6 +484,7 @@ let g:indentLine_char = '¦'
 """ }}}
 """" vim-gitgutter {{{
 
+let g:gitgutter_enabled = 1
 let g:gitgutter_sign_added = '▐'
 let g:gitgutter_sign_modified = '▐'
 let g:gitgutter_sign_removed = '▐'

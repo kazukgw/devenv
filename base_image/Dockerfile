@@ -223,6 +223,7 @@ RUN apt-get update --fix-missing \
   typescript-language-server \
   yaml-language-server \
   bash-language-server \
+  pyright \
   vscode-html-languageserver-bin \
   vscode-css-languageserver-bin \
 # }}}
