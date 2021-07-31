@@ -690,6 +690,23 @@ EOF
 let g:far#source='rg'
 let g:far#collapse_result=1
 """" }}}
+"""" telescope.nvim {{{
+lua << EOF
+local picker_settings = { theme = "ivy", layout_config = {height = 30}  }
+
+require('telescope').setup({
+  pickers = {
+    buffers = picker_settings,
+    find_files = picker_settings,
+    treesitter = picker_settings,
+    lsp_references = picker_settings,
+    current_buffer_fuzzy_find = picker_settings,
+    live_grep = picker_settings,
+    git_bcommits = picker_settings,
+  },
+})
+EOF
+"""" }}}
 
 """""""" }}}
 
