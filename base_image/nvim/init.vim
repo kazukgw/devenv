@@ -109,9 +109,9 @@ Plug 'tpope/vim-fugitive'
 
 " Motion/Cursor
 Plug 'Lokaltog/vim-easymotion'
-Plug 'rhysd/clever-f.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'cohama/lexima.vim'
+Plug 'justinmk/vim-sneak'
 
 " Appearance
 Plug 'LeafCage/foldCC.vim'
@@ -475,6 +475,13 @@ endfunction
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
 
 """ }}}
+"""" sneak-vim {{{
+
+let g:sneak#s_next = 1
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+
+"""" }}}
 """" IndentLine {{{
 
 let g:indentLine_color_term = 239
