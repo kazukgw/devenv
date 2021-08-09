@@ -100,6 +100,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kassio/neoterm'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'ray-x/lsp_signature.nvim'
+Plug 'stevearc/aerial.nvim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -201,6 +202,7 @@ local on_attach = function (client, bufnr)
   keymap('n', 'gs', "<cmd>lua require('telescope.builtin').treesitter()<CR>", opt)
   keymap('n', 'ga', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", opt)
   keymap('n', 'ga', ":<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>", opt)
+  keymap('n', 'tb', "<cmd>AerialToggle!<CR>", opt)
 
   if client.resolved_capabilities.document_formatting then
     vim.api.nvim_exec([[
@@ -214,6 +216,7 @@ local on_attach = function (client, bufnr)
   require('completion').on_attach(client)
   require('illuminate').on_attach(client)
   require('lsp_signature').on_attach()
+  require('aerial').on_attach(client)
 end
 
 local disable_formatting_on_init = function(client, initialize_result)
@@ -403,9 +406,9 @@ function! MyGitGutter()
     return ''
   endif
   let symbols = [
-        \ g:gitgutter_sign_added . ' ',
-        \ g:gitgutter_sign_modified . ' ',
-        \ g:gitgutter_sign_removed . ' '
+        \ g:gitgutter_sign_added . '+',
+        \ g:gitgutter_sign_modified . '~',
+        \ g:gitgutter_sign_removed . 'x'
         \ ]
   let hunks = GitGutterGetHunkSummary()
   let ret = []
@@ -713,6 +716,12 @@ require('telescope').setup({
   },
 })
 EOF
+"""" }}}
+"""" aerial {{{
+let g:aerial = {
+  \ 'default_direction': 'right',
+  \ 'min_width': '20',
+  \}
 """" }}}
 
 """""""" }}}
