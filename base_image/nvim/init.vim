@@ -47,7 +47,8 @@ set norelativenumber
 set showtabline=2
 " ref: completion-nvim
 " set completeopt-=preview
-set completeopt=menuone,noinsert,noselect
+" set completeopt=menuone,noinsert,noselect
+set completeopt=menu,menuone,noselect
 set shortmess+=c
 set scl=auto:5
 set updatetime=250
@@ -93,13 +94,24 @@ Plug 'RishabhRD/popfix'
 " Make vim to IDE
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kassio/neoterm'
-Plug 'glepnir/lspsaga.nvim'
+" Plug 'glepnir/lspsaga.nvim'
+Plug 'tami5/lspsaga.nvim'
+" Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+" Plug 'ray-x/navigator.lua'
+" Plug 'tjdevries/astronauta.nvim'
+" Plug 'RishabhRD/lspactions'
 Plug 'ray-x/lsp_signature.nvim'
+" Plug 'folke/trouble.nvim'
 Plug 'stevearc/aerial.nvim'
 
 " Git
@@ -156,6 +168,13 @@ Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったの�
 " Other
 Plug 'elzr/vim-json'
 
+" FSharp
+" Plug 'ionide/Ionide-vim', { 'do':  'make fsautocomplete' }
+Plug 'fsharp/vim-fsharp', {
+  \ 'for': 'fsharp',
+  \ 'do':  'make fsautocomplete',
+  \}
+
 call plug#end()
 
 """""""" }}}
@@ -186,6 +205,7 @@ colorscheme sonokai
 """""""" LSP {{{
 
 lua << EOF
+
 local on_attach = function (client, bufnr)
   local function keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -213,8 +233,8 @@ local on_attach = function (client, bufnr)
     ]], false)
   end
 
-  require('completion').on_attach(client)
-  require('illuminate').on_attach(client)
+  -- require('completion').on_attach(client)
+  -- require('illuminate').on_attach(client)
   require('lsp_signature').on_attach()
   require('aerial').on_attach(client)
 end
@@ -249,6 +269,7 @@ lspconfig.terraformls.setup {
 }
 lspconfig.yamlls.setup { on_attach = on_attach }
 lspconfig.bashls.setup { on_attach = on_attach }
+lspconfig.fsautocomplete.setup { on_attach = on_attach }
 
 local on_attach_efm = function(client)
   -- Set autocommands conditional on server_capabilities
@@ -295,6 +316,12 @@ lspconfig.efm.setup {
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
+
+-- require('navigator').setup()
+-- require('trouble').setup({icons = false})
+require('lspsaga').setup({
+  diagnostic_header_icon = "❗️",
+})
 
 EOF
 
@@ -473,6 +500,67 @@ function! MyGitversion()
 endfunction
 
 """ }}}
+"""" nvim-cmp
+lua <<EOF
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      end,
+    },
+    mapping = {
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      -- { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Setup lspconfig.
+  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
+  --   capabilities = capabilities
+  -- }
+EOF
+""""
 """" EasyMotion {{{
 
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
