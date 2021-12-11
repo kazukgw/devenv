@@ -199,9 +199,15 @@ RUN apt-get update --fix-missing \
 
 
 ### terraform-ls {{{
-  && curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - \
-  && sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-  && sudo apt-get update && sudo apt-get install terraform-ls \
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && export TERRAFORM_VERSION=1.1.0 \
+    && curl -fsSL -o terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" \
+    && unzip terraform.zip \
+    && cd terraform \
+    && chmod +x terraform \
+    && mv terraform ${DEVENVROOT}/bin/ \
+  ) \
 # }}}
 
 
