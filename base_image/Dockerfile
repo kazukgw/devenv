@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-ENV DEVENV_VERSION=3.1.0
+ENV DEVENV_VERSION=4.1.0
 
 ENV DEVENVROOT=/home/devenv
 
@@ -15,10 +15,10 @@ RUN apt-get update --fix-missing \
 
 
 ### change repository {{{
-  && wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - \
-  && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - \
-  && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
-  && echo "Package: *\nPin: origin \"archive.ubuntulinux.jp\"\nPin-Priority: 600\n" > /etc/apt/preferences \
+  # && wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - \
+  # && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - \
+  # && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
+  # && echo "Package: *\nPin: origin \"archive.ubuntulinux.jp\"\nPin-Priority: 600\n" > /etc/apt/preferences \
 # }}}
 
 
@@ -117,7 +117,7 @@ RUN apt-get update --fix-missing \
 
 ### golang {{{
   && ( \
-    export GOVERSION=1.16.5 \
+    export GOVERSION=1.17.5 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
     && mkdir -p ${DEVENVPATH}/.go \
@@ -139,7 +139,7 @@ RUN apt-get update --fix-missing \
     export LEMONADE_VERSION=v1.1.1 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://github.com/lemonade-command/lemonade/releases/download/${LEMONADE_VERSION}/lemonade_linux_amd64.tar.gz \
-    && tar -zxvf lemonade_linux_amd64.tar.gz \
+    && tar zxvf lemonade_linux_amd64.tar.gz \
     && mv lemonade ${DEVENVROOT}/bin/ \
     && rm lemonade_linux_amd64.tar.gz \
   ) \
@@ -148,8 +148,10 @@ RUN apt-get update --fix-missing \
 
 ### gdrive {{{
   && ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -fsL -o gdrive 'https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download' \
+    export GDRIVE_VERSION=2.1.1 \
+    && set -x; cd "$(mktemp -d)" \
+    && curl -fsL -o gdrive.tar.gz "https://github.com/prasmussen/gdrive/releases/download/${GDRIVE_VERSION}/gdrive_2.1.1_linux_amd64.tar.gz" \
+    && tar zxvf gdrive.tar.gz \
     && chmod +x gdrive \
     && mv gdrive ${DEVENVROOT}/bin/ \
   ) \
@@ -170,7 +172,7 @@ RUN apt-get update --fix-missing \
 
 ### google cloud sdk {{{
   && ( \
-    export CLOUD_SDK_VERSION=347.0.0 \
+    export CLOUD_SDK_VERSION=366.0.0 \
     && set -x; cd "$(mktemp -d)" \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -258,7 +260,7 @@ RUN apt-get update --fix-missing \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
-    && export TERRAFORM_VERSION=1.0.3 \
+    && export TERRAFORM_VERSION=1.1.0 \
     && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip ./terraform.zip \
     && chmod +x ./terraform \
@@ -269,7 +271,7 @@ RUN apt-get update --fix-missing \
 
 ### termshark {{{
   && ( \
-    export TERMSHARK_VERSION=2.2.0 \
+    export TERMSHARK_VERSION=2.3.0 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
     && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
@@ -338,10 +340,10 @@ RUN apt-get update --fix-missing \
     && set -x; cd "$(mktemp -d)" \
     && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
     && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
-    && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" \
-    && tar zxvf krew.tar.gz \
-    && mv ./krew-"${OS}_${ARCH}" ${KREW_ROOT}/bin/krew \
-    && ${KREW_ROOT}/bin/krew install krew \
+    && KREW="krew-${OS}_${ARCH}" \
+    && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" \
+    && tar zxvf "${KREW}.tar.gz" \
+    && ./"${KREW}" install krew \
   ) \
 # }}}
 
@@ -355,7 +357,7 @@ RUN apt-get update --fix-missing \
 
 ### Helmfile {{{
   && ( \
-    export HELMFILE_VERSION="0.139.9" \
+    export HELMFILE_VERSION="0.142.0" \
     && set -x; cd "$(mktemp -d)" \
     && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
     && chmod +x helmfile \
@@ -366,7 +368,7 @@ RUN apt-get update --fix-missing \
 
 ### k9s {{{
   && ( \
-    export K9S_VERSION="0.24.8" \
+    export K9S_VERSION="0.25.8" \
     && set -x; cd "$(mktemp -d)" \
     && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
     && tar zxvf k9s.tar.gz \
