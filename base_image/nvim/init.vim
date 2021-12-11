@@ -86,6 +86,13 @@ call plug#begin('~/.config/nvim/plugged')
 " Color scheme
 Plug 'sainnhe/sonokai'
 
+" Devicon
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'kyazdani42/nvim-web-devicons'
+
+"  tree
+" Plug 'kyazdani42/nvim-tree.lua'
+
 " Lua library
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
@@ -98,6 +105,8 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/nvim-cmp'
 
 Plug 'nvim-telescope/telescope.nvim'
@@ -500,20 +509,20 @@ function! MyGitversion()
 endfunction
 
 """ }}}
-"""" nvim-cmp
+"""" nvim-cmp {{{
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'
 
   cmp.setup({
     snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      end,
+     -- REQUIRED - you must specify a snippet engine
+     expand = function(args)
+       vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+       -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+       -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+       -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+     end,
     },
     mapping = {
       ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
@@ -560,7 +569,7 @@ lua <<EOF
   --   capabilities = capabilities
   -- }
 EOF
-""""
+"""" }}}
 """" EasyMotion {{{
 
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
@@ -749,20 +758,24 @@ lua << EOF
 local lspsaga = require('lspsaga')
 lspsaga.init_lsp_saga {
   -- use_saga_diagnostic_sign = true
-  error_sign = 'E▸',
-  warn_sign = 'W▸',
-  hint_sign = 'H▸',
-  infor_sign = 'I▸',
-  dianostic_header_icon = ' ▸ ',
+
+  error_sign = 'Ⓔ',
+  warn_sign = 'Ⓦ',
+  hint_sign = 'ⓗ',
+  infor_sign = 'ⓘ',
+  diagnostic_header_icon = ' ▸ ',
   code_action_icon = ' ',
+
   -- code_action_prompt = {
   --   enable = true,
   --   sign = true,
   --   sign_priority = 20,
   --   virtual_text = true,
   -- },
+
   finder_definition_icon = '▸  ',
   finder_reference_icon = '▸  ',
+
   -- max_preview_lines = 10, -- preview lines of lsp_finder and definition preview
   -- finder_action_keys = {
   --   open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>' -- quit can be a table
@@ -773,7 +786,9 @@ lspsaga.init_lsp_saga {
   -- rename_action_keys = {
   --   quit = '<C-c>',exec = '<CR>'  -- quit can be a table
   -- },
+
   definition_preview_icon = '▸  '
+
   -- "single" "double" "round" "plus"
   -- border_style = "single"
   -- rename_prompt_prefix = '➤',
@@ -810,6 +825,23 @@ let g:aerial = {
   \ 'default_direction': 'right',
   \ 'min_width': '20',
   \}
+"""" }}}
+"""" nvim-web-devicons, nvim-tree {{{
+let g:nvim_tree_show_icons = {
+    \ 'git': 1,
+    \ 'folders': 1,
+    \ 'files': 1,
+    \ 'folder_arrows': 1,
+    \ }
+
+lua  << EOF
+
+--  require('nvim-web-devicons').setup()
+
+--  require('nvim-tree').setup()
+
+EOF
+
 """" }}}
 
 """""""" }}}
@@ -931,7 +963,8 @@ nnoremap gj j
 nnoremap gk K
 
 """ NERTTree
-noremap nt :NERDTreeToggle <CR>
+"  noremap nt :NvimTreeToggle <CR>
+noremap nt :NERDTreeToggle<CR>
 
 """ keymap
 nmap s <Plug>(easymotion-s2)
