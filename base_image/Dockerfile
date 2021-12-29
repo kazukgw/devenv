@@ -383,6 +383,13 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
+### starship {{{
+  && ( \
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)" \
+  ) \
+# }}}
+
+
 ### go pkgs {{{
   && export GOROOT=${DEVENVROOT}/.go \
   && export PATH=${DEVENVROOT}/.go/bin:$PATH \
@@ -441,6 +448,7 @@ COPY fzf-command.bash ${DEVENVROOT}/.fzf-command.bash
 COPY lfrc ${DEVENVROOT}/.config/lf/lfrc
 COPY lfcd.sh ${DEVENVROOT}/.lfcd.sh
 COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
+COPY starship.toml ${DEVENVROOT}/.config/starship.toml
 # }}}
 
 

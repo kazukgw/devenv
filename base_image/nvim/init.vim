@@ -87,11 +87,11 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'sainnhe/sonokai'
 
 " Devicon
-" Plug 'ryanoasis/vim-devicons'
-" Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
 
 "  tree
-" Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Lua library
 Plug 'nvim-lua/plenary.nvim'
@@ -110,8 +110,8 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/nvim-cmp'
 
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'scrooloose/nerdtree'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kassio/neoterm'
 " Plug 'glepnir/lspsaga.nvim'
 Plug 'tami5/lspsaga.nvim'
@@ -759,35 +759,35 @@ local lspsaga = require('lspsaga')
 lspsaga.init_lsp_saga {
   -- use_saga_diagnostic_sign = true
 
-  error_sign = 'Ⓔ',
-  warn_sign = 'Ⓦ',
-  hint_sign = 'ⓗ',
-  infor_sign = 'ⓘ',
-  diagnostic_header_icon = ' ▸ ',
-  code_action_icon = ' ',
-
-  -- code_action_prompt = {
-  --   enable = true,
-  --   sign = true,
-  --   sign_priority = 20,
-  --   virtual_text = true,
-  -- },
-
-  finder_definition_icon = '▸  ',
-  finder_reference_icon = '▸  ',
-
-  -- max_preview_lines = 10, -- preview lines of lsp_finder and definition preview
-  -- finder_action_keys = {
-  --   open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>' -- quit can be a table
-  -- },
-  -- code_action_keys = {
-  --   quit = 'q',exec = '<CR>'
-  -- },
-  -- rename_action_keys = {
-  --   quit = '<C-c>',exec = '<CR>'  -- quit can be a table
-  -- },
-
-  definition_preview_icon = '▸  '
+--  error_sign = '﮻',
+--  warn_sign = '',
+--  hint_sign = '',
+--  infor_sign = '',
+--  diagnostic_header_icon = '  ',
+--  code_action_icon = ' ',
+--
+--  -- code_action_prompt = {
+--  --   enable = true,
+--  --   sign = true,
+--  --   sign_priority = 20,
+--  --   virtual_text = true,
+--  -- },
+--
+--  finder_definition_icon = '  ',
+--  finder_reference_icon = '  ',
+--
+--  -- max_preview_lines = 10, -- preview lines of lsp_finder and definition preview
+--  -- finder_action_keys = {
+--  --   open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>' -- quit can be a table
+--  -- },
+--  -- code_action_keys = {
+--  --   quit = 'q',exec = '<CR>'
+--  -- },
+--  -- rename_action_keys = {
+--  --   quit = '<C-c>',exec = '<CR>'  -- quit can be a table
+--  -- },
+--
+--  definition_preview_icon = '  '
 
   -- "single" "double" "round" "plus"
   -- border_style = "single"
@@ -836,9 +836,9 @@ let g:nvim_tree_show_icons = {
 
 lua  << EOF
 
---  require('nvim-web-devicons').setup()
+require('nvim-web-devicons').setup()
 
---  require('nvim-tree').setup()
+require('nvim-tree').setup()
 
 EOF
 
@@ -963,8 +963,8 @@ nnoremap gj j
 nnoremap gk K
 
 """ NERTTree
-"  noremap nt :NvimTreeToggle <CR>
-noremap nt :NERDTreeToggle<CR>
+noremap nt :NvimTreeToggle <CR>
+" noremap nt :NERDTreeToggle<CR>
 
 """ keymap
 nmap s <Plug>(easymotion-s2)

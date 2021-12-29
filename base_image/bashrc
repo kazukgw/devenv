@@ -150,6 +150,13 @@ source $HOME/.functions
 # }}}
 
 
+### starship {{{
+
+eval "$(starship init bash)" -- -y
+
+# }}}
+
+
 ### extenstion {{{
 
 [ -f ~/.bashrc_extension ] && source $HOME/.bashrc_extension

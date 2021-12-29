@@ -1,0 +1,24 @@
+[character]
+format = '[❯ ](bold 35)'
+
+[memory_usage]
+disabled = true
+
+[time]
+# time_format = "%T"
+style = "bold fg:214"
+format = ' [\[$time\]]($style) '
+disabled = false
+
+[username]
+style_user = "bold dimmed blue"
+show_always = true
+disabled = false
+
+[directory]
+style = "fg:33"
+truncate_to_repo = false
+truncation_length = 10
+
+[git_branch]
+style = "bold fg:198"
