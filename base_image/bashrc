@@ -152,7 +152,7 @@ source $HOME/.functions
 
 ### starship {{{
 
-eval "$(starship init bash)" -- -y
+eval "$(starship init bash)"
 
 # }}}
 
