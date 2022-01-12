@@ -36,6 +36,7 @@ RUN apt-get update --fix-missing \
     dnsutils \
     docker.io \
     exuberant-ctags \
+    fd-find \
     g++ \
     gawk \
     gfortran \
