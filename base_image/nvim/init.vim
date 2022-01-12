@@ -819,6 +819,7 @@ require('telescope').setup({
     current_buffer_fuzzy_find = picker_settings,
     live_grep = picker_settings,
     git_bcommits = picker_settings,
+    quickfix = picker_settings,
   },
 })
 EOF
@@ -1147,6 +1148,8 @@ command! Keymaps :lua require('telescope.builtin').keymaps{}
 command! Ls :lua require('telescope.builtin').buffers()
 
 command! BufHist :lua require('telescope.builtin').git_bcommits()
+
+command! -nargs=* -complete=dir Rg :call luaeval("require('telescope.builtin').live_grep({search_dirs = _A})", [<f-args>])
 
 """""""" }}}
 
