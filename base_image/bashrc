@@ -23,7 +23,7 @@ fi
 
 export TERM=xterm-color
 export EDITOR=nvim
-export PATH=$HOME/.devenv_bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/.devenv/bin:$HOME/.local/bin:$PATH
 
 # }}}
 

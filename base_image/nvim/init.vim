@@ -825,10 +825,14 @@ require('telescope').setup({
 EOF
 """" }}}
 """" aerial {{{
-let g:aerial = {
-  \ 'default_direction': 'right',
-  \ 'min_width': '20',
-  \}
+lua << EOF
+
+require('aerial').setup({
+  default_direction = 'right',
+  min_width = '20',
+})
+
+EOF
 """" }}}
 """" nvim-web-devicons, nvim-tree {{{
 let g:nvim_tree_show_icons = {

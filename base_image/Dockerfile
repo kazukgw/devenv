@@ -2,27 +2,24 @@ FROM ubuntu:22.04
 
 ENV DEVENV_VERSION=4.1.0
 
-ENV DEVENVROOT=/home/devenv
-
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG USER="developer"
+ARG USERID="501"
+ARG PASSWORD="password"
+ARG HOMEDIR=/home/developer
+ARG DEVENVROOT=/home/.devenv
 
-### do apt-get update and install wget due to get repository {{{
-RUN apt-get update --fix-missing \
+## create user, group, home
+RUN groupadd -g $USERID $USER \
+  && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
+  && echo "$USER:$PASSWORD" | chpasswd \
+  && mkdir -p $DEVENVROOT/bin \
+
+## apt {{{
+  && apt-get update --fix-missing \
   && apt-get install -y wget software-properties-common gnupg \
-# }}}
-
-
-### change repository {{{
-  # && wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - \
-  # && wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - \
-  # && wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list \
-  # && echo "Package: *\nPin: origin \"archive.ubuntulinux.jp\"\nPin-Priority: 600\n" > /etc/apt/preferences \
-# }}}
-
-
-### apt pkgs {{{
   && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
     apt-transport-https \
     bc \
@@ -97,10 +94,9 @@ RUN apt-get update --fix-missing \
 
 
 ### devenv {{{
-  && mkdir -p ${DEVENVROOT} \
-  && mkdir -p ${DEVENVROOT}/src \
-  && mkdir -p ${DEVENVROOT}/bin \
-  && mkdir -p ${DEVENVROOT}/pkg \
+  && mkdir ${HOMEDIR}/src \
+  && mkdir ${HOMEDIR}/bin \
+  && mkdir ${HOMEDIR}/pkg \
 # }}}
 
 
@@ -121,17 +117,16 @@ RUN apt-get update --fix-missing \
     export GOVERSION=1.17.5 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
-    && mkdir -p ${DEVENVPATH}/.go \
-    && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${DEVENVROOT} \
-    && mv ${DEVENVROOT}/go  ${DEVENVROOT}/.go \
+    && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz \
+    && mv go  ${HOMEDIR}/.go \
     && rm go${GOVERSION}.linux-amd64.tar.gz \
   ) \
 # }}}
 
 
 ### fzf {{{
-  && git clone --depth 1 https://github.com/junegunn/fzf.git ${DEVENVROOT}/.fzf \
-  && ${DEVENVROOT}/.fzf/install --bin \
+  && git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
+  && ${HOMEDIR}/.fzf/install --bin \
 # }}}
 
 
@@ -178,17 +173,8 @@ RUN apt-get update --fix-missing \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
-    && mv google-cloud-sdk ${DEVENVROOT}/.google-cloud-sdk \
+    && mv google-cloud-sdk ${HOMEDIR}/.google-cloud-sdk \
   ) \
-# }}}
-
-
-### docker {{{
-#  && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \
-#  && add-apt-repository \
-#    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable test edge" \
-#  && apt-get update \
-#  && apt-get install docker-ce -y \
 # }}}
 
 
@@ -219,11 +205,11 @@ RUN apt-get update --fix-missing \
 
 
 ### nodejs {{{
-  && export N_PREFIX=${DEVENVROOT}/.n \
+  && export N_PREFIX=${HOMEDIR}/.n \
   && curl -L https://git.io/n-install | bash -s -- -y \
-  && chmod +x ${DEVENVROOT}/.n/bin/n \
-  && export PATH=${DEVENVROOT}/.n/bin:$PATH \
-  && ${DEVENVROOT}/.n/bin/npm install --global \
+  && chmod +x ${HOMEDIR}/.n/bin/n \
+  && export PATH=${HOMEDIR}/.n/bin:$PATH \
+  && ${HOMEDIR}/.n/bin/npm install --global \
   eslint \
   yarn \
   prettier \
@@ -238,7 +224,7 @@ RUN apt-get update --fix-missing \
 
 
 ### python {{{
-  && git clone https://github.com/pyenv/pyenv.git $DEVENVROOT/.pyenv \
+  && git clone https://github.com/pyenv/pyenv.git $HOMEDIR/.pyenv \
   && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python \
   && rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip \
   && pip install --upgrade \
@@ -257,7 +243,7 @@ RUN apt-get update --fix-missing \
 
 
 ### java {{{
-  && export SDKMAN_DIR=${DEVENVROOT}/.sdkman \
+  && export SDKMAN_DIR=${HOMEDIR}/.sdkman \
   && curl -s "https://get.sdkman.io" | bash \
 # }}}
 
@@ -265,7 +251,7 @@ RUN apt-get update --fix-missing \
 ### terraform {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
-    && git clone https://github.com/tfutils/tfenv.git $DEVENVROOT/.tfenv \
+    && git clone https://github.com/tfutils/tfenv.git $HOMEDIR/.tfenv \
     && export TERRAFORM_VERSION=1.1.0 \
     && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip ./terraform.zip \
@@ -300,7 +286,7 @@ RUN apt-get update --fix-missing \
 
 ### lf {{{
   && curl -L https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xzC ${DEVENVROOT}/bin \
-  && mkdir -p ${DEVENVROOT}/.config/lf \
+  && mkdir -p ${HOMEDIR}/.config/lf \
 # }}}
 
 
@@ -337,7 +323,7 @@ RUN apt-get update --fix-missing \
 
 ### krew {{{
   && ( \
-    export KREW_ROOT=${DEVENVROOT}/.krew \
+    export KREW_ROOT=${HOMEDIR}/.krew \
     && mkdir -p $KREW_ROOT/bin \
     && mkdir -p $KREW_ROOT/receipts \
     && touch $KREW_ROOT/receipts/__dummy.yaml \
@@ -392,8 +378,8 @@ RUN apt-get update --fix-missing \
 
 
 ### go pkgs {{{
-  && export GOROOT=${DEVENVROOT}/.go \
-  && export PATH=${DEVENVROOT}/.go/bin:$PATH \
+  && export GOROOT=${HOMEDIR}/.go \
+  && export PATH=${HOMEDIR}/.go/bin:$PATH \
   && mkdir -p /usr/local/go \
   && mkdir -p /usr/local/go/src \
   && mkdir -p /usr/local/go/bin \
@@ -424,52 +410,33 @@ RUN apt-get update --fix-missing \
 # }}}
 
 
-### move DEVENVROOT/bin to DEVENVROOT/.devenv_bin {{{
-  && mv ${DEVENVROOT}/bin ${DEVENVROOT}/.devenv_bin \
-  && mkdir -p ${DEVENVROOT}/bin
+### change permission {{{
+  && chown -R $USER:$USER $HOMEDIR
 # }}}
+
 
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
 
 ### nvim & dotfiles {{{
-COPY nvim ${DEVENVROOT}/.config/nvim
-COPY bashrc ${DEVENVROOT}/.bashrc
-COPY bash_prompt ${DEVENVROOT}/.bash_prompt
-COPY templates ${DEVENVROOT}/.templates
-COPY cheatsheets ${DEVENVROOT}/.cheatsheets
-COPY functions ${DEVENVROOT}/.functions
-COPY tmux.conf ${DEVENVROOT}/.tmux.conf
-COPY git-prompt ${DEVENVROOT}/.git-prompt
-COPY git-completion ${DEVENVROOT}/.git-completion
-COPY gitconfig ${DEVENVROOT}/.gitconfig
-COPY tigrc ${DEVENVROOT}/.tigrc
-COPY fzf.bash ${DEVENVROOT}/.fzf.bash
-COPY fzf-command.bash ${DEVENVROOT}/.fzf-command.bash
-COPY lfrc ${DEVENVROOT}/.config/lf/lfrc
-COPY lfcd.sh ${DEVENVROOT}/.lfcd.sh
-COPY sudo_as_admin_successful ${DEVENVROOT}/.sudo_as_admin_successful
-COPY starship.toml ${DEVENVROOT}/.config/starship.toml
+COPY --chown=developer:developer nvim ${HOMEDIR}/.config/nvim
+COPY --chown=developer:developer bashrc ${HOMEDIR}/.bashrc
+COPY --chown=developer:developer bash_prompt ${HOMEDIR}/.bash_prompt
+COPY --chown=developer:developer templates ${HOMEDIR}/.templates
+COPY --chown=developer:developer cheatsheets ${HOMEDIR}/.cheatsheets
+COPY --chown=developer:developer functions ${HOMEDIR}/.functions
+COPY --chown=developer:developer tmux.conf ${HOMEDIR}/.tmux.conf
+COPY --chown=developer:developer git-prompt ${HOMEDIR}/.git-prompt
+COPY --chown=developer:developer git-completion ${HOMEDIR}/.git-completion
+COPY --chown=developer:developer gitconfig ${HOMEDIR}/.gitconfig
+COPY --chown=developer:developer tigrc ${HOMEDIR}/.tigrc
+COPY --chown=developer:developer fzf.bash ${HOMEDIR}/.fzf.bash
+COPY --chown=developer:developer fzf-command.bash ${HOMEDIR}/.fzf-command.bash
+COPY --chown=developer:developer lfrc ${HOMEDIR}/.config/lf/lfrc
+COPY --chown=developer:developer lfcd.sh ${HOMEDIR}/.lfcd.sh
+COPY --chown=developer:developer sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
+COPY --chown=developer:developer starship.toml ${HOMEDIR}/.config/starship.toml
 # }}}
-
-ARG USER="developer"
-ARG USERID="501"
-ARG DOCKER_GID="999"
-ARG PASSWORD="password"
-ARG HOMEDIR="/devenv"
-
-## create user, group, home
-RUN groupadd -g $USERID $USER \
-    && mkdir -p $HOMEDIR \
-    && useradd -u $USERID -g $USER -G sudo -m -d $HOMEDIR -s /bin/bash $USER \
-    && echo "$USER:$PASSWORD" | chpasswd \
-    && if [ -n "$DOCKER_GID" ]; then groupmod -g $DOCKER_GID docker; fi \
-    && usermod -aG docker $USER \
-    && mv ${DEVENVROOT}/* $HOMEDIR/ \
-    && mv ${DEVENVROOT}/.[^.]* $HOMEDIR/
-
-## change permission
-RUN chown -R $USER:$USER $HOMEDIR
 
 USER $USER
 WORKDIR $HOMEDIR
