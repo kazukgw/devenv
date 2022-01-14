@@ -213,13 +213,16 @@ RUN groupadd -g $USERID $USER \
   eslint \
   yarn \
   prettier \
+  @google/clasp \
   vim-language-server \
+  typescript \
   typescript-language-server \
+  svelte-language-server \
   yaml-language-server \
   bash-language-server \
   pyright \
-  vscode-html-languageserver-bin \
-  vscode-css-languageserver-bin \
+  vscode-langservers-extracted \
+  zx \
 # }}}
 
 
