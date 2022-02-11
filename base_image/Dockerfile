@@ -5,11 +5,11 @@ ENV DEVENV_VERSION=4.1.0
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG USER="developer"
+ARG USER="devenv"
 ARG USERID="501"
-ARG PASSWORD="password"
-ARG HOMEDIR=/home/developer
-ARG DEVENVROOT=/home/.devenv
+ARG PASSWORD="devenv"
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
 
 ## create user, group, home
 RUN groupadd -g $USERID $USER \
@@ -422,23 +422,23 @@ RUN groupadd -g $USERID $USER \
 ENV LANG=ja_JP.UTF-8
 
 ### nvim & dotfiles {{{
-COPY --chown=developer:developer nvim ${HOMEDIR}/.config/nvim
-COPY --chown=developer:developer bashrc ${HOMEDIR}/.bashrc
-COPY --chown=developer:developer bash_prompt ${HOMEDIR}/.bash_prompt
-COPY --chown=developer:developer templates ${HOMEDIR}/.templates
-COPY --chown=developer:developer cheatsheets ${HOMEDIR}/.cheatsheets
-COPY --chown=developer:developer functions ${HOMEDIR}/.functions
-COPY --chown=developer:developer tmux.conf ${HOMEDIR}/.tmux.conf
-COPY --chown=developer:developer git-prompt ${HOMEDIR}/.git-prompt
-COPY --chown=developer:developer git-completion ${HOMEDIR}/.git-completion
-COPY --chown=developer:developer gitconfig ${HOMEDIR}/.gitconfig
-COPY --chown=developer:developer tigrc ${HOMEDIR}/.tigrc
-COPY --chown=developer:developer fzf.bash ${HOMEDIR}/.fzf.bash
-COPY --chown=developer:developer fzf-command.bash ${HOMEDIR}/.fzf-command.bash
-COPY --chown=developer:developer lfrc ${HOMEDIR}/.config/lf/lfrc
-COPY --chown=developer:developer lfcd.sh ${HOMEDIR}/.lfcd.sh
-COPY --chown=developer:developer sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
-COPY --chown=developer:developer starship.toml ${HOMEDIR}/.config/starship.toml
+COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
+COPY --chown=devenv:devenv bashrc ${HOMEDIR}/.bashrc
+COPY --chown=devenv:devenv bash_prompt ${HOMEDIR}/.bash_prompt
+COPY --chown=devenv:devenv templates ${HOMEDIR}/.templates
+COPY --chown=devenv:devenv cheatsheets ${HOMEDIR}/.cheatsheets
+COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
+COPY --chown=devenv:devenv tmux.conf ${HOMEDIR}/.tmux.conf
+COPY --chown=devenv:devenv git-prompt ${HOMEDIR}/.git-prompt
+COPY --chown=devenv:devenv git-completion ${HOMEDIR}/.git-completion
+COPY --chown=devenv:devenv gitconfig ${HOMEDIR}/.gitconfig
+COPY --chown=devenv:devenv tigrc ${HOMEDIR}/.tigrc
+COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.bash
+COPY --chown=devenv:devenv fzf-command.bash ${HOMEDIR}/.fzf-command.bash
+COPY --chown=devenv:devenv lfrc ${HOMEDIR}/.config/lf/lfrc
+COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
+COPY --chown=devenv:devenv sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
+COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
 # }}}
 
 USER $USER
