@@ -124,7 +124,8 @@ Plug 'tami5/lspsaga.nvim'
 " Plug 'RishabhRD/lspactions'
 Plug 'ray-x/lsp_signature.nvim'
 " Plug 'folke/trouble.nvim'
-Plug 'stevearc/aerial.nvim'
+" Plug 'stevearc/aerial.nvim'
+Plug 'simrat39/symbols-outline.nvim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -234,7 +235,9 @@ local on_attach = function (client, bufnr)
   keymap('n', 'gs', "<cmd>lua require('telescope.builtin').treesitter()<CR>", opt)
   keymap('n', 'ga', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", opt)
   keymap('n', 'ga', ":<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>", opt)
-  keymap('n', 'tb', "<cmd>AerialToggle!<CR>", opt)
+  -- keymap('n', 'tb', "<cmd>AerialToggle!<CR>", opt)
+  keymap('n', 'tb', "<cmd>SymbolsOutline<CR>", opt)
+
 
   if client.resolved_capabilities.document_formatting then
     vim.api.nvim_exec([[
@@ -248,7 +251,7 @@ local on_attach = function (client, bufnr)
   -- require('completion').on_attach(client)
   -- require('illuminate').on_attach(client)
   require('lsp_signature').on_attach()
-  require('aerial').on_attach(client)
+  -- require('aerial').on_attach(client)
 end
 
 local disable_formatting_on_init = function(client, initialize_result)
@@ -827,10 +830,10 @@ EOF
 """" aerial {{{
 lua << EOF
 
-require('aerial').setup({
-  default_direction = 'right',
-  min_width = '20',
-})
+-- require('aerial').setup({
+--   default_direction = 'right',
+--   min_width = '20',
+-- })
 
 EOF
 """" }}}

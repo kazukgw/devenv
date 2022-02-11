@@ -179,7 +179,7 @@ RUN groupadd -g $USERID $USER \
 
 
 ### neovim {{{
-  && add-apt-repository -y ppa:neovim-ppa/unstable \
+  && add-apt-repository -y ppa:neovim-ppa/stable \
   && apt-get update \
   && apt-get install neovim -y \
 # }}}
