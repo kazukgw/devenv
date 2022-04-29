@@ -251,6 +251,14 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
+### rust {{{
+  && ( \
+    cull --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh \
+    && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
+  ) \
+# }}}
+
+
 ### terraform {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
@@ -347,17 +355,6 @@ RUN groupadd -g $USERID $USER \
   && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64 \
   && chmod +x ./kind \
   && mv ./kind ${DEVENVROOT}/bin/kind \
-# }}}
-
-
-### Helmfile {{{
-  && ( \
-    export HELMFILE_VERSION="0.142.0" \
-    && set -x; cd "$(mktemp -d)" \
-    && curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
-    && chmod +x helmfile \
-    && mv helmfile ${DEVENVROOT}/bin/ \
-  ) \
 # }}}
 
 

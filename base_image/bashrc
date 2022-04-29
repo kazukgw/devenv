@@ -92,6 +92,9 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
+# rust
+export PATH=$HOME/.cargo/bin:$PATH
+
 # fzf
 export PATH=$HOME/.fzf/bin:$PATH
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}"'
