@@ -303,12 +303,6 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
-### git-now {{{
-  && git clone --recursive git://github.com/iwata/git-now.git \
-  && (cd git-now && make install) \
-# }}}
-
-
 ### kubectl {{{
   && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
   && mv kubectl ${DEVENVROOT}/bin/kubectl \
