@@ -254,11 +254,11 @@ RUN groupadd -g $USERID $USER \
 ### rust {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
+    && export RUSTUP_HOME=${HOMEDIR}/.rustup \
+    && export CARGO_HOME=${HOMEDIR}/.cargo \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz -o rust-analyzer.gz \
     && gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
-    && mv .cargo  ${HOMEDIR}/.cargo \
-    && mv .rustup ${HOMEDIR}/.rustup \
   ) \
 # }}}
 
