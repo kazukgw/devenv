@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-ENV DEVENV_VERSION=4.1.0
+ENV DEVENV_VERSION=5.0.0
 
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
@@ -102,9 +102,9 @@ RUN groupadd -g $USERID $USER \
 
 ### tmux {{{
   && ( \
-    curl -sSL -o tmux-3.2.tar.gz https://github.com/tmux/tmux/releases/download/3.2/tmux-3.2.tar.gz \
-    && tar zxvf tmux-3.2.tar.gz \
-    && cd tmux-3.2 \
+    curl -sSL -o tmux-3.3a.tar.gz https://github.com/tmux/tmux/releases/download/3.3a/tmux-3.3a.tar.gz \
+    && tar zxvf tmux-3.3a.tar.gz \
+    && cd tmux-3.3a \
     && ./configure \
     && make \
     && make install \
@@ -114,7 +114,7 @@ RUN groupadd -g $USERID $USER \
 
 ### golang {{{
   && ( \
-    export GOVERSION=1.17.5 \
+    export GOVERSION=1.19.1 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
     && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz \
@@ -168,7 +168,7 @@ RUN groupadd -g $USERID $USER \
 
 ### google cloud sdk {{{
   && ( \
-    export CLOUD_SDK_VERSION=366.0.0 \
+    export CLOUD_SDK_VERSION=402.0.0 \
     && set -x; cd "$(mktemp -d)" \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -188,7 +188,7 @@ RUN groupadd -g $USERID $USER \
 ### terraform-ls {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
-    && export TERRAFORM_VERSION=1.1.0 \
+    && export TERRAFORM_VERSION=1.2.9 \
     && curl -fsSL -o terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" \
     && unzip terraform.zip \
     && chmod +x terraform \
@@ -276,7 +276,7 @@ RUN groupadd -g $USERID $USER \
 
 ### termshark {{{
   && ( \
-    export TERMSHARK_VERSION=2.3.0 \
+    export TERMSHARK_VERSION=2.4.0 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
     && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
@@ -288,7 +288,7 @@ RUN groupadd -g $USERID $USER \
 
 ### ttyd {{{
   && ( \
-    export TTYD_VERSION=1.6.3 \
+    export TTYD_VERSION=1.7.1 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
     && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
@@ -356,7 +356,7 @@ RUN groupadd -g $USERID $USER \
 
 ### k9s {{{
   && ( \
-    export K9S_VERSION="0.25.8" \
+    export K9S_VERSION="0.26.3" \
     && set -x; cd "$(mktemp -d)" \
     && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
     && tar zxvf k9s.tar.gz \
@@ -387,6 +387,14 @@ RUN groupadd -g $USERID $USER \
   && go install github.com/go-delve/delve/cmd/dlv@latest \
   && go install github.com/mholt/archiver/cmd/arc@latest \
   && go install github.com/laurent22/massren@latest \
+# }}}
+
+
+### rust {{{
+
+  && ( \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+  ) \
 # }}}
 
 
@@ -461,6 +469,6 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install gradle' \
   && /bin/bash -c '\
   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-  && pyenv install 3.9.4'
+  && pyenv install 3.10.6'
 
 # vim: foldmethod=marker foldlevel=0
