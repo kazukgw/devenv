@@ -348,8 +348,8 @@ EOF
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  -- ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
     -- disable = { "c", "rust" },  -- list of language that will be disabled
@@ -896,13 +896,6 @@ vim.g.symbols_outline = {
 EOF
 """" }}}
 """" nvim-web-devicons, nvim-tree {{{
-let g:nvim_tree_show_icons = {
-    \ 'git': 1,
-    \ 'folders': 1,
-    \ 'files': 1,
-    \ 'folder_arrows': 1,
-    \ }
-
 lua  << EOF
 
 require('nvim-web-devicons').setup()
@@ -910,6 +903,16 @@ require('nvim-web-devicons').setup()
 require('nvim-tree').setup({
   git = {
     ignore = false,
+  },
+  renderer = {
+    icons = {
+      show = {
+        git = true,
+        file = true,
+        folder = true,
+        folder_arrow = true,
+      }
+    }
   }
 })
 
