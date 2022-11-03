@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ENV DEVENV_VERSION=5.0.0
+ENV DEVENV_VERSION=5.0.1
 
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
@@ -185,17 +185,6 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
-### terraform-ls {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && export TERRAFORM_VERSION=1.2.9 \
-    && curl -fsSL -o terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" \
-    && unzip terraform.zip \
-    && chmod +x terraform \
-    && mv terraform ${DEVENVROOT}/bin/ \
-  ) \
-# }}}
-
 
 ### apt clean {{{
   && apt-get autoremove \
@@ -267,7 +256,7 @@ RUN groupadd -g $USERID $USER \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && git clone https://github.com/tfutils/tfenv.git $HOMEDIR/.tfenv \
-    && export TERRAFORM_VERSION=1.1.0 \
+    && export TERRAFORM_VERSION=1.3.4 \
     && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip ./terraform.zip \
     && chmod +x ./terraform \
@@ -463,6 +452,6 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install gradle' \
   && /bin/bash -c '\
   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-  && pyenv install 3.10.6'
+  && pyenv install 3.10.7'
 
 # vim: foldmethod=marker foldlevel=0
