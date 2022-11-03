@@ -185,7 +185,6 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
-
 ### apt clean {{{
   && apt-get autoremove \
   && apt-get clean \
@@ -248,6 +247,15 @@ RUN groupadd -g $USERID $USER \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz -o rust-analyzer.gz \
     && gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
+  ) \
+# }}}
+
+
+### haskell {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
+    && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
   ) \
 # }}}
 

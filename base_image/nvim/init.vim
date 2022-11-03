@@ -285,6 +285,7 @@ lspconfig.terraformls.setup {
 lspconfig.yamlls.setup { on_attach = on_attach }
 lspconfig.bashls.setup { on_attach = on_attach }
 lspconfig.fsautocomplete.setup { on_attach = on_attach }
+lspconfig.hls.setup { on_attach = on_attach }
 
 local on_attach_efm = function(client)
   -- Set autocommands conditional on server_capabilities
@@ -520,6 +521,8 @@ lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'
 
+  local select_opts = {behavior = cmp.SelectBehavior.Select}
+
   cmp.setup({
     snippet = {
      -- REQUIRED - you must specify a snippet engine
@@ -531,6 +534,8 @@ lua <<EOF
      end,
     },
     mapping = {
+      ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
+      ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
       ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
       ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
       ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
