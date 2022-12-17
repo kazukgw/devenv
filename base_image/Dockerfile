@@ -404,9 +404,32 @@ RUN ( \
   )
 # }}}
 
-
-
 ################################### stage5
+FROM stage1 as merged
+
+ARG USER="devenv"
+ARG USERID="501"
+ARG PASSWORD="devenv"
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+RUN mkdir -p /tmp/stage2 \
+  && mkdir -p /tmp/stage3 \
+  && mkdir -p /tmp/stage4
+
+### copy from stages {{{
+COPY --from=stage2 ${HOMEDIR}/* /tmp/stage2
+COPY --from=stage3 ${HOMEDIR}/* /tmp/stage3
+COPY --from=stage4 ${HOMEDIR}/* /tmp/stage4
+# }}}
+
+RUN cp -r /tmp/stage2/* ${HOMEDIR} \
+  && cp -r /tmp/stage3/* ${HOMEDIR} \
+  && cp -r /tmp/stage4/* ${HOMEDIR} 
+
+
+
+################################### stage6
 FROM stage1 as devenv
 
 ARG USER="devenv"
@@ -416,7 +439,7 @@ ARG HOMEDIR=/home/devenv
 ARG DEVENVROOT=/home/devenv/.devenv
 
 
-ENV DEVENV_VERSION=5.2.2
+ENV DEVENV_VERSION=5.3.0
 
 # golang
 ENV GOROOT $HOMEDIR/.go
@@ -439,13 +462,7 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
 
-
-### copy from stages {{{
-COPY --from=stage2 ${HOMEDIR}/* ${HOMEDIR}
-COPY --from=stage3 ${HOMEDIR}/* ${HOMEDIR}
-COPY --from=stage4 ${HOMEDIR}/* ${HOMEDIR}
-# }}}
-
+COPY --from=merged ${HOMEDIR}/* ${HOMEDIR}
 
 ### nvim & dotfiles {{{
 COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
