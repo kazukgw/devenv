@@ -368,12 +368,19 @@ RUN ( \
 
 ### java {{{
   && export SDKMAN_DIR=${HOMEDIR}/.sdkman \
-  && curl -s "https://get.sdkman.io" | bash \
+  && curl -s "https://get.sdkman.io" | bash
 # }}}
 
 
+
+################################### stage5
+FROM stage1 as stage5
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
 ### rust {{{
-  && ( \
+RUN ( \
     set -x; cd "$(mktemp -d)" \
     && export RUSTUP_HOME=${HOMEDIR}/.rustup \
     && export CARGO_HOME=${HOMEDIR}/.cargo \
@@ -404,7 +411,9 @@ RUN ( \
   )
 # }}}
 
-################################### stage5
+
+
+################################### stage6
 FROM stage1 as merged
 
 ARG USER="devenv"
@@ -412,21 +421,6 @@ ARG USERID="501"
 ARG PASSWORD="devenv"
 ARG HOMEDIR=/home/devenv
 ARG DEVENVROOT=/home/devenv/.devenv
-
-RUN mkdir -p /tmp/stage2 \
-  && mkdir -p /tmp/stage3 \
-  && mkdir -p /tmp/stage4
-
-### copy from stages {{{
-COPY --from=stage2 ${HOMEDIR} /tmp/stage2
-COPY --from=stage3 ${HOMEDIR} /tmp/stage3
-COPY --from=stage4 ${HOMEDIR} /tmp/stage4
-# }}}
-
-RUN cp -a /tmp/stage2/. ${HOMEDIR} \
-  && cp -a /tmp/stage3/. ${HOMEDIR} \
-  && cp -a /tmp/stage4/. ${HOMEDIR} 
-
 
 
 ################################### stage6
@@ -462,7 +456,7 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
 
-COPY --from=merged ${HOMEDIR}/* ${HOMEDIR}
+COPY --from=merged ${HOMEDIR} ${HOMEDIR}
 
 ### nvim & dotfiles {{{
 COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
@@ -485,9 +479,25 @@ COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
 # }}}
 
 
+RUN mkdir -p /tmp/stage2 \
+  && mkdir -p /tmp/stage3 \
+  && mkdir -p /tmp/stage4 \
+  && mkdir -p /tmp/stage5
+
+### copy from stages {{{
+COPY --from=stage2 ${HOMEDIR} /tmp/stage2
+COPY --from=stage3 ${HOMEDIR} /tmp/stage3
+COPY --from=stage4 ${HOMEDIR} /tmp/stage4
+COPY --from=stage5 ${HOMEDIR} /tmp/stage5
+# }}}
+
+RUN cp -a /tmp/stage2/. ${HOMEDIR}/ \
+  && cp -a /tmp/stage3/. ${HOMEDIR}/ \
+  && cp -a /tmp/stage4/. ${HOMEDIR}/ \
+  && cp -a /tmp/stage5/. ${HOMEDIR}/  \
 
 ## go pkgs {{{
-RUN  ls -la ${HOMEDIR} \
+  && ls -la ${HOMEDIR} \
   && export GOROOT=${HOMEDIR}/.go \
   && export PATH=${HOMEDIR}/.go/bin:$PATH \
   && mkdir -p /usr/local/go \
@@ -519,6 +529,7 @@ RUN  ls -la ${HOMEDIR} \
   && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
 # }}}
 
+  && rm -rf /tmp/* \
 
 ### change permission {{{
   && chown -R $USER:$USER $HOMEDIR
