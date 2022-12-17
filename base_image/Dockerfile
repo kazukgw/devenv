@@ -1,15 +1,15 @@
-FROM ubuntu:22.04
+################################### stage1
+FROM ubuntu:22.04 as stage1
 
-ENV DEVENV_VERSION=5.1.2
-
-## for ubuntu 18.04 tzdata
-ENV DEBIAN_FRONTEND=noninteractive
 
 ARG USER="devenv"
 ARG USERID="501"
 ARG PASSWORD="devenv"
 ARG HOMEDIR=/home/devenv
 ARG DEVENVROOT=/home/devenv/.devenv
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 
 ## create user, group, home
 RUN groupadd -g $USERID $USER \
@@ -36,7 +36,7 @@ RUN groupadd -g $USERID $USER \
     fd-find \
     g++ \
     gawk \
-    gfortran \
+    # gfortran \
     git \
     git-extras \
     htop \
@@ -112,20 +112,23 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
-### golang {{{
-  && ( \
-    export GOVERSION=1.19.4 \
-    && set -x; cd "$(mktemp -d)" \
-    && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
-    && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz \
-    && mv go  ${HOMEDIR}/.go \
-    && rm go${GOVERSION}.linux-amd64.tar.gz \
-  ) \
+### apt clean {{{
+  && apt-get autoremove \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 # }}}
 
 
+
+
+################################### stage2
+FROM stage1 as stage2
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
 ### fzf {{{
-  && git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
   && ${HOMEDIR}/.fzf/install --bin \
 # }}}
 
@@ -190,10 +193,138 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
-### apt clean {{{
-  && apt-get autoremove \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
+
+### terraform {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && git clone https://github.com/tfutils/tfenv.git $HOMEDIR/.tfenv \
+    && export TERRAFORM_VERSION=1.3.6 \
+    && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip ./terraform.zip \
+    && chmod +x ./terraform \
+    && mv ./terraform ${DEVENVROOT}/bin/ \
+  ) \
+#}}}
+
+
+### termshark {{{
+  && ( \
+    export TERMSHARK_VERSION=2.4.0 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+    && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
+    && mv termshark_${TERMSHARK_VERSION}_linux_x64/termshark  ${DEVENVROOT}/bin \
+    && rm -r termshark_${TERMSHARK_VERSION}_linux_x64* \
+  ) \
+# }}}
+
+
+### ttyd {{{
+  && ( \
+    export TTYD_VERSION=1.7.2 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
+    && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
+    && chmod +x ${DEVENVROOT}/bin/ttyd \
+  ) \
+# }}}
+
+
+### lf {{{
+  && curl -L https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xzC ${DEVENVROOT}/bin \
+  && mkdir -p ${HOMEDIR}/.config/lf
+# }}}
+
+
+
+
+################################### stage3
+FROM stage1 as stage3
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+### kubectl {{{
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+  && mv kubectl ${DEVENVROOT}/bin/kubectl \
+  && chmod +x ${DEVENVROOT}/bin/kubectl \
+# }}}
+
+
+### kustomize {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash \
+    && mv kustomize ${DEVENVROOT}/bin/ \
+  ) \
+# }}}
+
+
+### Helm {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
+    && bash get_helm.sh \
+  ) \
+# }}}
+
+
+### krew {{{
+  && ( \
+    export KREW_ROOT=${HOMEDIR}/.krew \
+    && mkdir -p $KREW_ROOT/bin \
+    && mkdir -p $KREW_ROOT/receipts \
+    && touch $KREW_ROOT/receipts/__dummy.yaml \
+    && mkdir -p $KREW_ROOT/store \
+    && mkdir -p $KREW_ROOT/index \
+    && set -x; cd "$(mktemp -d)" \
+    && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
+    && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
+    && KREW="krew-${OS}_${ARCH}" \
+    && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" \
+    && tar zxvf "${KREW}.tar.gz" \
+    && ./"${KREW}" install krew \
+  ) \
+# }}}
+
+
+### kind {{{
+  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64 \
+  && chmod +x ./kind \
+  && mv ./kind ${DEVENVROOT}/bin/kind \
+# }}}
+
+
+### k9s {{{
+  && ( \
+    export K9S_VERSION="0.26.7" \
+    && set -x; cd "$(mktemp -d)" \
+    && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
+    && tar zxvf k9s.tar.gz \
+    && chmod +x k9s \
+    && mv k9s ${DEVENVROOT}/bin/ \
+  )
+# }}}
+
+
+
+
+
+################################### stage4
+FROM stage1 as stage4
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+### golang {{{
+RUN ( \
+    export GOVERSION=1.19.4 \
+    && set -x; cd "$(mktemp -d)" \
+    && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
+    && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz \
+    && mv go ${HOMEDIR}/.go \
+    && rm go${GOVERSION}.linux-amd64.tar.gz \
+  ) \
 # }}}
 
 
@@ -272,162 +403,33 @@ RUN groupadd -g $USERID $USER \
     && tar xzvf linux64.tar.gz \
     && chmod +x ./purescript/purs \
     && cp ./purescript/purs ${DEVENVROOT}/bin/ \
-  ) \
+  )
 # }}}
 
 
-### terraform {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && git clone https://github.com/tfutils/tfenv.git $HOMEDIR/.tfenv \
-    && export TERRAFORM_VERSION=1.3.6 \
-    && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-    && unzip ./terraform.zip \
-    && chmod +x ./terraform \
-    && mv ./terraform ${DEVENVROOT}/bin/ \
-  ) \
-#}}}
+
+################################### stage5
+FROM stage1 as devenv
+
+ARG USER="devenv"
+ARG USERID="501"
+ARG PASSWORD="devenv"
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
 
 
-### termshark {{{
-  && ( \
-    export TERMSHARK_VERSION=2.4.0 \
-    && set -x; cd "$(mktemp -d)" \
-    && wget https://github.com/gcla/termshark/releases/download/v${TERMSHARK_VERSION}/termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
-    && tar -zxvf termshark_${TERMSHARK_VERSION}_linux_x64.tar.gz \
-    && mv termshark_${TERMSHARK_VERSION}_linux_x64/termshark  ${DEVENVROOT}/bin \
-    && rm -r termshark_${TERMSHARK_VERSION}_linux_x64* \
-  ) \
-# }}}
-
-
-### ttyd {{{
-  && ( \
-    export TTYD_VERSION=1.7.2 \
-    && set -x; cd "$(mktemp -d)" \
-    && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
-    && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
-    && chmod +x ${DEVENVROOT}/bin/ttyd \
-  ) \
-# }}}
-
-
-### lf {{{
-  && curl -L https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xzC ${DEVENVROOT}/bin \
-  && mkdir -p ${HOMEDIR}/.config/lf \
-# }}}
-
-
-### kubectl {{{
-  && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
-  && mv kubectl ${DEVENVROOT}/bin/kubectl \
-  && chmod +x ${DEVENVROOT}/bin/kubectl \
-# }}}
-
-
-### kustomize {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash \
-    && mv kustomize ${DEVENVROOT}/bin/ \
-  ) \
-# }}}
-
-
-### Helm {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
-    && bash get_helm.sh \
-  ) \
-# }}}
-
-
-### krew {{{
-  && ( \
-    export KREW_ROOT=${HOMEDIR}/.krew \
-    && mkdir -p $KREW_ROOT/bin \
-    && mkdir -p $KREW_ROOT/receipts \
-    && touch $KREW_ROOT/receipts/__dummy.yaml \
-    && mkdir -p $KREW_ROOT/store \
-    && mkdir -p $KREW_ROOT/index \
-    && set -x; cd "$(mktemp -d)" \
-    && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
-    && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
-    && KREW="krew-${OS}_${ARCH}" \
-    && curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" \
-    && tar zxvf "${KREW}.tar.gz" \
-    && ./"${KREW}" install krew \
-  ) \
-# }}}
-
-
-### kind {{{
-  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64 \
-  && chmod +x ./kind \
-  && mv ./kind ${DEVENVROOT}/bin/kind \
-# }}}
-
-
-### k9s {{{
-  && ( \
-    export K9S_VERSION="0.26.7" \
-    && set -x; cd "$(mktemp -d)" \
-    && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
-    && tar zxvf k9s.tar.gz \
-    && chmod +x k9s \
-    && mv k9s ${DEVENVROOT}/bin/ \
-  ) \
-# }}}
-
-
-### starship {{{
-  && ( \
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y \
-  ) \
-# }}}
-
-
-### go pkgs {{{
-  && export GOROOT=${HOMEDIR}/.go \
-  && export PATH=${HOMEDIR}/.go/bin:$PATH \
-  && mkdir -p /usr/local/go \
-  && mkdir -p /usr/local/go/src \
-  && mkdir -p /usr/local/go/bin \
-  && mkdir -p /usr/local/go/pkg \
-  && export GOPATH=/usr/local/go \
-  && go install github.com/x-motemen/ghq@latest \
-  && go install github.com/itchyny/mmv/cmd/mmv@latest \
-  && go install github.com/mattn/efm-langserver@latest \
-  && go install github.com/go-delve/delve/cmd/dlv@latest \
-  && go install github.com/mholt/archiver/cmd/arc@latest \
-  && go install github.com/laurent22/massren@latest \
-# }}}
-
-
-### clean tmpdir {{{
-  && rm -rf /tmp/* \
-# }}}
-
-
-### timezone {{{
-  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
-# }}}
-
-
-### lang {{{
-  # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
-  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
-# }}}
-
-
-### change permission {{{
-  && chown -R $USER:$USER $HOMEDIR
-# }}}
-
+ENV DEVENV_VERSION=5.2.2
 
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
+
+
+### copy from stages {{{
+COPY --from=stage2 ${HOMEDIR}/* ${HOMEDIR}
+COPY --from=stage3 ${HOMEDIR}/* ${HOMEDIR}
+COPY --from=stage4 ${HOMEDIR}/* ${HOMEDIR}
+# }}}
+
 
 ### nvim & dotfiles {{{
 COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
@@ -448,6 +450,47 @@ COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
 COPY --chown=devenv:devenv sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
 COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
 # }}}
+
+
+
+## go pkgs {{{
+RUN  export GOROOT=${HOMEDIR}/.go \
+  && export PATH=${HOMEDIR}/.go/bin:$PATH \
+  && mkdir -p /usr/local/go \
+  && mkdir -p /usr/local/go/src \
+  && mkdir -p /usr/local/go/bin \
+  && mkdir -p /usr/local/go/pkg \
+  && export GOPATH=/usr/local/go \
+  && go install github.com/x-motemen/ghq@latest \
+  && go install github.com/itchyny/mmv/cmd/mmv@latest \
+  && go install github.com/mattn/efm-langserver@latest \
+  && go install github.com/go-delve/delve/cmd/dlv@latest \
+  && go install github.com/mholt/archiver/cmd/arc@latest \
+  && go install github.com/laurent22/massren@latest \
+# }}}
+
+### starship {{{
+  && ( \
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y \
+  ) \
+# }}}
+
+### timezone {{{
+  && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
+# }}}
+
+
+### lang {{{
+  # && localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS \
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
+# }}}
+
+
+### change permission {{{
+  && chown -R $USER:$USER $HOMEDIR
+# }}}
+
+
 
 USER $USER
 WORKDIR $HOMEDIR
