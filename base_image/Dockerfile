@@ -185,13 +185,10 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && add-apt-repository -y ppa:neovim-ppa/stable \
-    && curl -o nvim-linux64.tar.gz -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
-    && tar xzvf nvim-linux64.tar.gz \
-    && chmod +x ./nvim-linux64/bin/nvim \
-    && cp ./nvim-linux64/bin/nvim ${DEVENVROOT}/bin/ \
+    && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
+    && apt install nvim-linux64.deb \
   ) \
 # }}}
-
 
 
 ### terraform {{{
@@ -390,6 +387,7 @@ RUN ( \
 ### haskell {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
+    && export GHCUP_INSTALL_BASE_PREFIX=${HOMEDIR} \
     && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
     && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
   ) \
