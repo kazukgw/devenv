@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ENV DEVENV_VERSION=5.0.1
+ENV DEVENV_VERSION=5.1.1
 
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
@@ -114,7 +114,7 @@ RUN groupadd -g $USERID $USER \
 
 ### golang {{{
   && ( \
-    export GOVERSION=1.19.1 \
+    export GOVERSION=1.19.4 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz \
     && tar -zxvf go${GOVERSION}.linux-amd64.tar.gz \
@@ -168,7 +168,7 @@ RUN groupadd -g $USERID $USER \
 
 ### google cloud sdk {{{
   && ( \
-    export CLOUD_SDK_VERSION=402.0.0 \
+    export CLOUD_SDK_VERSION=412.0.0 \
     && set -x; cd "$(mktemp -d)" \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
     && tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz \
@@ -179,9 +179,14 @@ RUN groupadd -g $USERID $USER \
 
 
 ### neovim {{{
-  && add-apt-repository -y ppa:neovim-ppa/stable \
-  && apt-get update \
-  && apt-get install neovim -y \
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && add-apt-repository -y ppa:neovim-ppa/stable \
+    && curl -O https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
+    && tar xzvf nvim-linux64.tar.gz \
+    && chmod +x ./nvim-linux64/bin/nvim \
+    && cp ./nvim-linux64/bin/nvim ${DEVENVROOT}/bin/ \
+  ) \
 # }}}
 
 
@@ -260,11 +265,22 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
+### PureScript {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -L https://github.com/purescript/purescript/releases/download/v0.15.7/linux64.tar.gz -o linux64.tar.gz \
+    && tar xzvf linux64.tar.gz \
+    && chmod +x ./purescript/purs \
+    && cp ./purescript/purs ${DEVENVROOT}/bin/ \
+  ) \
+# }}}
+
+
 ### terraform {{{
   && ( \
     set -x; cd "$(mktemp -d)" \
     && git clone https://github.com/tfutils/tfenv.git $HOMEDIR/.tfenv \
-    && export TERRAFORM_VERSION=1.3.4 \
+    && export TERRAFORM_VERSION=1.3.6 \
     && curl -o ./terraform.zip -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip ./terraform.zip \
     && chmod +x ./terraform \
@@ -287,7 +303,7 @@ RUN groupadd -g $USERID $USER \
 
 ### ttyd {{{
   && ( \
-    export TTYD_VERSION=1.7.1 \
+    export TTYD_VERSION=1.7.2 \
     && set -x; cd "$(mktemp -d)" \
     && wget https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64 \
     && mv ttyd.x86_64 ${DEVENVROOT}/bin/ttyd \
@@ -347,7 +363,7 @@ RUN groupadd -g $USERID $USER \
 
 
 ### kind {{{
-  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64 \
+  && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64 \
   && chmod +x ./kind \
   && mv ./kind ${DEVENVROOT}/bin/kind \
 # }}}
@@ -355,7 +371,7 @@ RUN groupadd -g $USERID $USER \
 
 ### k9s {{{
   && ( \
-    export K9S_VERSION="0.26.3" \
+    export K9S_VERSION="0.26.7" \
     && set -x; cd "$(mktemp -d)" \
     && curl -sSL -o k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz \
     && tar zxvf k9s.tar.gz \
@@ -460,6 +476,6 @@ RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk install gradle' \
   && /bin/bash -c '\
   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-  && pyenv install 3.10.7'
+  && pyenv install 3.11.0'
 
 # vim: foldmethod=marker foldlevel=0
