@@ -418,6 +418,24 @@ ARG DEVENVROOT=/home/devenv/.devenv
 
 ENV DEVENV_VERSION=5.2.2
 
+# golang
+ENV GOROOT $HOMEDIR/.go
+ENV GOPATH $HOMEDIR
+ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
+
+# sdkman & java
+ENV PATH $HOMEDIR/.sdkman/bin:$PATH
+
+# node
+ENV N_PREFIX $HOMEDIR/.n
+ENV PATH $HOMEDIR/.n/bin:$PATH
+
+## pyenv
+ENV PATH $HOMEDIR/.pyenv/bin:$PATH
+ENV PYENV_ROOT $HOMEDIR/.pyenv
+ENV PATH $PYENV_ROOT/bin:$PATH
+
+
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
 
@@ -489,26 +507,8 @@ RUN  export GOROOT=${HOMEDIR}/.go \
 # }}}
 
 
-
 USER $USER
 WORKDIR $HOMEDIR
-
-# golang
-ENV GOROOT $HOMEDIR/.go
-ENV GOPATH $HOMEDIR
-ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
-
-# sdkman & java
-ENV PATH $HOMEDIR/.sdkman/bin:$PATH
-
-# node
-ENV N_PREFIX $HOMEDIR/.n
-ENV PATH $HOMEDIR/.n/bin:$PATH
-
-## pyenv
-ENV PATH $HOMEDIR/.pyenv/bin:$PATH
-ENV PYENV_ROOT $HOMEDIR/.pyenv
-ENV PATH $PYENV_ROOT/bin:$PATH
 
 RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
