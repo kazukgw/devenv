@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ENV DEVENV_VERSION=5.1.1
+ENV DEVENV_VERSION=5.1.2
 
 ## for ubuntu 18.04 tzdata
 ENV DEBIAN_FRONTEND=noninteractive
