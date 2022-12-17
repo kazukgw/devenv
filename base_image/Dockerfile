@@ -182,7 +182,7 @@ RUN groupadd -g $USERID $USER \
   && ( \
     set -x; cd "$(mktemp -d)" \
     && add-apt-repository -y ppa:neovim-ppa/stable \
-    && curl -O https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
+    && curl -o nvim-linux64.tar.gz -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz \
     && tar xzvf nvim-linux64.tar.gz \
     && chmod +x ./nvim-linux64/bin/nvim \
     && cp ./nvim-linux64/bin/nvim ${DEVENVROOT}/bin/ \
