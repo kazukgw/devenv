@@ -418,9 +418,9 @@ RUN mkdir -p /tmp/stage2 \
   && mkdir -p /tmp/stage4
 
 ### copy from stages {{{
-COPY --from=stage2 ${HOMEDIR}/* /tmp/stage2
-COPY --from=stage3 ${HOMEDIR}/* /tmp/stage3
-COPY --from=stage4 ${HOMEDIR}/* /tmp/stage4
+COPY --from=stage2 ${HOMEDIR} /tmp/stage2
+COPY --from=stage3 ${HOMEDIR} /tmp/stage3
+COPY --from=stage4 ${HOMEDIR} /tmp/stage4
 # }}}
 
 RUN cp -r /tmp/stage2/* ${HOMEDIR} \
