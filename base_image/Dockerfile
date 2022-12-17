@@ -186,7 +186,7 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
     set -x; cd "$(mktemp -d)" \
     && add-apt-repository -y ppa:neovim-ppa/stable \
     && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
-    && apt install nvim-linux64.deb \
+    && apt install ./nvim-linux64.deb \
   ) \
 # }}}
 
