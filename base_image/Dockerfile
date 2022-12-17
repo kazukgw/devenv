@@ -423,9 +423,9 @@ COPY --from=stage3 ${HOMEDIR} /tmp/stage3
 COPY --from=stage4 ${HOMEDIR} /tmp/stage4
 # }}}
 
-RUN cp -r /tmp/stage2/* ${HOMEDIR} \
-  && cp -r /tmp/stage3/* ${HOMEDIR} \
-  && cp -r /tmp/stage4/* ${HOMEDIR} 
+RUN cp -a /tmp/stage2/. ${HOMEDIR} \
+  && cp -a /tmp/stage3/. ${HOMEDIR} \
+  && cp -a /tmp/stage4/. ${HOMEDIR} 
 
 
 
@@ -487,7 +487,8 @@ COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
 
 
 ## go pkgs {{{
-RUN  export GOROOT=${HOMEDIR}/.go \
+RUN  ls -la ${HOMEDIR} \
+  && export GOROOT=${HOMEDIR}/.go \
   && export PATH=${HOMEDIR}/.go/bin:$PATH \
   && mkdir -p /usr/local/go \
   && mkdir -p /usr/local/go/src \
