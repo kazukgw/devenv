@@ -1,12 +1,11 @@
 steps:
-- name: 'gcr.io/kaniko-project/executor:latest'
+- name: 'gcr.io/cloud-builders/docker:latest'
   env:
   - 'DOCKER_BUILDKIT=1'
   args:
-  - --context=base_image
-  - --destination=gcr.io/kazukgw-prvt/devenv
-  - --dockerfile=base_image/Dockerfile
-  - --cache=true
-  - --cache-ttl=16h
-  - --compressed-caching=false
-timeout: 3600s
+  - 'build'
+  - '-t'
+  - 'gcr.io/kazukgw-prvt/devenv'
+  - 'base_image'
+timeout: 7200s
+images: ['gcr.io/kazukgw-prvt/devenv']
