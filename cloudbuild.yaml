@@ -3,6 +3,7 @@ steps:
   env:
   - 'DOCKER_BUILDKIT=1'
   args:
+  - --context=base_image
   - --destination=gcr.io/kazukgw-prvt/devenv
   - --dockerfile=base_image/Dockerfile
   - --cache=true
