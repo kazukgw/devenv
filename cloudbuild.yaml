@@ -7,5 +7,4 @@ steps:
   - --dockerfile=base_image/Dockerfile
   - --cache=true
   - --cache-ttl=10h
-images: ['gcr.io/kazukgw-prvt/devenv']
 timeout: 3600s
