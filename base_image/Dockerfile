@@ -393,12 +393,19 @@ RUN ( \
     && export GHCUP_INSTALL_BASE_PREFIX=${HOMEDIR} \
     && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
     && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
-  ) \
+  )
 # }}}
 
 
+################################# stage7
+FROM stage1 as stage7
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+
 ### PureScript {{{
-  && ( \
+RUN ( \
     set -x; cd "$(mktemp -d)" \
     && curl -L https://github.com/purescript/purescript/releases/download/v0.15.7/linux64.tar.gz -o linux64.tar.gz \
     && tar xzvf linux64.tar.gz \
@@ -409,7 +416,7 @@ RUN ( \
 
 
 
-################################### stage7
+################################### stage8
 FROM stage1 as devenv
 
 ARG USER="devenv"
@@ -448,6 +455,7 @@ COPY --from=stage3 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage4 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage7 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 # }}}
 
 
