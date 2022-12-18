@@ -415,9 +415,61 @@ RUN ( \
 # }}}
 
 
+################################# stage8
+FROM stage1 as stage8
 
-################################### stage8
-FROM stage1 as devenv
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+COPY --from=stage2 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage3 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage4 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage7 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+# }}}
+
+
+### nvim & dotfiles {{{
+COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
+COPY --chown=devenv:devenv bashrc ${HOMEDIR}/.bashrc
+COPY --chown=devenv:devenv bash_prompt ${HOMEDIR}/.bash_prompt
+COPY --chown=devenv:devenv templates ${HOMEDIR}/.templates
+COPY --chown=devenv:devenv cheatsheets ${HOMEDIR}/.cheatsheets
+COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
+COPY --chown=devenv:devenv tmux.conf ${HOMEDIR}/.tmux.conf
+COPY --chown=devenv:devenv git-prompt ${HOMEDIR}/.git-prompt
+COPY --chown=devenv:devenv git-completion ${HOMEDIR}/.git-completion
+COPY --chown=devenv:devenv gitconfig ${HOMEDIR}/.gitconfig
+COPY --chown=devenv:devenv tigrc ${HOMEDIR}/.tigrc
+COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.bash
+COPY --chown=devenv:devenv fzf-command.bash ${HOMEDIR}/.fzf-command.bash
+COPY --chown=devenv:devenv lfrc ${HOMEDIR}/.config/lf/lfrc
+COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
+COPY --chown=devenv:devenv sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
+COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
+# }}}
+
+## go pkgs {{{
+RUN ls -la ${HOMEDIR} \
+  && export GOROOT=${HOMEDIR}/.go \
+  && export PATH=${HOMEDIR}/.go/bin:$PATH \
+  && mkdir -p /usr/local/go \
+  && mkdir -p /usr/local/go/src \
+  && mkdir -p /usr/local/go/bin \
+  && mkdir -p /usr/local/go/pkg \
+  && export GOPATH=/usr/local/go \
+  && go install github.com/x-motemen/ghq@latest \
+  && go install github.com/itchyny/mmv/cmd/mmv@latest \
+  && go install github.com/mattn/efm-langserver@latest \
+  && go install github.com/go-delve/delve/cmd/dlv@latest \
+  && go install github.com/mholt/archiver/cmd/arc@latest \
+  && go install github.com/laurent22/massren@latest
+# }}}
+
+
+################################### stage9
+FROM stage8 as devenv
 
 ARG USER="devenv"
 ARG USERID="501"
@@ -449,57 +501,11 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 # 日本語の入力に必要
 ENV LANG=ja_JP.UTF-8
 
-### copy from stages {{{
-COPY --from=stage2 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage3 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage4 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage7 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-# }}}
-
-
-### nvim & dotfiles {{{
-COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
-COPY --chown=devenv:devenv bashrc ${HOMEDIR}/.bashrc
-COPY --chown=devenv:devenv bash_prompt ${HOMEDIR}/.bash_prompt
-COPY --chown=devenv:devenv templates ${HOMEDIR}/.templates
-COPY --chown=devenv:devenv cheatsheets ${HOMEDIR}/.cheatsheets
-COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
-COPY --chown=devenv:devenv tmux.conf ${HOMEDIR}/.tmux.conf
-COPY --chown=devenv:devenv git-prompt ${HOMEDIR}/.git-prompt
-COPY --chown=devenv:devenv git-completion ${HOMEDIR}/.git-completion
-COPY --chown=devenv:devenv gitconfig ${HOMEDIR}/.gitconfig
-COPY --chown=devenv:devenv tigrc ${HOMEDIR}/.tigrc
-COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.bash
-COPY --chown=devenv:devenv fzf-command.bash ${HOMEDIR}/.fzf-command.bash
-COPY --chown=devenv:devenv lfrc ${HOMEDIR}/.config/lf/lfrc
-COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
-COPY --chown=devenv:devenv sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_successful
-COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
-# }}}
-
-
-## go pkgs {{{
-RUN ls -la ${HOMEDIR} \
-  && export GOROOT=${HOMEDIR}/.go \
-  && export PATH=${HOMEDIR}/.go/bin:$PATH \
-  && mkdir -p /usr/local/go \
-  && mkdir -p /usr/local/go/src \
-  && mkdir -p /usr/local/go/bin \
-  && mkdir -p /usr/local/go/pkg \
-  && export GOPATH=/usr/local/go \
-  && go install github.com/x-motemen/ghq@latest \
-  && go install github.com/itchyny/mmv/cmd/mmv@latest \
-  && go install github.com/mattn/efm-langserver@latest \
-  && go install github.com/go-delve/delve/cmd/dlv@latest \
-  && go install github.com/mholt/archiver/cmd/arc@latest \
-  && go install github.com/laurent22/massren@latest \
-# }}}
-
+COPY --from=stage8 ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage8 /usr/local/go /usr/local/go
 
 ### starship {{{
-  && ( \
+RUN ( \
     sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y \
   ) \
 # }}}
