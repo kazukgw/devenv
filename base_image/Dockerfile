@@ -469,7 +469,7 @@ RUN ls -la ${HOMEDIR} \
 
 
 ################################### stage9
-FROM stage8 as devenv
+FROM stage1 as devenv
 
 ARG USER="devenv"
 ARG USERID="501"
