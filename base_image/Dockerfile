@@ -181,14 +181,6 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
 # }}}
 
 
-### neovim {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
-    && apt install ./nvim-linux64.deb -f \
-  ) \
-# }}}
-
 
 ### terraform {{{
   && ( \
@@ -489,11 +481,22 @@ RUN ls -la ${HOMEDIR} \
   && go install github.com/laurent22/massren@latest \
 # }}}
 
+
 ### starship {{{
   && ( \
     sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y \
   ) \
 # }}}
+
+
+### neovim {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
+    && apt install ./nvim-linux64.deb -f \
+  ) \
+# }}}
+
 
 ### timezone {{{
   && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
