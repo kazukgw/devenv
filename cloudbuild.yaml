@@ -7,4 +7,5 @@ steps:
   - --dockerfile=base_image/Dockerfile
   - --cache=true
   - --cache-ttl=10h
+  - --build-arg BUILDKIT_INLINE_CACHE=1
 timeout: 3600s

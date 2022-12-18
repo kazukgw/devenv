@@ -376,12 +376,19 @@ RUN ( \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz -o rust-analyzer.gz \
     && gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
-  ) \
+  )
 # }}}
 
 
+################################### stage6
+FROM stage1 as stage6
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+
 ### haskell {{{
-  && ( \
+RUN ( \
     set -x; cd "$(mktemp -d)" \
     && export GHCUP_INSTALL_BASE_PREFIX=${HOMEDIR} \
     && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
@@ -402,7 +409,7 @@ RUN ( \
 
 
 
-################################### stage6
+################################### stage7
 FROM stage1 as devenv
 
 ARG USER="devenv"
@@ -440,6 +447,7 @@ COPY --from=stage2 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage3 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage4 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 # }}}
 
 
