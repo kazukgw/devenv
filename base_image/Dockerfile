@@ -510,9 +510,7 @@ WORKDIR $HOMEDIR
 
 RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
   && sdk update \
-  && sdk install java \
-  && sdk install maven \
-  && sdk install gradle' \
+  && sdk install java' \
   && /bin/bash -c '\
   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
   && pyenv install 3.11.0'
