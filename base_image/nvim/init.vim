@@ -178,6 +178,12 @@ Plug 'tpope/vim-markdown'
 " TypeScript
 Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったので
 
+" PureScript
+Plug 'purescript-contrib/purescript-vim'
+
+" Rust
+Plug 'simrat39/rust-tools.nvim'
+
 " Other
 Plug 'elzr/vim-json'
 
@@ -239,7 +245,7 @@ local on_attach = function (client, bufnr)
   keymap('n', 'tb', "<cmd>SymbolsOutline<CR>", opt)
 
 
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_exec([[
       augroup auto_lsp_document_formatting
         autocmd! * <buffer>
@@ -255,8 +261,8 @@ local on_attach = function (client, bufnr)
 end
 
 local disable_formatting_on_init = function(client, initialize_result)
-  client.resolved_capabilities.document_formatting = false
-  client.resolved_capabilities.document_range_formatting = false
+  client.server_capabilities.documentFormattingProvider = false
+  client.server_capabilities.documentRangeFormattingProvider = false
 end
 
 local lspconfig = require('lspconfig')
@@ -289,7 +295,7 @@ lspconfig.hls.setup { on_attach = on_attach }
 
 local on_attach_efm = function(client)
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_exec([[
       augroup auto_lsp_document_formatting
         autocmd! * <buffer>
@@ -338,6 +344,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 require('lspsaga').setup({
   diagnostic_header_icon = "❗️",
 })
+
+
+require("rust-tools").setup()
 
 EOF
 
@@ -1152,6 +1161,7 @@ lualine.setup(config)
 EOF
 
 """" }}}
+
 
 """""""" }}}
 
