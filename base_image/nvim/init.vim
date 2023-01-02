@@ -173,7 +173,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'mattn/emmet-vim', { 'for': ['html','eruby'] }
 
 " Markdown
-Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 
 " TypeScript
 Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったので
@@ -346,7 +346,7 @@ require('lspsaga').setup({
 })
 
 
-require("rust-tools").setup()
+require("rust-tools").setup({ server = { on_attach = on_attach }})
 
 EOF
 
@@ -607,6 +607,7 @@ map F <Plug>Sneak_F
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#505050'
 let g:indentLine_char = '¦'
+let g:indentLine_conceallevel = 0
 
 """ }}}
 """" vim-gitgutter {{{
