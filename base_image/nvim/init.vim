@@ -112,6 +112,8 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/nvim-cmp'
 
+Plug 'ErichDonGubler/lsp_lines.nvim'
+Plug 'j-hui/fidget.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 " Plug 'scrooloose/nerdtree'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -123,7 +125,7 @@ Plug 'tami5/lspsaga.nvim'
 " Plug 'tjdevries/astronauta.nvim'
 " Plug 'RishabhRD/lspactions'
 Plug 'ray-x/lsp_signature.nvim'
-" Plug 'folke/trouble.nvim'
+Plug 'folke/trouble.nvim'
 " Plug 'stevearc/aerial.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 
@@ -542,19 +544,31 @@ lua <<EOF
        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
      end,
     },
-    mapping = {
-      ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
-      ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    -- mapping = {
+    --   ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
+    --   ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
+    --   ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    --   ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    --   ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    --   ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    --   ['<C-e>'] = cmp.mapping({
+    --     i = cmp.mapping.abort(),
+    --     c = cmp.mapping.close(),
+    --   }),
+    --   ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    -- },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       -- { name = 'vsnip' }, -- For vsnip users.
@@ -568,6 +582,7 @@ lua <<EOF
 
   -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
     sources = {
       { name = 'buffer' }
     }
@@ -575,6 +590,7 @@ lua <<EOF
 
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
       { name = 'path' }
     }, {
@@ -1162,6 +1178,17 @@ lualine.setup(config)
 EOF
 
 """" }}}
+"""" lsp_lines {{{
+lua << EOF
+require("lsp_lines").setup()
+EOF
+"""" }}}
+"""" fidget.nvim {{{
+lua << EOF
+require("fidget").setup()
+EOF
+"""" }}}
+
 
 
 """""""" }}}
