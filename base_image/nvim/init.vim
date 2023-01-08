@@ -118,8 +118,8 @@ Plug 'nvim-telescope/telescope.nvim'
 " Plug 'scrooloose/nerdtree'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'kassio/neoterm'
-" Plug 'glepnir/lspsaga.nvim'
-Plug 'tami5/lspsaga.nvim'
+Plug 'glepnir/lspsaga.nvim'
+" Plug 'tami5/lspsaga.nvim'
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
 " Plug 'tjdevries/astronauta.nvim'
@@ -184,7 +184,7 @@ Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったの�
 Plug 'purescript-contrib/purescript-vim'
 
 " Rust
-Plug 'simrat39/rust-tools.nvim'
+" Plug 'simrat39/rust-tools.nvim'
 
 " Other
 Plug 'elzr/vim-json'
@@ -294,6 +294,8 @@ lspconfig.yamlls.setup { on_attach = on_attach }
 lspconfig.bashls.setup { on_attach = on_attach }
 lspconfig.fsautocomplete.setup { on_attach = on_attach }
 lspconfig.hls.setup { on_attach = on_attach }
+lspconfig.rust_analyzer.setup { on_attach = on_attach }
+
 
 local on_attach_efm = function(client)
   -- Set autocommands conditional on server_capabilities
@@ -343,12 +345,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- require('navigator').setup()
 -- require('trouble').setup({icons = false})
-require('lspsaga').setup({
-  diagnostic_header_icon = "❗️",
-})
+require('lspsaga').init_lsp_saga()
 
-
-require("rust-tools").setup({ server = { on_attach = on_attach }})
+-- require("rust-tools").setup({ server = { on_attach = on_attach }})
 
 EOF
 
