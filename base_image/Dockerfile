@@ -324,11 +324,11 @@ RUN ( \
 ## go pkgs {{{
   && export GOROOT=${HOMEDIR}/.go \
   && export PATH=${HOMEDIR}/.go/bin:$PATH \
-  && mkdir -p /usr/local/go \
-  && mkdir -p /usr/local/go/src \
-  && mkdir -p /usr/local/go/bin \
-  && mkdir -p /usr/local/go/pkg \
-  && export GOPATH=/usr/local/go \
+  && mkdir -p ${DEVENVROOT}/go \
+  && mkdir -p ${DEVENVROOT}/go/src \
+  && mkdir -p ${DEVENVROOT}/go/bin \
+  && mkdir -p ${DEVENVROOT}/go/pkg \
+  && export GOPATH=${DEVENVROOT}/go \
   && go install github.com/x-motemen/ghq@latest \
   && go install github.com/itchyny/mmv/cmd/mmv@latest \
   && go install github.com/mattn/efm-langserver@latest \
@@ -493,7 +493,7 @@ ENV DEVENV_VERSION=5.3.0
 # golang
 ENV GOROOT $HOMEDIR/.go
 ENV GOPATH $HOMEDIR
-ENV PATH $GOPATH/bin:$GOROOT/bin:/usr/local/go/bin:$PATH
+ENV PATH $GOPATH/bin:$GOROOT/bin:${DEVENVROOT}/go/bin:$PATH
 
 # sdkman & java
 ENV PATH $HOMEDIR/.sdkman/bin:$PATH
@@ -512,7 +512,6 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 ENV LANG=ja_JP.UTF-8
 
 COPY --from=stage8 ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage8 /usr/local/go /usr/local/go
 
 ### starship {{{
 RUN ( \
