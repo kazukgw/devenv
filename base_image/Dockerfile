@@ -321,6 +321,21 @@ RUN ( \
   ) \
 # }}}
 
+## go pkgs {{{
+  && export GOROOT=${HOMEDIR}/.go \
+  && export PATH=${HOMEDIR}/.go/bin:$PATH \
+  && mkdir -p /usr/local/go \
+  && mkdir -p /usr/local/go/src \
+  && mkdir -p /usr/local/go/bin \
+  && mkdir -p /usr/local/go/pkg \
+  && export GOPATH=/usr/local/go \
+  && go install github.com/x-motemen/ghq@latest \
+  && go install github.com/itchyny/mmv/cmd/mmv@latest \
+  && go install github.com/mattn/efm-langserver@latest \
+  && go install github.com/go-delve/delve/cmd/dlv@latest \
+  && go install github.com/mholt/archiver/cmd/arc@latest \
+  && go install github.com/laurent22/massren@latest \
+# }}}
 
 ### nodejs {{{
   && export N_PREFIX=${HOMEDIR}/.n \
@@ -342,9 +357,29 @@ RUN ( \
   vscode-langservers-extracted \
   zx \
   purescript \
-  spago \
+  spago
 # }}}
 
+
+
+
+################################### stage5
+FROM stage1 as stage5
+
+ARG HOMEDIR=/home/devenv
+ARG DEVENVROOT=/home/devenv/.devenv
+
+### rust {{{
+RUN ( \
+    set -x; cd "$(mktemp -d)" \
+    && export RUSTUP_HOME=${HOMEDIR}/.rustup \
+    && export CARGO_HOME=${HOMEDIR}/.cargo \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz -o rust-analyzer.gz \
+    && gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
+    && chmod +x ${DEVENVROOT}/bin/rust-analyzer \
+  ) \
+# }}}
 
 ### python {{{
   && git clone https://github.com/pyenv/pyenv.git $HOMEDIR/.pyenv \
@@ -364,7 +399,6 @@ RUN ( \
     black \
 # }}}
 
-
 ### java {{{
   && export SDKMAN_DIR=${HOMEDIR}/.sdkman \
   && curl -s "https://get.sdkman.io" | bash
@@ -372,58 +406,39 @@ RUN ( \
 
 
 
-################################### stage5
-FROM stage1 as stage5
-
-ARG HOMEDIR=/home/devenv
-ARG DEVENVROOT=/home/devenv/.devenv
-
-### rust {{{
-RUN ( \
-    set -x; cd "$(mktemp -d)" \
-    && export RUSTUP_HOME=${HOMEDIR}/.rustup \
-    && export CARGO_HOME=${HOMEDIR}/.cargo \
-    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-    && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz -o rust-analyzer.gz \
-    && gzip -d -c rust-analyzer.gz > ${DEVENVROOT}/bin/rust-analyzer \
-    && chmod +x ${DEVENVROOT}/bin/rust-analyzer \
-  )
-# }}}
-
-
 ################################### stage6
-FROM stage1 as stage6
-
-ARG HOMEDIR=/home/devenv
-ARG DEVENVROOT=/home/devenv/.devenv
-
-
-### haskell {{{
-RUN ( \
-    set -x; cd "$(mktemp -d)" \
-    && export GHCUP_INSTALL_BASE_PREFIX=${HOMEDIR} \
-    && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
-    && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
-  )
-# }}}
-
-
-################################# stage7
-FROM stage1 as stage7
-
-ARG HOMEDIR=/home/devenv
-ARG DEVENVROOT=/home/devenv/.devenv
-
-
-### PureScript {{{
-RUN ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -L https://github.com/purescript/purescript/releases/download/v0.15.7/linux64.tar.gz -o linux64.tar.gz \
-    && tar xzvf linux64.tar.gz \
-    && chmod +x ./purescript/purs \
-    && cp ./purescript/purs ${DEVENVROOT}/bin/ \
-  )
-# }}}
+# FROM stage1 as stage6
+#
+# ARG HOMEDIR=/home/devenv
+# ARG DEVENVROOT=/home/devenv/.devenv
+#
+#
+# ### haskell {{{
+# RUN ( \
+#     set -x; cd "$(mktemp -d)" \
+#     && export GHCUP_INSTALL_BASE_PREFIX=${HOMEDIR} \
+#     && export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
+#     && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
+#   )
+# # }}}
+#
+#
+# ################################# stage7
+# FROM stage1 as stage7
+#
+# ARG HOMEDIR=/home/devenv
+# ARG DEVENVROOT=/home/devenv/.devenv
+#
+#
+# ### PureScript {{{
+# RUN ( \
+#     set -x; cd "$(mktemp -d)" \
+#     && curl -L https://github.com/purescript/purescript/releases/download/v0.15.7/linux64.tar.gz -o linux64.tar.gz \
+#     && tar xzvf linux64.tar.gz \
+#     && chmod +x ./purescript/purs \
+#     && cp ./purescript/purs ${DEVENVROOT}/bin/ \
+#   )
+# # }}}
 
 
 ################################# stage8
@@ -461,22 +476,6 @@ COPY --chown=devenv:devenv sudo_as_admin_successful ${HOMEDIR}/.sudo_as_admin_su
 COPY --chown=devenv:devenv starship.toml ${HOMEDIR}/.config/starship.toml
 # }}}
 
-## go pkgs {{{
-RUN ls -la ${HOMEDIR} \
-  && export GOROOT=${HOMEDIR}/.go \
-  && export PATH=${HOMEDIR}/.go/bin:$PATH \
-  && mkdir -p /usr/local/go \
-  && mkdir -p /usr/local/go/src \
-  && mkdir -p /usr/local/go/bin \
-  && mkdir -p /usr/local/go/pkg \
-  && export GOPATH=/usr/local/go \
-  && go install github.com/x-motemen/ghq@latest \
-  && go install github.com/itchyny/mmv/cmd/mmv@latest \
-  && go install github.com/mattn/efm-langserver@latest \
-  && go install github.com/go-delve/delve/cmd/dlv@latest \
-  && go install github.com/mholt/archiver/cmd/arc@latest \
-  && go install github.com/laurent22/massren@latest
-# }}}
 
 
 ################################### stage9
