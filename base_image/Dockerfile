@@ -112,6 +112,15 @@ RUN groupadd -g $USERID $USER \
 # }}}
 
 
+### neovim {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
+    && apt install ./nvim-linux64.deb -f \
+  ) \
+# }}}
+
+
 ### apt clean {{{
   && apt-get autoremove \
   && apt-get clean \
@@ -179,7 +188,6 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${HOMEDIR}/.fzf \
     && mv google-cloud-sdk ${HOMEDIR}/.google-cloud-sdk \
   ) \
 # }}}
-
 
 
 ### terraform {{{
@@ -333,6 +341,8 @@ RUN ( \
   pyright \
   vscode-langservers-extracted \
   zx \
+  purescript \
+  spago \
 # }}}
 
 
@@ -426,8 +436,8 @@ COPY --from=stage2 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage3 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage4 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
-COPY --from=stage7 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+# COPY --from=stage6 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
+# COPY --from=stage7 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 # }}}
 
 
@@ -512,15 +522,6 @@ RUN ( \
 # }}}
 
 
-### neovim {{{
-  && ( \
-    set -x; cd "$(mktemp -d)" \
-    && curl -o nvim-linux64.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
-    && apt install ./nvim-linux64.deb -f \
-  ) \
-# }}}
-
-
 ### timezone {{{
   && ln -sf /usr/share/zoneinfo/Asia//Tokyo /etc/localtime \
 # }}}
@@ -534,10 +535,14 @@ RUN ( \
 USER $USER
 WORKDIR $HOMEDIR
 
-RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
-  && sdk update \
-  && sdk install java' \
-  && /bin/bash -c '\
+# RUN /bin/bash -c 'source ~/.sdkman/bin/sdkman-init.sh \
+#   && sdk update \
+#   && sdk install java' \
+#   && /bin/bash -c '\
+#   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
+#   && pyenv install 3.11.0'
+
+RUN /bin/bash -c '\
   if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
   && pyenv install 3.11.0'
 
