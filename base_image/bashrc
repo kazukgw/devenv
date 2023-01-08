@@ -96,7 +96,7 @@ fi
 export PATH=$HOME/.cargo/bin:$PATH
 
 # haskell
-source "$HOME"/.ghcup/env
+# source "$HOME"/.ghcup/env
 
 # fzf
 export PATH=$HOME/.fzf/bin:$PATH
