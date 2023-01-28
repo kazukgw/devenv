@@ -467,7 +467,6 @@ COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 
 ### nvim & dotfiles {{{
 COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
-COPY --chown=devenv:devenv bashrc ${HOMEDIR}/.bashrc
 COPY --chown=devenv:devenv zshrc ${HOMEDIR}/.zshrc
 COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
 COPY --chown=devenv:devenv tmux.conf ${HOMEDIR}/.tmux.conf
