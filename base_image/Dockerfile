@@ -468,7 +468,7 @@ COPY --from=stage5 --chown=devenv:devenv ${HOMEDIR} ${HOMEDIR}
 ### nvim & dotfiles {{{
 COPY --chown=devenv:devenv nvim ${HOMEDIR}/.config/nvim
 COPY --chown=devenv:devenv bashrc ${HOMEDIR}/.bashrc
-COPY --chown=devenv:devenv bash_prompt ${HOMEDIR}/.bash_prompt
+COPY --chown=devenv:devenv zshrc ${HOMEDIR}/.zshrc
 COPY --chown=devenv:devenv templates ${HOMEDIR}/.templates
 COPY --chown=devenv:devenv cheatsheets ${HOMEDIR}/.cheatsheets
 COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
@@ -477,7 +477,7 @@ COPY --chown=devenv:devenv git-completion ${HOMEDIR}/.git-completion
 COPY --chown=devenv:devenv gitconfig ${HOMEDIR}/.gitconfig
 COPY --chown=devenv:devenv tigrc ${HOMEDIR}/.tigrc
 COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.bash
-COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.zsh
+COPY --chown=devenv:devenv fzf.zsh ${HOMEDIR}/.fzf.zsh
 COPY --chown=devenv:devenv fzf-command.bash ${HOMEDIR}/.fzf-command.bash
 COPY --chown=devenv:devenv lfrc ${HOMEDIR}/.config/lf/lfrc
 COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
