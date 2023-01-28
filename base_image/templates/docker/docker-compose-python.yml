@@ -1,5 +1,0 @@
-python:
-  image: python:3.6
-  volumes:
-    - ./site-packages:/root/.local/lib/python2.7/site-packages
-  command: tail -f  /dev/null

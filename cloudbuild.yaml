@@ -6,6 +6,6 @@ steps:
   - 'build'
   - '-t'
   - 'gcr.io/kazukgw-prvt/devenv'
-  - 'base_image'
+  - 'devenv'
 timeout: 7200s
 images: ['gcr.io/kazukgw-prvt/devenv']

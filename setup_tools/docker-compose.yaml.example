@@ -29,9 +29,9 @@ services:
       # nvim
       - /Users/developer/devenv/.config/nvim/plugged:/Users/developer/devenv/.config/nvim/plugged
       # nvim coc settings
-      - /Users/developer/devenv/.config/nvim/coc-settings.json:/Users/developer/devenv/.config/nvim/coc-settings.json
+      # - /Users/developer/devenv/.config/nvim/coc-settings.json:/Users/developer/devenv/.config/nvim/coc-settings.json
       # coc.nvim extension
-      - /Users/kazukgw/devenv/.config/coc:/Users/kazukgw/devenv/.config/coc
+      # - /Users/kazukgw/devenv/.config/coc:/Users/kazukgw/devenv/.config/coc
       # pip pacakges
       - /Users/developer/devenv/.local:/Users/developer/devenv/.local
       # share
