@@ -21,9 +21,12 @@ RUN groupadd -g $USERID $USER \
   && apt-get update --fix-missing \
   && apt-get install -y wget software-properties-common gnupg \
   && apt-get update --fix-missing && apt-get install -y --no-install-recommends\
+    # gfortran \
+    # tmux \
     apt-transport-https \
     bc \
     bison \
+    bubblewrap \
     build-essential\
     bzip2 \
     ca-certificates \
@@ -36,7 +39,6 @@ RUN groupadd -g $USERID $USER \
     fd-find \
     g++ \
     gawk \
-    # gfortran \
     git \
     git-extras \
     htop \
@@ -80,7 +82,6 @@ RUN groupadd -g $USERID $USER \
     telnet \
     tig \
     tk-dev\
-    # tmux \
     traceroute \
     tree \
     tshark \
@@ -89,6 +90,7 @@ RUN groupadd -g $USERID $USER \
     xz-utils\
     zip \
     zlib1g-dev \
+    zsh \
     && apt install  -y --no-install-recommends -o Dpkg::Options::="--force-overwrite" bat \
 # }}}
 
@@ -357,10 +359,17 @@ RUN ( \
   vscode-langservers-extracted \
   zx \
   purescript \
-  spago
+  spago \
 # }}}
 
-
+### ocaml {{{
+  && ( \
+    set -x; cd "$(mktemp -d)" \
+    && curl -o opam -sLl https://github.com/ocaml/opam/releases/download/2.1.4/opam-2.1.4-x86_64-linux \
+    && chmod +x opam \
+    && mv opam ${DEVENVROOT}/bin/opam \
+  )
+# }}}
 
 
 ################################### stage5
@@ -464,11 +473,11 @@ COPY --chown=devenv:devenv templates ${HOMEDIR}/.templates
 COPY --chown=devenv:devenv cheatsheets ${HOMEDIR}/.cheatsheets
 COPY --chown=devenv:devenv functions ${HOMEDIR}/.functions
 COPY --chown=devenv:devenv tmux.conf ${HOMEDIR}/.tmux.conf
-COPY --chown=devenv:devenv git-prompt ${HOMEDIR}/.git-prompt
 COPY --chown=devenv:devenv git-completion ${HOMEDIR}/.git-completion
 COPY --chown=devenv:devenv gitconfig ${HOMEDIR}/.gitconfig
 COPY --chown=devenv:devenv tigrc ${HOMEDIR}/.tigrc
 COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.bash
+COPY --chown=devenv:devenv fzf.bash ${HOMEDIR}/.fzf.zsh
 COPY --chown=devenv:devenv fzf-command.bash ${HOMEDIR}/.fzf-command.bash
 COPY --chown=devenv:devenv lfrc ${HOMEDIR}/.config/lf/lfrc
 COPY --chown=devenv:devenv lfcd.sh ${HOMEDIR}/.lfcd.sh
@@ -526,7 +535,12 @@ RUN ( \
 
 
 ### lang {{{
-  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+  && update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja" \
+# }}}
+
+
+### chsh {{{
+  && chsh devenv -s /usr/bin/zsh
 # }}}
 
 
@@ -541,7 +555,8 @@ WORKDIR $HOMEDIR
 #   && pyenv install 3.11.0'
 
 RUN /bin/bash -c '\
-  if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
-  && pyenv install 3.11.0'
+    if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
+    && pyenv install 3.11.0 \
+    && opam init -y -n --disable-sandboxing'
 
 # vim: foldmethod=marker foldlevel=0

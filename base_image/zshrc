@@ -1,0 +1,175 @@
+setopt histignorealldups sharehistory
+
+# Use emacs keybindings even if our EDITOR is set to vi
+bindkey -e
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+### show DEVENV {{{
+
+if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
+
+cat << EOS
+
+
+  ██████╗  ██████╗ ███╗   ██╗████████╗    ██████╗  █████╗ ███╗   ██╗██╗ ██████╗
+  ██╔══██╗██╔═══██╗████╗  ██║╚══██╔══╝    ██╔══██╗██╔══██╗████╗  ██║██║██╔════╝
+  ██║  ██║██║   ██║██╔██╗ ██║   ██║       ██████╔╝███████║██╔██╗ ██║██║██║
+  ██║  ██║██║   ██║██║╚██╗██║   ██║       ██╔═══╝ ██╔══██║██║╚██╗██║██║██║
+  ██████╔╝╚██████╔╝██║ ╚████║   ██║       ██║     ██║  ██║██║ ╚████║██║╚██████╗██╗
+  ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝       ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝ ╚═════╝╚═╝
+
+
+EOS
+fi
+
+# }}}
+
+
+### env variables {{{
+
+export TERM=xterm-color
+export EDITOR=nvim
+export PATH=$HOME/.devenv/bin:$HOME/.local/bin:$PATH
+
+# }}}
+
+
+### history {{{
+
+# https://askubuntu.com/questions/339546/how-do-i-see-the-history-of-the-commands-i-have-run-in-tmux
+export HISTCONTROL=ignoreboth
+export HISTSIZE=10000
+export HISTCONTROL=ignoredups:erasedups
+# shopt -s histappend
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# }}}
+
+
+### git config {{{
+
+[ -n "$GIT_NAME" ] && git config --global user.name "$GIT_NAME"
+[ -n "$GIT_EMAIL" ] && git config --global user.email "$GIT_EMAIL"
+[ -n "$GITHUB_USER" ] && git config --global github.user "$GITHUB_USER"
+[ -n "$http_proxy" ] && git config --global http.proxy "$http_proxy"
+[ -n "$https_proxy" ] && git config --global https.proxy "$https_proxy"
+
+# }}}
+
+
+### languages / tools {{{
+
+# go
+export GOROOT=$HOME/.go
+export PATH=$GOROOT/bin:/usr/local/go/bin:$PATH
+
+# node
+export N_PREFIX=$HOME/.n
+export PATH=$HOME/.n/bin:$PATH
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
+
+# rust
+export PATH=$HOME/.cargo/bin:$PATH
+
+# haskell
+# source "$HOME"/.ghcup/env
+
+# fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}"'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# lf
+[ -f ~/.lfcd.sh ] && source ~/.lfcd.sh
+
+# sdkman
+export PATH=$HOME/.sdkman/bin:$PATH
+source ~/.sdkman/bin/sdkman-init.sh
+
+# tfenv
+export PATH=$HOME/.tfenv/bin:$PATH
+
+# google-cloud-sdk
+export PATH=$HOME/.google-cloud-sdk/bin:$PATH
+
+# lemonade
+if [[ -n "$DISABLE_LEMONADE" ]]; then
+  if which lemonade >> /dev/null ; then
+    mv $(which lemonade) $(which lemonade)-org
+  fi
+fi
+
+# krew
+export PATH=$HOME/.krew/bin:$PATH
+
+# }}}
+
+
+### alias {{{
+
+alias l='ls -G -a --color=auto'
+alias ls='ls -G -a --color=auto'
+alias ll='ls -G -lah --color=auto'
+alias tmux='tmux -u'
+alias t='tmux'
+alias ttt='tmux new -s dev'
+alias g='git'
+alias tiga='tig --all'
+
+alias vim=nvim
+alias vi=nvim
+alias v=nvim
+alias vimrc='nvim $HOME/.config/nvim/init.vim'
+
+# }}}
+
+
+### custom functions {{{
+
+source $HOME/.functions
+
+# }}}
+
+
+### starship {{{
+
+eval "$(starship init zsh)"
+
+# }}}
+
+
+# vim: foldmethod=marker foldlevel=0
+

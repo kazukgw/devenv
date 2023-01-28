@@ -86,6 +86,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Color scheme
 Plug 'sainnhe/sonokai'
 
+
 "
 Plug 'nvim-lualine/lualine.nvim'
 
@@ -143,10 +144,11 @@ Plug 'justinmk/vim-sneak'
 
 " Appearance
 Plug 'LeafCage/foldCC.vim'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 " Plug 'itchyny/lightline.vim'
 Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 Plug 'RRethy/vim-illuminate'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Tools
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
@@ -218,7 +220,6 @@ endif
 " let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
 let g:sonokai_diagnostic_line_highlight = 1
-
 colorscheme sonokai
 
 """"""""}}}
@@ -295,6 +296,7 @@ lspconfig.bashls.setup { on_attach = on_attach }
 lspconfig.fsautocomplete.setup { on_attach = on_attach }
 lspconfig.hls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
+lspconfig.ocamllsp.setup { on_attach = on_attach }
 
 
 local on_attach_efm = function(client)
@@ -345,7 +347,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- require('navigator').setup()
 -- require('trouble').setup({icons = false})
-require('lspsaga').init_lsp_saga()
 
 -- require("rust-tools").setup({ server = { on_attach = on_attach }})
 
@@ -621,7 +622,7 @@ map F <Plug>Sneak_F
 
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#505050'
-let g:indentLine_char = '¦'
+let g:indentLine_char = '╵'
 let g:indentLine_conceallevel = 0
 
 """ }}}
@@ -792,7 +793,9 @@ augroup END
 """" lspsaga {{{
 lua << EOF
 local lspsaga = require('lspsaga')
-lspsaga.init_lsp_saga {
+lspsaga.setup({})
+
+-- lspsaga.init_lsp_saga {
   -- use_saga_diagnostic_sign = true
 
 --  error_sign = '﮻',
@@ -832,7 +835,7 @@ lspsaga.init_lsp_saga {
   -- the related filetypes into this table
   -- like server_filetype_map = {metals = {'sbt', 'scala'}}
   -- server_filetype_map = {}
-}
+-- }
 EOF
 """" }}}
 """" far.vim {{{
@@ -1187,7 +1190,15 @@ lua << EOF
 require("fidget").setup()
 EOF
 """" }}}
-
+"""" indent-blankline.nvim {{{
+" lua << EOF
+" require("indent_blankline").setup({
+"   show_current_context = true,
+"   show_current_context_start = true,
+"   space_char_blankline = " ",
+" })
+" EOF
+"""" }}}
 
 
 """""""" }}}
