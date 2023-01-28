@@ -237,16 +237,16 @@ local on_attach = function (client, bufnr)
 
   local opt = {noremap=true, silent=true}
 
-  keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opt)
+  keymap('n', 'gK', '<cmd>lua vim.lsp.buf.hover()<CR>', opt)
   keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opt)
   keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opt)
   keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opt)
-  keymap('n', 'gR', "<cmd>lua require('lspsaga.rename').rename()<CR>", opt)
-  keymap('n', 'gk', "<cmd>lua require('lspsaga.diagnostic').show_cursor_diagnostics()<CR>", opt)
+  keymap('n', 'gR', "<cmd>Lspsaga rename<CR>", opt)
+  keymap('n', 'gk', "<cmd>Lspsaga show_cursor_diagnostics<CR>", opt)
   keymap('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", opt)
   keymap('n', 'gs', "<cmd>lua require('telescope.builtin').treesitter()<CR>", opt)
-  keymap('n', 'ga', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", opt)
-  keymap('n', 'ga', ":<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>", opt)
+  keymap('n', 'ga', "<cmd>Lspsaga code_action<CR>", opt)
+  -- keymap('n', 'ga', ":<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>", opt)
   -- keymap('n', 'tb', "<cmd>AerialToggle!<CR>", opt)
   keymap('n', 'tb', "<cmd>SymbolsOutline<CR>", opt)
 
@@ -794,9 +794,22 @@ augroup illuminate_augroup
 augroup END
 """ }}}
 """" lspsaga {{{
+sign define LspDiagnosticsErrorSign text=﮻
+sign define LspDiagnosticsWarningSign text=
+sign define LspDiagnosticsInformationSign text=
+sign define LspDiagnosticsHintSign text=
+
 lua << EOF
 local lspsaga = require('lspsaga')
-lspsaga.setup({})
+lspsaga.setup({
+  ui = {
+    border = "solid",
+    colors = {
+      normal_bg = '#363944',
+      title_bg = '#363944',
+    },
+  }
+})
 
 -- lspsaga.init_lsp_saga {
   -- use_saga_diagnostic_sign = true
@@ -1367,6 +1380,15 @@ highlight SpecialKey term=underline ctermfg=darkgray guifg=darkgray
 """""""" }}}
 
 """""""" MySettings {{{
+
+lua<<EOF
+-- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = "﮻ ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+EOF
 
 """ Terminal {{{
 augroup MyTerminal
