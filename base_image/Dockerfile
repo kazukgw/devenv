@@ -557,6 +557,6 @@ WORKDIR $HOMEDIR
 RUN /bin/bash -c '\
     if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)"; fi \
     && pyenv install 3.11.0 \
-    && opam init -y -n --disable-sandboxing'
+    && /home/devenv/.devenv/bin/opam init -y -n --disable-sandboxing'
 
 # vim: foldmethod=marker foldlevel=0
