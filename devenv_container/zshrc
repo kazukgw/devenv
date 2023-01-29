@@ -108,6 +108,9 @@ export PATH=$HOME/.cargo/bin:$PATH
 # haskell
 # source "$HOME"/.ghcup/env
 
+# ocaml
+eval $(opam env)
+
 # fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
