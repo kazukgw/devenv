@@ -624,7 +624,7 @@ map F <Plug>Sneak_F
 """" IndentLine {{{
 
 let g:indentLine_color_term = 239
-let g:indentLine_color_gui = '#505050'
+let g:indentLine_color_gui = '#31343b'
 let g:indentLine_char = '╵'
 let g:indentLine_conceallevel = 0
 
