@@ -28,10 +28,6 @@ services:
       - /Users/developer/devenv/pkg:/Users/developer/devenv/pkg
       # nvim
       - /Users/developer/devenv/.config/nvim/plugged:/Users/developer/devenv/.config/nvim/plugged
-      # nvim coc settings
-      # - /Users/developer/devenv/.config/nvim/coc-settings.json:/Users/developer/devenv/.config/nvim/coc-settings.json
-      # coc.nvim extension
-      # - /Users/kazukgw/devenv/.config/coc:/Users/kazukgw/devenv/.config/coc
       # pip pacakges
       - /Users/developer/devenv/.local:/Users/developer/devenv/.local
       # share
@@ -72,12 +68,12 @@ services:
     security_opt:
       - seccomp:unconfined
 
-  socat:
-    image: alpine/socat
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - "0.0.0.0:1234:1234"
-    command:
-      - TCP-LISTEN:1234,fork
-      - UNIX-CONNECT:/var/run/docker.sock
+  # socat:
+  #   image: alpine/socat
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   ports:
+  #     - "0.0.0.0:1234:1234"
+  #   command:
+  #     - TCP-LISTEN:1234,fork
+  #     - UNIX-CONNECT:/var/run/docker.sock
