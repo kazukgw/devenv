@@ -21,7 +21,7 @@ $scala\
 [](fg:#8cb865 bg:#77bdd9)\
 $time\
 [ ](fg:#77bdd9)\
-"""
+\n[❯](fg:#FC5D7C bold) """
 
 
 # Disable the blank line at the start of the prompt
