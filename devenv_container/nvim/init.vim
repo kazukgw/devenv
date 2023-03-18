@@ -623,10 +623,10 @@ map F <Plug>Sneak_F
 """" }}}
 """" IndentLine {{{
 
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui = '#31343b'
 let g:indentLine_char = '╵'
 let g:indentLine_conceallevel = 0
+highlight IndentBlanklineChar guifg=#404040 gui=nocombine
+
 
 """ }}}
 """" vim-gitgutter {{{
@@ -1207,13 +1207,13 @@ require("fidget").setup()
 EOF
 """" }}}
 """" indent-blankline.nvim {{{
-" lua << EOF
-" require("indent_blankline").setup({
-"   show_current_context = true,
-"   show_current_context_start = true,
-"   space_char_blankline = " ",
-" })
-" EOF
+lua << EOF
+require("indent_blankline").setup({
+  show_current_context = false,
+  show_current_context_start = false,
+  space_char_blankline = " ",
+})
+EOF
 """" }}}
 
 """" symbols-outline {{{
