@@ -184,7 +184,8 @@ Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'leafgarland/typescript-vim'  " syntax highlight ができなかったので
 
 " PureScript
-Plug 'purescript-contrib/purescript-vim'
+Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
+
 
 " Rust
 " Plug 'simrat39/rust-tools.nvim'
@@ -198,6 +199,9 @@ Plug 'fsharp/vim-fsharp', {
   \ 'for': 'fsharp',
   \ 'do':  'make fsautocomplete',
   \}
+
+Plug 'rescript-lang/vim-rescript'
+
 
 call plug#end()
 
@@ -300,6 +304,14 @@ lspconfig.fsautocomplete.setup { on_attach = on_attach }
 lspconfig.hls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
 lspconfig.ocamllsp.setup { on_attach = on_attach }
+
+lspconfig.rescriptls.setup {
+  cmd = {
+    'node',
+    vim.fn.expand('$HOME/.config/nvim/plugged/vim-rescript/server/out/server.js'),
+    '--stdio'
+  }
+}
 
 
 local on_attach_efm = function(client)
